@@ -1,0 +1,8 @@
+<div *ngIf="user">
+  <button (click)="logout.emit()" class="btn btn-dark">
+    <mat-icon aria-hidden="false">assignment_ind</mat-icon>
+    <div>
+      {{ user.name }}
+    </div>
+  </button>
+</div>

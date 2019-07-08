@@ -1,0 +1,15 @@
+mat-card {
+  max-width:  400px;
+  margin:  2em auto;
+  text-align:  center;
+  background-color: grey;
+
+}
+
+.signin-content{
+  padding:  60px 1rem;
+  background-color: #58345F;
+}
+.full-width-input{
+  width:  100%;
+}
