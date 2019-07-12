@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { RootStoreState, LoginStoreActions } from '../app/root-store';
+
+import { LoginState } from '../app/root-store/login-store/login.state';
+import * as fromLoginActions from '../app/root-store/login-store/login.actions';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,13 @@ import { RootStoreState, LoginStoreActions } from '../app/root-store';
 })
 export class AppComponent implements OnInit {
   title = 'perminv-app';
-  constructor(private store$: Store<RootStoreState.Estado>) {}
+  constructor(private store$: Store<LoginState>) {}
 
   ngOnInit() {
     console.log('Arrancando....');
     // this.store$.dispatch(
     //  LoginStoreActions.Trylogin({ username: 'dg.rio', password: 'blabla' })
     // );
-    this.store$.dispatch(LoginStoreActions.Trytoken());
+    this.store$.dispatch(fromLoginActions.Trytoken());
   }
 }

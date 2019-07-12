@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { RootStoreState, LoginStoreActions } from '../root-store';
+import { RootStoreState } from '../root-store';
+import { LoginState } from '../root-store/login-store/login.state';
 import { Store, select } from '@ngrx/store';
+import * as fromLoginActions from '../root-store/login-store/login.actions';
 
 @Component({
   selector: 'app-login',
@@ -12,10 +14,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   private formSubmitAttempt: boolean;
 
-  constructor(
-    private fb: FormBuilder,
-    private store$: Store<RootStoreState.Estado>
-  ) {}
+  constructor(private fb: FormBuilder, private store$: Store<LoginState>) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -41,7 +40,7 @@ export class LoginComponent implements OnInit {
       );
       */
       this.store$.dispatch(
-        LoginStoreActions.Trylogin({
+        fromLoginActions.Trylogin({
           username: this.form.get('userName').value,
           password: this.form.get('password').value
         })

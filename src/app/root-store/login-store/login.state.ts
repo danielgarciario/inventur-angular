@@ -1,5 +1,7 @@
 import { User } from '../../models/user.model';
 
+// import * as fromRoot from '../root-store.state';
+
 export interface LoginState {
   user: User;
   authenticated: boolean;

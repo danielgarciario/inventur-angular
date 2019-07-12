@@ -9,7 +9,7 @@ import { SessionsStoreEffects } from './effects';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature('sesions', reducer),
+    StoreModule.forFeature('sesion', reducer),
     EffectsModule.forFeature([SessionsStoreEffects])
   ],
   providers: [SessionsStoreEffects]

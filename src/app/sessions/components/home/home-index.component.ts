@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Sesion } from '../models/sesion.model';
+import { Sesion } from '../../../models/sesion.model';
 
 @Component({
   selector: 'app-sesion-index',
@@ -11,6 +11,7 @@ import { Sesion } from '../models/sesion.model';
 })
 export class HomeIndexComponent {
   @Output() delete = new EventEmitter<Sesion>();
+  @Output() gotoSesion = new EventEmitter<Sesion>();
 
   @Input() loading: boolean;
 

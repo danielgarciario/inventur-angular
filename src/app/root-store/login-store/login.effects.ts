@@ -66,7 +66,7 @@ export class LoginStoreEffects {
     () =>
       this.actions$.pipe(
         ofType(fromLogin.Loginsuccess),
-        tap((_) => this.router.navigate(['']))
+        tap((_) => this.router.navigate(['/sessions']))
       ),
     { dispatch: false }
   );
@@ -75,7 +75,7 @@ export class LoginStoreEffects {
     () =>
       this.actions$.pipe(
         ofType(fromLogin.LoginfromTokensuccess),
-        tap((_) => this.router.navigate(['']))
+        tap((_) => this.router.navigate(['/sessions']))
       ),
     { dispatch: false }
   );

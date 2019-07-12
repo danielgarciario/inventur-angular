@@ -29,7 +29,7 @@ export class SessionsService {
   } */
 
   getSessions(emno: string): Observable<Array<Sesion>> {
-    console.log(`Dentro de getSessions para empleado ${emno}`);
+    // console.log(`Dentro de getSessions para empleado ${emno}`);
     const q = `${this.baseURL}/api/Sesions/getSessions?empno=${emno}`;
     return this.http.get<Array<Sesion>>(q);
   }

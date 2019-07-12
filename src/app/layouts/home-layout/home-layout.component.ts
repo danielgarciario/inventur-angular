@@ -10,6 +10,8 @@ import { select, Store } from '@ngrx/store';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { User } from './../../models/user.model';
+import { LoginState } from './../../root-store/login-store/login.state';
+import * as fromSelectors from './../../root-store/login-store/login.selectors';
 
 @Component({
   selector: 'app-home-layout',
@@ -21,18 +23,20 @@ export class HomeLayoutComponent implements OnInit {
   isHandset$: Observable<boolean>;
   user$: Observable<User>;
   constructor(
-    private store$: Store<RootStoreState.Estado>,
+    private store$: Store<LoginState>,
     private breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit() {
-    this.isLoggedIn$ = this.store$.pipe(
+    /*  this.isLoggedIn$ = this.store$.pipe(
       select(LoginStoreSelectors.loginIsAuthenticated)
     );
-    this.user$ = this.store$.pipe(select(LoginStoreSelectors.loginUsuario));
+    this.user$ = this.store$.pipe(select(LoginStoreSelectors.loginUsuario)); */
     this.isHandset$ = this.breakpointObserver
       .observe(Breakpoints.Handset)
       .pipe(map((result) => result.matches));
+    this.isLoggedIn$ = this.store$.select(fromSelectors.loginIsAuthenticated);
+    this.user$ = this.store$.select(fromSelectors.loginUsuario);
   }
 
   onLogout() {

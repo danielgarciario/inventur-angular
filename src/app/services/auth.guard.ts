@@ -6,19 +6,17 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 
-import { LoginStoreSelectors, RootStoreState } from '../root-store';
+import { LoginState } from '../root-store/login-store/login.state';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import * as fromSelectors from '../root-store/login-store/login.selectors';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private store: Store<RootStoreState.Estado>,
-    private router: Router
-  ) {}
+  constructor(private store: Store<LoginState>, private router: Router) {}
   /*
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -40,7 +38,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    return this.store.select(LoginStoreSelectors.loginIsAuthenticated).pipe(
+    return this.store.select(fromSelectors.loginIsAuthenticated).pipe(
       map((aut) => {
         if (!aut) {
           this.router.navigate(['/login']);

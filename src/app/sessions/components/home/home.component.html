@@ -1,0 +1,31 @@
+<div style="margin: 10px">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Sessions</mat-card-title>
+      <mat-card-subtitle>Actions</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Sessions: Verknupfung zwischen Anwender und Lager
+      </p>
+      <p>
+        blablablablabla
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button color="Warn" aria-label="icon button add">
+        <mat-icon>add_to_queue</mat-icon>
+        Neue
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<div style="margin: 10px">
+  <app-sesion-index
+    [loading]="loading | async"
+    [sesiones]="sesiones | async"
+    (gotoSesion)="onGotoSession($event)"
+    (delete)="onDeleteSession($event)"
+  >
+  </app-sesion-index>
+</div>
