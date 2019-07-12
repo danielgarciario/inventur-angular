@@ -13,24 +13,19 @@ import { environment } from 'src/environments/environment';
 import { ServicesModule } from './services/services.module';
 import { LoginLayoutComponent } from './layouts/login-layout/login-layout.component';
 import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
-// import { HomeComponent } from './home/home.component';
+
 import { LoginComponent } from './login/login.component';
 import { LoginDetailComponent } from './login/login-detail.component';
 import { LayoutModule } from '@angular/cdk/layout';
-// import { HomeIndexComponent } from './home/home-index.component';
-// import { SesionComponent } from './sesion/sesion.component';
 import { SessionsModule } from './sessions/sessions.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // HomeComponent,
-    //  HomeIndexComponent,
     LoginComponent,
     LoginDetailComponent,
     HomeLayoutComponent,
     LoginLayoutComponent
-    // SesionComponent
   ],
   imports: [
     BrowserModule,
