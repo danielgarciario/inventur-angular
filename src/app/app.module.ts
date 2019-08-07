@@ -35,10 +35,10 @@ import { SessionsModule } from './sessions/sessions.module';
     SessionsModule,
     ServicesModule,
     AppMaterialModule,
-    // StoreDevtoolsModule.instrument({
-    //   maxAge: 25,
-    //   logOnly: environment.production
-    // }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,

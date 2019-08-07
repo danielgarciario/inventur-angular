@@ -29,64 +29,79 @@ const elreducer = createReducer(
   }),
   on(fromActions.LoadPositions, (estado) => {
     estado = { ...estado };
-    posicionsadapter.removeAll(estado.posiciones);
+    estado.posiciones = posicionsadapter.removeAll(estado.posiciones);
     estado.posiciones.loadingPositions = true;
     return estado;
   }),
   on(fromActions.LoadSesionsSuccess, (estado, { nuevassesiones }) => {
     estado = { ...estado };
+    estado.sesiones = sesionadapter.addMany(nuevassesiones, estado.sesiones);
     estado.sesiones.loadingSessions = false;
-    sesionadapter.addMany(nuevassesiones, estado.sesiones);
     return estado;
   }),
   on(fromActions.LoadPositionsSuccess, (estado, { nuevasposiciones }) => {
     estado = { ...estado };
-    posicionsadapter.addMany(nuevasposiciones, estado.posiciones);
+    estado.posiciones = posicionsadapter.addMany(
+      nuevasposiciones,
+      estado.posiciones
+    );
     estado.posiciones.loadingPositions = false;
     return estado;
   }),
   on(fromActions.BuscaCandidatosLagerOrt, (estado, { localizacion }) => {
     estado = { ...estado };
-    kandidatosadapter.removeAll(estado.kandidatos);
+    estado.kandidatos = kandidatosadapter.removeAll(estado.kandidatos);
     estado.kandidatos.loadingKandidatos = true;
     return estado;
   }),
   on(fromActions.CandidatosLagerOrtSuccess, (estado, { nuevosCandidatos }) => {
     estado = { ...estado };
-    kandidatosadapter.addMany(nuevosCandidatos, estado.kandidatos);
+    estado.kandidatos = kandidatosadapter.addMany(
+      nuevosCandidatos,
+      estado.kandidatos
+    );
     estado.kandidatos.loadingKandidatos = false;
     estado.kandidatos.selectedKandidate = null;
     return estado;
   }),
   on(fromActions.BuscaCandidatosItem, (estado, { item }) => {
     estado = { ...estado };
-    kandidatosadapter.removeAll(estado.kandidatos);
+    estado.kandidatos = kandidatosadapter.removeAll(estado.kandidatos);
     estado.kandidatos.loadingKandidatos = true;
     return estado;
   }),
   on(fromActions.BuscaCandidatosItemSuccess, (estado, { nuevosCandidatos }) => {
     estado = { ...estado };
-    kandidatosadapter.addMany(nuevosCandidatos, estado.kandidatos);
+    estado.kandidatos = kandidatosadapter.addMany(
+      nuevosCandidatos,
+      estado.kandidatos
+    );
     estado.kandidatos.loadingKandidatos = false;
     estado.kandidatos.selectedKandidate = null;
     return estado;
   }),
   on(fromActions.buscaArticulos, (estado, { busqueda }) => {
     estado = { ...estado };
-    potencialadapter.removeAll(estado.potenciales);
+    estado.potenciales = potencialadapter.removeAll(estado.potenciales);
     estado.potenciales.loadingPotencials = true;
     estado.potenciales.selectedPotencial = null;
     return estado;
   }),
   on(fromActions.buscaArticulosSucess, (estado, { nuevospotenciales }) => {
     estado = { ...estado };
-    potencialadapter.addMany(nuevospotenciales, estado.potenciales);
+    estado.potenciales = potencialadapter.addMany(
+      nuevospotenciales,
+      estado.potenciales
+    );
     estado.potenciales.loadingPotencials = false;
     return estado;
   }),
   on(fromActions.seleccionaArticulo, (estado, { articuloseleccionado }) => {
     estado = { ...estado };
-    potencialadapter.addOne(articuloseleccionado, estado.potenciales);
+    estado.potenciales = potencialadapter.addOne(
+      articuloseleccionado,
+      estado.potenciales
+    );
     estado.potenciales.loadingPotencials = false;
     estado.potenciales.selectedPotencial = articuloseleccionado;
     return estado;
@@ -98,7 +113,7 @@ const elreducer = createReducer(
   }),
   on(fromActions.AddSesionPosSuccess, (estado, { nuevasespos }) => {
     estado = { ...estado };
-    posicionsadapter.addOne(nuevasespos, estado.posiciones);
+    estado.posiciones = posicionsadapter.addOne(nuevasespos, estado.posiciones);
     estado.posiciones.selectedSessionPos = nuevasespos;
     return estado;
   })
