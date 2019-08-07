@@ -11,7 +11,7 @@
 .maintoolbar{
   position: fixed;
   z-index: 2;
- 
+
 }
 
 .fill-remaining-space {
@@ -38,7 +38,7 @@
 }
 */
 .sidenav {
-  width: 200px;
+  width: 125px;
   align-items: center;
   justify-content: flex-start;
 }

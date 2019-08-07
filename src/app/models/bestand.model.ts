@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export interface Bestand {
   idbtnd: number;
   idsespos: number;
@@ -5,7 +7,7 @@ export interface Bestand {
   qblk: number;
   qlal: number;
   qord: number;
-  ldatum: Date;
+  ldatum: moment.Moment;
 }
 
 export interface BestandID extends Bestand {

@@ -1,1 +1,47 @@
-<p>sesion works!</p>
+<div style="margin: 10px">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title
+        >Postions für Lager {{ (sesion$ | async).lager }}</mat-card-title
+      >
+      <mat-card-subtitle>Actions</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        Postions: Verknupfung zwischen Anwender und Lager
+      </p>
+      <p>
+        blablablablabla
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        aria-label="icon button add"
+        (click)="onNeuePosition()"
+      >
+        <mat-icon>add_to_queue</mat-icon>
+        Neue
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        aria-label="icon button Excel"
+        (click)="onExportToExcel()"
+      >
+        <mat-icon>description</mat-icon>
+        Zum Excel
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<div style="margin: 10px">
+  <app-pos-index
+    [loading]="loading$ | async"
+    [posiciones]="posiciones$ | async"
+    (delete)="onDeletePosicion($event)"
+  >
+  </app-pos-index>
+</div>

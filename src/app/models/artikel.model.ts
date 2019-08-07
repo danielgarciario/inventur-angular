@@ -3,7 +3,7 @@ import { Artikelartenum } from './artikelartenum.enum';
 
 export interface Artikel {
   artikelnr: string;
-  artikelbeschreibung: string;
+  beschreibung: string;
   cuni: string;
   artikelart: Artikelartenum;
   seri: SerialArtikelEnum;

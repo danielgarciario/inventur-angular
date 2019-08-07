@@ -1,0 +1,105 @@
+<div *ngIf="loading == null">
+  isLoading Data...
+</div>
+<div *ngIf="loading != null">
+  <table mat-table [dataSource]="posiciones">
+    <ng-container matColumnDef="idposicion">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let pos">
+        {{ pos.idsespos }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="checkedam">
+      <th mat-header-cell *matHeaderCellDef>Checked Am</th>
+      <td mat-cell *matCellDef="let pos">
+        {{ pos.checkedam | date: 'd.MM HH:mm' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="artikel">
+      <th mat-header-cell *matHeaderCellDef>Artikel</th>
+      <td mat-cell *matCellDef="let pos">
+        <span class="badge">{{ pos.artikel.artikelnr }}</span>
+        <mat-icon *ngIf="pos.artikel.seri == 1">graphic_eq</mat-icon>
+        {{ pos.artikel.beschreibung }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="lagerplatz">
+      <th mat-header-cell *matHeaderCellDef>Lagerplatz</th>
+      <td mat-cell *matCellDef="let pos">
+        {{ pos.lagerort.lagerplatz }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="efabestand">
+      <th mat-header-cell *matHeaderCellDef>EfA Bestand</th>
+      <td mat-cell *matCellDef="let pos">
+        <!-- {{ pos.bestand.reduce((acum,b)=>acum + b.qhnd ,0) }} -->
+        <span>
+          {{ pos.bestand | getSumBestandOnHnd }}
+        </span>
+        <span>
+          {{ pos.artikel.cuni }}
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="gezaehlt">
+      <th mat-header-cell *matHeaderCellDef>Gezählt</th>
+      <td mat-cell *matCellDef="let pos">
+        <span *ngIf="pos.gezahlt.length == 0">
+          Noch nicht!!
+        </span>
+        <span *ngIf="pos.gezahlt.length > 0">
+          <span>
+            {{ pos.gezahlt | getSumGezahlt }}
+          </span>
+          <span>
+            {{ pos.artikel.cuni }}
+          </span>
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let pos">
+        <button
+          mat-icon-button
+          color="Warn"
+          aria-label="icon button delete"
+          (click)="delete.emit(pos)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr
+      mat-header-row
+      [ngClass]="'tablafila'"
+      *matHeaderRowDef="
+        [
+          'checkedam',
+          'artikel',
+          'lagerplatz',
+          'efabestand',
+          'gezaehlt',
+          'acciones'
+        ];
+        sticky: true
+      "
+    ></tr>
+    <tr
+      mat-row
+      [ngClass]="'tablafila'"
+      *matRowDef="
+        let row;
+        columns: [
+          'checkedam',
+          'artikel',
+          'lagerplatz',
+          'efabestand',
+          'gezaehlt',
+          'acciones'
+        ]
+      "
+    ></tr>
+  </table>
+</div>

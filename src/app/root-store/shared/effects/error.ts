@@ -38,16 +38,17 @@ export class ErrorEffects {
   showErrorEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromErrorActions.HttpError),
-      tap((accion) => console.log(accion.err)),
       map((accion) => {
-        if (accion.err.status !== undefined && accion.err.status == 401) {
+        if (accion.err.status !== undefined && accion.err.status === 401) {
           return fromLoginActions.Logout();
         }
         let msg: string;
-        if (accion.err.status !== undefined && accion.err.status == 0) {
+        if (accion.err.status == undefined) {
           msg = 'Etwas ist schief gegangen!!';
         } else {
-          msg = accion.err.message;
+          if (accion.err.status === 406) {
+            msg = accion.err.error;
+          }
         }
         return fromSnackBarActions.SnackbarOpen({ mensaje: msg });
       })

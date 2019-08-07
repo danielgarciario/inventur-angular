@@ -3,7 +3,7 @@ import { LoginApiService } from './login.api.service';
 import { JwtService } from './jwt.service';
 import { User } from '../models/user.model';
 import { BehaviorSubject, ReplaySubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { isUndefined } from 'util';
@@ -48,6 +48,10 @@ export class LoginService {
     this.borrarAutorizacion();
   }
 
+  salvaAutorizacion(usuario: User) {
+    this.jwtService.saveToken(usuario.token);
+    console.log('Guardado Token!!');
+  }
   guardaAutorizacion(usuario: User) {
     this.jwtService.saveToken(usuario.token);
     // console.log(usuario);
@@ -86,8 +90,10 @@ export class LoginService {
     return this.apiService.trythelogin(usuario, password);
   }
   tryToken(): Observable<User> {
-    const tkn = this.jwtService.getToken();
-    console.log(`Tengo Token: ${tkn}`);
+    // const tkn = this.jwtService.getToken();
+    console.log(`Trying Token:`);
+    const ahora = Date.now();
+    console.log(ahora);
     return this.apiService.tryGetUser();
   }
 
@@ -96,7 +102,13 @@ export class LoginService {
     // this.jwtService.destroyToken();
   }
   saveTheToken(usuario: User) {
+    if (usuario === null) {
+      return;
+    }
     if (isUndefined(usuario)) {
+      return;
+    }
+    if (isUndefined(usuario.token)) {
       return;
     }
     this.jwtService.saveToken(usuario.token);

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { isUndefined } from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,9 @@ export class JwtService {
   }
 
   saveToken(token: string) {
+    if (isUndefined(token)) {
+      return;
+    }
     window.localStorage[this.tokenaddres] = token;
   }
 

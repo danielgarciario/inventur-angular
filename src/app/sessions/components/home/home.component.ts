@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromActions from '../../../root-store/sessions-store/actions';
 import * as fromSelectors from '../../../root-store/sessions-store/selectors';
-import { Estado } from '../../../root-store/sessions-store/state';
+// import { Estado } from '../../../root-store/sessions-store/state';
 import { Observable, Subscriber, Subscription } from 'rxjs';
 import { Sesion } from '../../../models/sesion.model';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AppEstado } from 'src/app/root-store/root-store.state';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   constructor(
-    private store$: Store<Estado>,
+    private store$: Store<AppEstado>,
     private router: Router,
     private route: ActivatedRoute
   ) {}

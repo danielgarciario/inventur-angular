@@ -7,6 +7,7 @@ import {
   HttpEvent
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { isUndefined } from 'util';
 
 @Injectable({ providedIn: 'root' })
 export class HttpTokenInterceptor implements HttpInterceptor {
@@ -23,7 +24,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
 
     const token = this.jwtService.getToken();
 
-    if (token) {
+    if (!isUndefined(token)) {
       // tslint:disable-next-line: no-string-literal
       headersConfig['Authorization'] = `${token}`;
     }

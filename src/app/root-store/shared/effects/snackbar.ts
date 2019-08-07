@@ -12,9 +12,10 @@ export class SnackbarEffects {
   openSnackbarEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.SnackbarOpen),
-      tap((accion) =>
-        this.matSnackBar.open(accion.mensaje, accion.action, accion.config)
-      ),
+      tap((accion) => {
+        console.log(`Mensaje ${accion.mensaje}`);
+        this.matSnackBar.open(accion.mensaje, accion.action, accion.config);
+      }),
       delay(5000),
       map(() => fromActions.SnackbarClose())
     )

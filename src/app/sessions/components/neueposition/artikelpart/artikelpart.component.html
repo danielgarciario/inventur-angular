@@ -1,0 +1,29 @@
+<form [formGroup]="artikelForm">
+  <mat-form-field>
+    <input
+      matInput
+      type="text"
+      placeholder="Artikel"
+      formControlName="artikel"
+    />
+    <button
+      mat-button
+      *ngIf="artikelfc.value"
+      matSuffix
+      mat-icon-button
+      arial-label="Clear Artikel"
+      (click)="artikelForm.patchValue({ artikel: '' })"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</form>
+<mat-selection-list *ngIf="(potenciales$ | async).length > 1">
+  <mat-list-item
+    *ngFor="let pot of potenciales$ | async"
+    (click)="selectpotencial(pot)"
+  >
+    {{ pot.artikelnr }}
+    {{ pot.beschreibung }}
+  </mat-list-item>
+</mat-selection-list>

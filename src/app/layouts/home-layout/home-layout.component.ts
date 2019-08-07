@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { User } from './../../models/user.model';
 import { LoginState } from './../../root-store/login-store/login.state';
 import * as fromSelectors from './../../root-store/login-store/login.selectors';
+import { AppEstado } from './../../root-store/root-store.state';
 
 @Component({
   selector: 'app-home-layout',
@@ -23,7 +24,8 @@ export class HomeLayoutComponent implements OnInit {
   isHandset$: Observable<boolean>;
   user$: Observable<User>;
   constructor(
-    private store$: Store<LoginState>,
+    // private store$: Store<LoginState>,
+    private store$: Store<AppEstado>,
     private breakpointObserver: BreakpointObserver
   ) {}
 

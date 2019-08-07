@@ -1,0 +1,20 @@
+<form [formGroup]="locaForm">
+  <mat-form-field>
+    <input
+      matInput
+      type="text"
+      formControlName="loca"
+      placeholder="Lagerplatz"
+    />
+    <button
+      mat-button
+      *ngIf="locafc.value"
+      matSuffix
+      mat-icon-button
+      arial-label="Clear Lagerplatz"
+      (click)="locaForm.patchValue({ loca: '' })"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</form>

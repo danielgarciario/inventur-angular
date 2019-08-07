@@ -1,4 +1,5 @@
 import { User } from '../../models/user.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 // import * as fromRoot from '../root-store.state';
 
@@ -7,12 +8,13 @@ export interface LoginState {
   authenticated: boolean;
   isLoading?: boolean;
   loaded?: boolean;
-  error?: any;
+  error?: HttpErrorResponse;
 }
 
-export const initialState: LoginState = {
+export const initialLoginState: LoginState = {
   user: { emno: '', login: '', password: '', name: '', token: '' },
   isLoading: false,
   loaded: false,
-  authenticated: false
+  authenticated: false,
+  error: null
 };

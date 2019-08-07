@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../../models/user.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export const Trylogin = createAction(
   '[Login Page] trylogin',
@@ -18,9 +19,18 @@ export const LoginfromTokensuccess = createAction(
 
 export const Loginfail = createAction(
   '[Login Page] login failed',
-  props<{ error: any }>()
+  props<{ error: HttpErrorResponse }>()
+);
+
+export const NormalLoginFail = createAction(
+  '[Login Page] Normal Login Failled'
 );
 
 export const Trytoken = createAction('[Login Page] trytoken');
-export const TokenTryFailed = createAction('[Login Page] trytoken failed');
+
+export const TokenTryFailed = createAction(
+  '[Login Page] trytoken failed',
+  props<{ error: HttpErrorResponse }>()
+);
 export const Logout = createAction('[Login Page] Logout');
+export const LoginNoAction = createAction('[Login Page] No hagas nada');
