@@ -1,0 +1,51 @@
+<div class="contenedor">
+  <div class="columna1">
+    <!-- Artikel Mit ID -->
+    <div *ngIf="posicion.artikel.seri === 1">
+      <table mat-table [dataSource]="posicion.bestand">
+        <ng-container matColumnDef="checkdam">
+          <th mat-header-cell *matHeaderCellDef>Letzte datum</th>
+          <td mat-cell *matCellDef="let be">
+            {{ be.ldatum | date: 'd.MM HH:mm' }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="serial">
+          <th mat-header-cell *matHeaderCellDef>ID Nummer</th>
+          <td mat-cell *matCellDef="let be">
+            {{ be.serl }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let be">
+            <button
+              mat-icon-button
+              color="Accent"
+              aria-label="icon button gotoSesion"
+              (click)="add2gezahlt.emit(be)"
+            >
+              <mat-icon>add_box</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="['checkdam', 'serial', 'acciones']; sticky: true"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['checkdam', 'serial', 'acciones']"
+        ></tr>
+      </table>
+    </div>
+    <!-- Artikel Ohne ID-->
+    <div *ngIf="posicion.artikel.seri === 2"></div>
+  </div>
+  <div class="columna2">
+    <app-sesion-aktueller-bestand
+      [lager]="posicion.lagerort.lager"
+      [artikel]="posicion.artikel.artikelnr"
+    ></app-sesion-aktueller-bestand>
+  </div>
+</div>

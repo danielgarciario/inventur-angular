@@ -13,6 +13,8 @@ import {
 // import { Kandidato } from 'src/app/models/kandidato.model';
 // import { Artikel } from 'src/app/models/artikel.model';
 import { AppEstado } from '../root-store.state';
+import { Dictionary } from '@ngrx/entity';
+import { SesionPos } from 'src/app/models/sespos.model';
 
 /* export const getSessionState = createFeatureSelector<fromState.Estado>(
   'sesion'
@@ -80,10 +82,41 @@ export const DameSesiones = createSelector(
   getSessionEntityState,
   fromSessionsState.getAllSessions
 );
+export const DameSesionesEntitites = createSelector(
+  getSessionEntityState,
+  fromSessionsState.getSessionsEntities
+);
+export const DameSesionID = createSelector(
+  DameSesionesEntitites,
+  (e: Dictionary<Sesion>, props: { sesionid: number }) => e[props.sesionid]
+);
 
 export const DamePosiciones = createSelector(
   getPositionsEntityState,
   fromPositionState.getAllPositions
+);
+
+export const DamePosicionesEntities = createSelector(
+  getPositionsEntityState,
+  fromPositionState.getPositionsEntities
+);
+
+export const DamePosicionId = createSelector(
+  DamePosicionesEntities,
+  (entities: Dictionary<SesionPos>, props: { posid: number }) =>
+    entities[props.posid]
+);
+export const DameSiPosicionEstaModificada = createSelector(
+  getPositionsEntityState,
+  (s) => s.modificada
+);
+export const DameSelectedPosition = createSelector(
+  getPositionsEntityState,
+  (p) => p.selectedSessionPos
+);
+export const DameSesPosicionCreateSuccess = createSelector(
+  getPositionsEntityState,
+  (p) => p.createdSuccess
 );
 
 export const DameKandidatos = createSelector(

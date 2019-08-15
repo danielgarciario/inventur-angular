@@ -19,7 +19,7 @@
       <th mat-header-cell *matHeaderCellDef>Artikel</th>
       <td mat-cell *matCellDef="let pos">
         <span class="badge">{{ pos.artikel.artikelnr }}</span>
-        <mat-icon *ngIf="pos.artikel.seri == 1">graphic_eq</mat-icon>
+        <mat-icon *ngIf="pos.artikel.seri == 1">info</mat-icon>
         {{ pos.artikel.beschreibung }}
       </td>
     </ng-container>
@@ -67,6 +67,14 @@
           (click)="delete.emit(pos)"
         >
           <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          aria-label="icon button goto"
+          color="Accent"
+          (click)="gotoPosition.emit(pos)"
+        >
+          <mat-icon>exit_to_app</mat-icon>
         </button>
       </td>
     </ng-container>

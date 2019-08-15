@@ -1,0 +1,32 @@
+.contenedor {
+  display: grid;
+  grid-template-columns: 60% 40%
+}
+
+div .columna1 {
+  grid-column: 1;
+}
+div .columna2 {
+  grid-column: 2;
+}
+
+table {
+  width: 100%;
+}
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+.mat-icon-button{
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.mat-header-cell{
+  color: white;
+}
+tr.mat-row{
+  height: 25px;
+}
+

@@ -54,10 +54,6 @@ export const loginIsAuthenticated = createSelector(
   selectLogin,
   (estado: LoginState) => estado.authenticated
 );
-export const loginIsLoaded = createSelector(
-  selectLogin,
-  (estado: LoginState) => estado.loaded
-);
 export const loginUsuario: MemoizedSelector<AppEstado, User> = createSelector(
   selectLogin,
   (estado: LoginState) => estado.user

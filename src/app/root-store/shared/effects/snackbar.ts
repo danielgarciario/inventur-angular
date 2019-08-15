@@ -8,7 +8,7 @@ import * as fromActions from '../actions/snackbar';
 export class SnackbarEffects {
   constructor(private actions$: Actions, private matSnackBar: MatSnackBar) {}
 
-  @Effect()
+  // @Effect()
   openSnackbarEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromActions.SnackbarOpen),
@@ -21,7 +21,7 @@ export class SnackbarEffects {
     )
   );
 
-  @Effect({ dispatch: false })
+  // @Effect({ dispatch: false })
   closeSnackbarEffect$ = createEffect(
     () =>
       this.actions$.pipe(

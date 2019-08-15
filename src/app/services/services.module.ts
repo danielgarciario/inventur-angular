@@ -10,6 +10,7 @@ import { JwtService } from './jwt.service';
 import { LoginService } from './login.service';
 import { AuthGuard } from './auth.guard';
 import { ExcelService } from './excel.service';
+import { UniqueSerialByArtikelValidator } from './UniqueSerialByArtikelValidator.service';
 import {
   SumBestandOnHandPipe,
   SumGezahltPipe,
@@ -29,6 +30,7 @@ import {
     DatePipe,
     SumBestandOnHandPipe,
     SumGezahltPipe,
+    UniqueSerialByArtikelValidator,
     Moment2ExcelPipe,
     ExcelService
   ]

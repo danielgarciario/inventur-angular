@@ -10,6 +10,7 @@ export class PosIndexComponent {
   @Input() loading: boolean;
   @Input() posiciones: Array<SesionPos>;
   @Output() delete = new EventEmitter<SesionPos>();
+  @Output() gotoPosition = new EventEmitter<SesionPos>();
 
   constructor() {}
 }

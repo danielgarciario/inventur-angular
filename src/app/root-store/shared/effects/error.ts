@@ -34,20 +34,20 @@ export class ErrorEffects {
   )
   ); */
 
-  @Effect()
+  // @Effect()
   showErrorEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromErrorActions.HttpError),
       map((accion) => {
-        if (accion.err.status !== undefined && accion.err.status === 401) {
+        if (accion.status !== undefined && accion.status === 401) {
           return fromLoginActions.Logout();
         }
         let msg: string;
-        if (accion.err.status == undefined) {
+        if (accion.status === undefined) {
           msg = 'Etwas ist schief gegangen!!';
         } else {
-          if (accion.err.status === 406) {
-            msg = accion.err.error;
+          if (accion.status === 406) {
+            msg = accion.mensaje;
           }
         }
         return fromSnackBarActions.SnackbarOpen({ mensaje: msg });

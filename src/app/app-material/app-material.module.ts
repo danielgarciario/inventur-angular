@@ -13,7 +13,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatGridListModule, MatTooltipModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [],
@@ -30,7 +31,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatListModule,
     MatTableModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatGridListModule,
+    MatTooltipModule,
+    FlexLayoutModule
   ],
   exports: [
     MatToolbarModule,
@@ -44,7 +48,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatListModule,
     MatTableModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatGridListModule,
+    MatTooltipModule,
+    FlexLayoutModule
   ]
 })
-export class AppMaterialModule { }
+export class AppMaterialModule {}

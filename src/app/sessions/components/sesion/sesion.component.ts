@@ -55,8 +55,26 @@ export class SesionComponent implements OnInit, OnDestroy {
     this.posisubscript.unsubscribe();
   }
 
-  onDeletePosicion(pos: Position) {
+  onDeletePosicion(pos: SesionPos) {
     console.log('Delete Position');
+    this.store$.dispatch(
+      fromActions.ConfirDeleteSesionPosicion({
+        sesionid: pos.idsesion,
+        posicionid: pos.idsespos
+      })
+    );
+  }
+  onGotoPosition(pos: SesionPos) {
+    console.log(`Goto Posistion: ${pos.idsespos} from ${this.route}`);
+
+    this.router.navigate(['../../position', pos.idsespos], {
+      relativeTo: this.route
+    });
+    /*
+    this.store$.dispatch(
+      fromActions.SelectSesion({ selectedSesionId: ses.idSesion })
+    );
+    */
   }
 
   onExportToExcel() {

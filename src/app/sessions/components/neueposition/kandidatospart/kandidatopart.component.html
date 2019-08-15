@@ -14,7 +14,7 @@
       <th mat-header-cell *matHeaderCellDef>Artikel</th>
       <td mat-cell *matCellDef="let pos">
         <span class="badge">{{ pos.articulo.artikelnr }}</span>
-        <mat-icon *ngIf="pos.articulo.seri == 1">graphic_eq</mat-icon>
+        <mat-icon *ngIf="pos.articulo.seri == 1">info</mat-icon>
         {{ pos.articulo.beschreibung }}
       </td>
     </ng-container>

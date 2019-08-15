@@ -6,15 +6,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 export interface LoginState {
   user: User;
   authenticated: boolean;
-  isLoading?: boolean;
-  loaded?: boolean;
-  error?: HttpErrorResponse;
+  isLoading: boolean;
 }
 
 export const initialLoginState: LoginState = {
   user: { emno: '', login: '', password: '', name: '', token: '' },
   isLoading: false,
-  loaded: false,
-  authenticated: false,
-  error: null
+  authenticated: false
 };

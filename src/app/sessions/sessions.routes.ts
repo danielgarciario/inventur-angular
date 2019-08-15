@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SesionComponent } from './components/sesion/sesion.component';
 import { NeuePositionComponent } from './components/neueposition/neueposition.component';
 import { AuthGuard } from '../services/auth.guard';
+import { PositionComponent } from './components/position/position.component';
 
 export const sessionsRoutes: Routes = [
   {
@@ -18,7 +19,8 @@ export const sessionsRoutes: Routes = [
       },
       { path: 'sessions', component: HomeComponent },
       { path: 'session/:id', component: SesionComponent },
-      { path: 'neueposition/:id', component: NeuePositionComponent }
+      { path: 'neueposition/:id', component: NeuePositionComponent },
+      { path: 'position/:id', component: PositionComponent }
     ]
   }
 ];

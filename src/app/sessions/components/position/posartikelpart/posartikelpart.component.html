@@ -1,0 +1,35 @@
+<div>
+  <div class="contenedor">
+    <span class="titulo1 titulo">
+      Artikel Nr
+    </span>
+    <span class="dato1 titulo">Beschreibung</span>
+    <span class="titulo1 dato">
+      {{ artikel.artikelnr }}
+    </span>
+    <span class="dato1 dato"> {{ artikel.beschreibung }} </span>
+
+    <span class="titulo2 titulo"> Bestandseinheit</span>
+    <span class="dato2 dato">{{ artikel.cuni }}</span>
+    <span class="titulo3 titulo">Mit Id Nr</span>
+    <span class="dato3 dato"> {{ artikel.seri }} </span>
+  </div>
+</div>
+
+<!--
+<div fxLayout="column" fxLayoutAlign="start strech">
+  <div fxLayout="row">
+    <span fxFlex="" class="titulo">Artikel Nr</span>
+    <span class="dato"> {{ artikel.artikelnr }} </span>
+  </div>
+  <div fxLayout="row">
+    <span fxFlex="" class="titulo">Beschreibung</span>
+    <span class="dato"> {{ artikel.beschreibung }} </span>
+  </div>
+  <div fxLayout="row">
+    <span fxFlex="" class="titulo">Bestandseinheit</span>
+    <span class="dato"> {{ artikel.cuni }} </span>
+    <span class="titulo">Mit Id Nr</span>
+    <span class="dato">{{ artikel.seri }}</span>
+  </div>
+</div> -->

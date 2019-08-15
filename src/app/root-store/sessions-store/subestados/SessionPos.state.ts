@@ -3,9 +3,10 @@ import { SesionPos } from 'src/app/models/sespos.model';
 
 export interface SessionPosState extends EntityState<SesionPos> {
   loadingPositions: boolean;
-  addDialogShow: boolean;
-  deleteDialogShow: boolean;
+  modificada: boolean;
   selectedSessionPos: SesionPos;
+  createdSuccess: boolean;
+  saving: boolean;
 }
 
 function getSessionPosicionId(sp: SesionPos): number {
@@ -25,9 +26,10 @@ export const posicionsadapter: EntityAdapter<SesionPos> = createEntityAdapter<
 export const positionInitialState: SessionPosState = posicionsadapter.getInitialState(
   {
     loadingPositions: false,
-    addDialogShow: false,
-    deleteDialogShow: false,
-    selectedSessionPos: null
+    modificada: false,
+    selectedSessionPos: null,
+    createdSuccess: false,
+    saving: false
   }
 );
 

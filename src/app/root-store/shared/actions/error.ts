@@ -4,5 +4,5 @@ import { createAction, props } from '@ngrx/store';
 
 export const HttpError = createAction(
   '[Http Error] Http Generic Error',
-  props<{ err: HttpErrorResponse }>()
+  props<{ status: number; mensaje: string }>()
 );

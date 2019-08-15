@@ -1,0 +1,43 @@
+div .contenedor {
+  display: grid;
+  grid-template-columns: 150px auto 100px auto
+}
+
+.titulo1 {
+  grid-column: 1 / span 2;
+  text-align: left
+}
+.dato1 {
+  grid-column: 3 / span 2;
+  text-align: left
+}
+.titulo2 {
+  grid-column: 1;
+}
+.dato2 {
+  grid-column: 2;
+}
+.titulo3 {
+  grid-column: 3;
+}
+.dato3 {
+  grid-column: 4
+};
+
+
+
+
+.titulo {
+  display: block;
+  font-size: small;
+  color: white;
+  background-color: darkblue;
+  border-radius:  4px;
+  border-block-color: black;
+  margin-right: 0.8em;
+}
+.dato {
+  display: inline-block;
+  font-size: normal;
+  border-block-color:  darkblue;
+}

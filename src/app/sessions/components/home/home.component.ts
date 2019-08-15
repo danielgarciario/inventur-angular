@@ -58,5 +58,8 @@ export class HomeComponent implements OnInit {
   }
   onDeleteSession(ses: Sesion) {
     console.log(`Delete Session: ${ses.idSesion}`);
+    this.store$.dispatch(
+      fromActions.ConfirmDeleteSesion({ sesionid: ses.idSesion })
+    );
   }
 }

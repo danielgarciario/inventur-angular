@@ -42,6 +42,7 @@
     [loading]="loading$ | async"
     [posiciones]="posiciones$ | async"
     (delete)="onDeletePosicion($event)"
+    (gotoPosition)="onGotoPosition($event)"
   >
   </app-pos-index>
 </div>

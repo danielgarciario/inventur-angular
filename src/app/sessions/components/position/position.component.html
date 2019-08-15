@@ -1,0 +1,71 @@
+<div>
+  <mat-card style="margin: 10px">
+    <mat-card-actions>
+      <button
+        #btnzurucksesion
+        mat-raised-button
+        color="primary"
+        aria-label="icon button 2positions"
+      >
+        <mat-icon>arrow_back</mat-icon>Zurück
+      </button>
+      <button
+        #btndeletesesposition
+        mat-raised-button
+        color="primary"
+        aria-label="icon button delete"
+      >
+        <mat-icon>delete</mat-icon>Löschen
+      </button>
+      <button
+        mat-raised-button
+        [disabled]="!(modificada$ | async)"
+        color="primary"
+        (click)="onSavePosition()"
+      >
+        <mat-icon>save</mat-icon>Speichern
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card style="margin: 10px">
+    <mat-card-header>
+      <mat-card-title>Artikel und Lagerplatz</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="artikelcontainer">
+        <app-posicion-artikel-part
+          [artikel]="(position$ | async).artikel"
+        ></app-posicion-artikel-part>
+
+        <app-posicion-localizacion-part
+          [lagerort]="(position$ | async).lagerort"
+        ></app-posicion-localizacion-part>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin: 10px">
+    <mat-card-header>
+      <mat-card-title>Bestand</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-position-bestand-part
+        [posicion]="position$ | async"
+        (add2gezahlt)="onCopyBestandID2GezahltID($event)"
+      ></app-position-bestand-part>
+    </mat-card-content>
+  </mat-card>
+  <mat-card style="margin: 10px">
+    <mat-card-header>
+      <mat-card-title>Gezählt</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-position-gezahlt-part
+        [posicion]="position$ | async"
+        (resetgezahltID)="onResetGezahltID($event)"
+        (showDetailID)="onShowGezhaltIDDetaill($event)"
+        (DeletetgezahltID)="onDeleteGezahltIDDetail($event)"
+        (OnNeuGezhaltID)="onNewGezhaltID($event)"
+      ></app-position-gezahlt-part>
+    </mat-card-content>
+  </mat-card>
+</div>

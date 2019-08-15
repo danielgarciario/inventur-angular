@@ -5,7 +5,7 @@
       aria-label="Toggle sidenav"
       mat-icon-button
       (click)="drawer.toggle()"
-      *ngIf="isHandset$ | async"
+      *ngIf="isIPAD$ | async"
     >
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
@@ -21,8 +21,8 @@
       #drawer
       class="sidenav"
       fixedInViewPort="true"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'push' : 'side'"
+      [attr.role]="(isIPAD$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isIPAD$ | async) ? 'push' : 'side'"
       [opened]="!(isHandset$ | async)"
     >
       <mat-nav-list>

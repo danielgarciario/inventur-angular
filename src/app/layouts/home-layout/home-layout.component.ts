@@ -21,7 +21,7 @@ import { AppEstado } from './../../root-store/root-store.state';
 })
 export class HomeLayoutComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
-  isHandset$: Observable<boolean>;
+  isIPAD$: Observable<boolean>;
   user$: Observable<User>;
   constructor(
     // private store$: Store<LoginState>,
@@ -34,8 +34,8 @@ export class HomeLayoutComponent implements OnInit {
       select(LoginStoreSelectors.loginIsAuthenticated)
     );
     this.user$ = this.store$.pipe(select(LoginStoreSelectors.loginUsuario)); */
-    this.isHandset$ = this.breakpointObserver
-      .observe(Breakpoints.Handset)
+    this.isIPAD$ = this.breakpointObserver
+      .observe(Breakpoints.Tablet)
       .pipe(map((result) => result.matches));
     this.isLoggedIn$ = this.store$.select(fromSelectors.loginIsAuthenticated);
     this.user$ = this.store$.select(fromSelectors.loginUsuario);

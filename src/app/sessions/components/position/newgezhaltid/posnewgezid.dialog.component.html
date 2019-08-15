@@ -1,0 +1,66 @@
+<h1 mat-dialog-title>
+  ID Teile für {{ data.sespos.artikel.artikelnr }} <br />
+  {{ data.sespos.artikel.beschreibung }}
+</h1>
+<div mat-dialog-content>
+  <form [formGroup]="gzidForm" class="formulario">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        id="numsert"
+        placeholder="ID Nummer"
+        formControlName="numsert"
+        maxlength="30"
+      />
+      <mat-hint align="end"
+        >Max. Buchstaben: {{ serialinput.length }} /30</mat-hint
+      >
+    </mat-form-field>
+    <div
+      *ngIf="numsert.invalid && (numsert.dirty || numsert.touched)"
+      class="alert alert-danger"
+    >
+      <div *ngIf="gzidForm.get('numsert').errors.required">
+        Serial ID ist Mandantory
+      </div>
+      <div *ngIf="gzidForm.get('numsert').errors.maxlength">
+        Serial ID muss maximal 30 Bustaben haben
+      </div>
+    </div>
+    <div *ngIf="serialAlreadyExists" class="alert alert-danger">
+      ID Nummer schon benutzt
+    </div>
+
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        placeholder="gezählt"
+        formControlName="gezhalt"
+        id="gezhalt"
+        min="0"
+        max="1"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Comments"
+        id="comment"
+        formControlName="comment"
+      ></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Tschuss!!</button>
+  <button
+    mat-button
+    [mat-dialog-close]
+    [disabled]="gzidForm.invalid || serialAlreadyExists"
+    (click)="ok()"
+  >
+    Ok
+  </button>
+</div>

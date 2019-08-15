@@ -21,6 +21,13 @@ import {
 } from './components/sesion/sumbestand.pipe';
 import { LocaPartComponent } from './components/neueposition/locapart/locapart.component';
 import { KandidatoPartComponent } from './components/neueposition/kandidatospart/kandidatopart.component';
+import { PositionComponent } from './components/position/position.component';
+import { PosicionArtikelPartComponent } from './components/position/posartikelpart/posartikelpart.component';
+import { PosicionLocalizacionPartComponent } from './components/position/localizationpart/poslocalizationpart.component';
+import { PosicionBestandPartComponent } from './components/position/bestandspart/posbestandpart.component';
+import { PosicionGezahltPartComponent } from './components/position/gezahltpat/posgezahltpart.component';
+import { DialogPosicionGezhaltIDComponent } from './components/position/newgezhaltid/posnewgezid.dialog.component';
+import { AktullerBestandComponent } from './components/AktuellerBestand/aktuellerbestand.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +40,13 @@ import { KandidatoPartComponent } from './components/neueposition/kandidatospart
     ArtikelPartComponent,
     LocaPartComponent,
     KandidatoPartComponent,
+    PositionComponent,
+    PosicionArtikelPartComponent,
+    PosicionLocalizacionPartComponent,
+    PosicionBestandPartComponent,
+    PosicionGezahltPartComponent,
+    AktullerBestandComponent,
+    DialogPosicionGezhaltIDComponent,
 
     SumBestandOnHandPipe,
     SumGezahltPipe,
@@ -44,6 +58,7 @@ import { KandidatoPartComponent } from './components/neueposition/kandidatospart
     FormsModule,
     RouterModule.forChild(sessionsRoutes),
     AppMaterialModule
-  ]
+  ],
+  entryComponents: [DialogPosicionGezhaltIDComponent]
 })
 export class SessionsModule {}

@@ -1,0 +1,7 @@
+.artikelcontainer{
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-items: stretch;
+  justify-content: stretch;
+  grid-auto-flow: row;
+}

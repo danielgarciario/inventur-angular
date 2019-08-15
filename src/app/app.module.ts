@@ -18,6 +18,14 @@ import { LoginComponent } from './login/login.component';
 import { LoginDetailComponent } from './login/login-detail.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { SessionsModule } from './sessions/sessions.module';
+import { StoreModule } from '@ngrx/store';
+import { rootreducermap } from './root-store/root-store.state';
+import { EffectsModule } from '@ngrx/effects';
+import { ErrorEffects } from './root-store/shared/effects/error';
+import { SnackbarEffects } from './root-store/shared/effects/snackbar';
+import { LoginStoreEffects } from './root-store/login-store/login.effects';
+import { SessionsStoreEffects } from './root-store/sessions-store/effects';
+import { DeleteConfirmDialogComponent } from './shared/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +33,8 @@ import { SessionsModule } from './sessions/sessions.module';
     LoginComponent,
     LoginDetailComponent,
     HomeLayoutComponent,
-    LoginLayoutComponent
+    LoginLayoutComponent,
+    DeleteConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -35,16 +44,31 @@ import { SessionsModule } from './sessions/sessions.module';
     SessionsModule,
     ServicesModule,
     AppMaterialModule,
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-      logOnly: environment.production
-    }),
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    LayoutModule
+    LayoutModule,
+    StoreModule.forRoot(rootreducermap, {
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+        strictStateSerializability: true,
+        strictActionSerializability: true
+      }
+    }),
+    EffectsModule.forRoot([
+      ErrorEffects,
+      SnackbarEffects,
+      LoginStoreEffects,
+      SessionsStoreEffects
+    ]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DeleteConfirmDialogComponent]
 })
 export class AppModule {}

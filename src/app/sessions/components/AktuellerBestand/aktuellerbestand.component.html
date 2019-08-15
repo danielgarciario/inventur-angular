@@ -1,0 +1,75 @@
+<div>
+  <table mat-table [dataSource]="aktubestand$ | async">
+    <ng-container matColumnDef="loca">
+      <th mat-header-cell *matHeaderCellDef>Lagerplatz</th>
+      <th mat-cell *matCellDef="let ab">
+        {{ ab.loca }}
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="onhand">
+      <th mat-header-cell *matHeaderCellDef>Onhand</th>
+      <th mat-cell *matCellDef="let ab">
+        {{ ab.onhand }}
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="gesperrt">
+      <th mat-header-cell *matHeaderCellDef>Gesperrt</th>
+      <th mat-cell *matCellDef="let ab">
+        {{ ab.gesperrt }}
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="ordered">
+      <th mat-header-cell *matHeaderCellDef>Ordered</th>
+      <th mat-cell *matCellDef="let ab">
+        {{ ab.ordered }}
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="transit">
+      <th mat-header-cell *matHeaderCellDef>Transit</th>
+      <th mat-cell *matCellDef="let ab">
+        {{ ab.transit }}
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="reserviert">
+      <th mat-header-cell *matHeaderCellDef>Reserviert</th>
+      <th mat-cell *matCellDef="let ab">
+        {{ ab.reserviert }}
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="letztebuchung">
+      <th mat-header-cell *matHeaderCellDef>L.Buchung</th>
+      <th mat-cell *matCellDef="let ab">
+        {{ ab.letzteBuchung | date: 'd.MM HH:mm' }}
+      </th>
+    </ng-container>
+
+    <tr
+      mat-header-row
+      *matHeaderRowDef="
+        [
+          'loca',
+          'onhand',
+          'gesperrt',
+          'ordered',
+          'reserviert',
+          'letztebuchung'
+        ];
+        sticky: true
+      "
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="
+        let row;
+        columns: [
+          'loca',
+          'onhand',
+          'gesperrt',
+          'ordered',
+          'reserviert',
+          'letztebuchung'
+        ]
+      "
+    ></tr>
+  </table>
+</div>

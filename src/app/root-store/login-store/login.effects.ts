@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType, Effect } from '@ngrx/effects';
+import {
+  Actions,
+  createEffect,
+  ofType,
+  Effect,
+  OnIdentifyEffects
+} from '@ngrx/effects';
 import { of, Observable } from 'rxjs';
 import {
   catchError,
@@ -13,7 +19,8 @@ import {
   mergeMap,
   skip,
   takeUntil,
-  debounceTime
+  debounceTime,
+  mapTo
 } from 'rxjs/operators';
 import { LoginService } from '../../services/login.service';
 import { MatSnackBar } from '@angular/material';
@@ -30,11 +37,8 @@ export class LoginStoreEffects {
     private router: Router,
     private loginservice: LoginService,
     private snackBar: MatSnackBar
-  ) {
-    console.log('LoginStoreEffects Constructor');
-  }
+  ) {}
 
-  @Effect()
   tryloginEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromLogin.Trylogin),
@@ -42,104 +46,72 @@ export class LoginStoreEffects {
         this.loginservice.trylogin(accion.username, accion.password).pipe(
           map((usr) => {
             if (usr === null) {
-              return fromLogin.NormalLoginFail();
+              return fromLogin.LoginUnbekannt();
             }
             this.loginservice.saveTheToken(usr);
             return fromLogin.Loginsuccess({ usuario: usr });
           }),
-          catchError((rror) => of(fromLogin.Loginfail({ error: rror })))
+          catchError((rror: HttpErrorResponse) =>
+            of(
+              fromLogin.Loginfail({
+                status: rror.status,
+                mensaje: rror.statusText as string
+              })
+            )
+          )
         )
       )
     )
   );
-  /* @Effect()
-  tryTokenEffect$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromLogin.Trytoken),
-      tap((accion) => console.log('Intentando leer usuario desde el token')),
-      exhaustMap((accion) =>
-        this.loginservice.tryToken().pipe(
-          tap((usr) => this.loginservice.guardaAutorizacion(usr)),
-          map((usr) => fromLogin.LoginfromTokensuccess({ usuario: usr })),
-          catchError((rror) => of(fromLogin.TokenTryFailed()))
-        )
-      )
-    )
-  ); */
-  @Effect()
+
   tryTokenEffect$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(fromLogin.Trytoken),
-        exhaustMap((accion) => {
-          return this.loginservice.tryToken().pipe(
+        exhaustMap((accion) =>
+          this.loginservice.tryToken().pipe(
             map((u) => {
               this.loginservice.salvaAutorizacion(u);
-              return fromLogin.LoginfromTokensuccess({ usuario: u });
+              return fromLogin.Loginsuccess({ usuario: u });
             }),
             catchError((rror: HttpErrorResponse) =>
-              of(fromLogin.TokenTryFailed({ error: rror }))
+              of(
+                fromLogin.TokenTryFailed({
+                  status: rror.status,
+                  mensaje: rror.statusText as string
+                })
+              )
             )
-          );
-        })
+          )
+        )
       ),
     { resubscribeOnError: false }
   );
 
-  @Effect({ dispatch: false })
   loginSuccessEffect$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(fromLogin.Loginsuccess),
-        distinctUntilChanged(),
         tap((_) => this.router.navigate(['/sessions']))
-      ),
-    { dispatch: false }
-  );
-  @Effect({ dispatch: false })
-  loginSuccessFromToken$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(fromLogin.LoginfromTokensuccess),
-        tap((_) => this.router.navigate(['/sessions']))
-      ),
-    { dispatch: false }
-  );
-  @Effect({ dispatch: false })
-  loginNormalFailledEffect$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(fromLogin.NormalLoginFail),
-        distinctUntilChanged(),
-        tap((_) =>
-          this.snackBar.open(
-            'Anwender und oder Passwort nicht bekannt!!',
-            null,
-            {
-              duration: 5000
-            }
-          )
-        )
       ),
     { dispatch: false }
   );
 
-  @Effect({ dispatch: false })
   loginFailEffect$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(fromLogin.Loginfail),
-        distinctUntilChanged(),
         tap((accion) => {
           this.loginservice.deleteToken();
           let msg: string;
-          if (isUndefined(accion.error.status)) {
+          msg = accion.mensaje;
+          if (isUndefined(accion.status)) {
             msg = `Etwas ist schiff gegangen !!`;
-            console.log(accion.error);
+            console.log(accion.mensaje);
           } else {
-            if (accion.error.status === 500) {
-              msg = `Upppps! Internal Server Error ${accion.error.message}`;
-            } else if (accion.error.status === 401) {
+            if (accion.status === 500) {
+              msg = `Upppps! Internal Server Error ${accion.mensaje}`;
+            } else if (accion.status === 401) {
               msg = `Anwender und/oder Passwort nicht bekantt!!`;
             }
           }
@@ -150,46 +122,44 @@ export class LoginStoreEffects {
       ),
     { dispatch: false }
   );
-  /* @Effect({ dispatch: false })
+
+  loginUnbekannt$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromLogin.LoginUnbekannt),
+        tap((accion) =>
+          this.snackBar.open('Anwender und/oder Passwort nicht bekannt', null, {
+            duration: 500
+          })
+        )
+      ),
+    { dispatch: false }
+  );
+
   TokenTryFailedEffect$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(fromLogin.TokenTryFailed),
-        // distinctUntilChanged(),
         map((accion) => {
           this.loginservice.deleteToken();
-          console.log(accion.error);
           this.router.navigate(['/login']);
+          let msg = '';
+          if (isUndefined(accion.status)) {
+            msg = 'Etwas ist schiff gegangen!!!';
+            console.log(accion.mensaje);
+          } else {
+            if (accion.status === 500) {
+              msg = `Upppps! Internal Server Error ${accion.mensaje}`;
+            }
+          }
+          if (msg.length > 0) {
+            this.snackBar.open(msg, null, { duration: 5000 });
+          }
         })
-        // , tap((_) => console.log('Ahora Routing to Login'))
-        // , tap((_) => this.router.navigate(['/login']))
       ),
     { dispatch: false }
-  ); */
-  @Effect()
-  TokenTryFailedEffect$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromLogin.TokenTryFailed),
-      map((accion) => {
-        this.loginservice.deleteToken();
-        this.router.navigate(['/login']);
-        let msg = '';
-        if (isUndefined(accion.error.status)) {
-          msg = 'Etwas ist schiff gegangen!!!';
-          console.log(accion.error);
-        } else {
-          if (accion.error.status === 500) {
-            msg = `Upppps! Internal Server Error ${accion.error.message}`;
-          }
-        }
-        if (msg.length > 0) {
-          this.snackBar.open(msg, null, { duration: 5000 });
-        }
-        return fromLogin.LoginNoAction();
-      })
-    )
   );
-  @Effect({ dispatch: false })
+
   LogoutEffect$ = createEffect(
     () =>
       this.actions$.pipe(

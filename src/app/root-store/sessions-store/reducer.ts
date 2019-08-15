@@ -9,113 +9,166 @@ import { kandidatosadapter } from './subestados/Kandidatos.state';
 import { AppEstado, EstadoInicialApp } from '../root-store.state';
 import { sesionInitialState } from './state';
 import { EstadoSesiones } from './state';
+import { Dictionary } from '@ngrx/entity';
+import { SesionPos } from 'src/app/models/sespos.model';
 
 const elreducer = createReducer(
   sesionInitialState,
   on(fromActions.LoadSesions, (estado) => {
-    estado = { ...estado };
-    estado.sesiones.loadingSessions = true;
-    return estado;
+    let ssesiones = { ...estado.sesiones };
+    ssesiones.loadingSessions = true;
+    ssesiones.selectedSesionId = null;
+    ssesiones = sesionadapter.removeAll(ssesiones);
+    return { ...estado, sesiones: ssesiones };
   }),
   on(fromActions.SelectSesion, (estado, { selectedSesionId }) => {
-    estado = { ...estado };
-    estado.sesiones.selectedSesionId = selectedSesionId;
-    return estado;
-  }),
-  on(fromActions.SelectSesion, (estado, { selectedSesionId }) => {
-    estado = { ...estado };
-    estado.sesiones.selectedSesionId = selectedSesionId;
-    return estado;
-  }),
-  on(fromActions.LoadPositions, (estado) => {
-    estado = { ...estado };
-    estado.posiciones = posicionsadapter.removeAll(estado.posiciones);
-    estado.posiciones.loadingPositions = true;
-    return estado;
+    const ssesiones = { ...estado.sesiones };
+    ssesiones.selectedSesionId = selectedSesionId;
+    return { ...estado, sesiones: ssesiones };
   }),
   on(fromActions.LoadSesionsSuccess, (estado, { nuevassesiones }) => {
-    estado = { ...estado };
-    estado.sesiones = sesionadapter.addMany(nuevassesiones, estado.sesiones);
-    estado.sesiones.loadingSessions = false;
-    return estado;
+    let ssesiones = { ...estado.sesiones };
+    ssesiones = sesionadapter.addMany(nuevassesiones, ssesiones);
+    ssesiones.loadingSessions = false;
+    ssesiones.selectedSesionId = null;
+    return { ...estado, sesiones: ssesiones };
+  }),
+  on(fromActions.DeleteSesionSuccess, (estado, { sesionid }) => {
+    let ssesiones = { ...estado.sesiones };
+    ssesiones = sesionadapter.removeOne(sesionid, ssesiones);
+    return { ...estado, sesiones: ssesiones };
+  }),
+  on(fromActions.LoadPositions, (estado) => {
+    let sposiciones = { ...estado.posiciones };
+    sposiciones.loadingPositions = true;
+    sposiciones = posicionsadapter.removeAll(estado.posiciones);
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(
+    fromActions.DeleteSesionPosicionSuccess,
+    (estado, { sesionid, posicionid }) => {
+      let sposiciones = { ...estado.posiciones };
+      sposiciones = posicionsadapter.removeOne(posicionid, sposiciones);
+      return { ...estado, posiciones: sposiciones };
+    }
+  ),
+  on(fromActions.SetSelectPosition, (estado, { posicion }) => {
+    const sposiciones = { ...estado.posiciones };
+    sposiciones.selectedSessionPos = posicion;
+    return { ...estado, posiciones: sposiciones };
   }),
   on(fromActions.LoadPositionsSuccess, (estado, { nuevasposiciones }) => {
-    estado = { ...estado };
-    estado.posiciones = posicionsadapter.addMany(
-      nuevasposiciones,
-      estado.posiciones
-    );
-    estado.posiciones.loadingPositions = false;
-    return estado;
+    let sposition = { ...estado.posiciones };
+    sposition = posicionsadapter.addMany(nuevasposiciones, sposition);
+    sposition.loadingPositions = false;
+    return { ...estado, posiciones: sposition };
   }),
   on(fromActions.BuscaCandidatosLagerOrt, (estado, { localizacion }) => {
-    estado = { ...estado };
-    estado.kandidatos = kandidatosadapter.removeAll(estado.kandidatos);
-    estado.kandidatos.loadingKandidatos = true;
-    return estado;
+    let skandidatos = { ...estado.kandidatos };
+    skandidatos = kandidatosadapter.removeAll(skandidatos);
+    skandidatos.loadingKandidatos = true;
+    return { ...estado, kandidatos: skandidatos };
   }),
   on(fromActions.CandidatosLagerOrtSuccess, (estado, { nuevosCandidatos }) => {
-    estado = { ...estado };
-    estado.kandidatos = kandidatosadapter.addMany(
-      nuevosCandidatos,
-      estado.kandidatos
-    );
-    estado.kandidatos.loadingKandidatos = false;
-    estado.kandidatos.selectedKandidate = null;
-    return estado;
+    let skandidatos = { ...estado.kandidatos };
+    skandidatos = kandidatosadapter.addMany(nuevosCandidatos, skandidatos);
+    skandidatos.loadingKandidatos = false;
+    skandidatos.selectedKandidate = null;
+    return { ...estado, kandidatos: skandidatos };
   }),
   on(fromActions.BuscaCandidatosItem, (estado, { item }) => {
-    estado = { ...estado };
-    estado.kandidatos = kandidatosadapter.removeAll(estado.kandidatos);
-    estado.kandidatos.loadingKandidatos = true;
-    return estado;
+    let skandidatos = { ...estado.kandidatos };
+    skandidatos = kandidatosadapter.removeAll(skandidatos);
+    skandidatos.loadingKandidatos = true;
+    return { ...estado, kandidatos: skandidatos };
   }),
   on(fromActions.BuscaCandidatosItemSuccess, (estado, { nuevosCandidatos }) => {
-    estado = { ...estado };
-    estado.kandidatos = kandidatosadapter.addMany(
-      nuevosCandidatos,
-      estado.kandidatos
-    );
-    estado.kandidatos.loadingKandidatos = false;
-    estado.kandidatos.selectedKandidate = null;
-    return estado;
+    let skandidatos = { ...estado.kandidatos };
+    skandidatos = kandidatosadapter.addMany(nuevosCandidatos, skandidatos);
+    skandidatos.loadingKandidatos = false;
+    skandidatos.selectedKandidate = null;
+    return { ...estado, kandidatos: skandidatos };
   }),
   on(fromActions.buscaArticulos, (estado, { busqueda }) => {
-    estado = { ...estado };
-    estado.potenciales = potencialadapter.removeAll(estado.potenciales);
-    estado.potenciales.loadingPotencials = true;
-    estado.potenciales.selectedPotencial = null;
-    return estado;
+    let spotenciales = { ...estado.potenciales };
+    spotenciales = potencialadapter.removeAll(spotenciales);
+    spotenciales.loadingPotencials = true;
+    spotenciales.selectedPotencial = null;
+    return { ...estado, potenciales: spotenciales };
   }),
   on(fromActions.buscaArticulosSucess, (estado, { nuevospotenciales }) => {
-    estado = { ...estado };
-    estado.potenciales = potencialadapter.addMany(
-      nuevospotenciales,
-      estado.potenciales
-    );
-    estado.potenciales.loadingPotencials = false;
-    return estado;
+    let spotenciales = { ...estado.potenciales };
+    spotenciales = potencialadapter.addMany(nuevospotenciales, spotenciales);
+    spotenciales.loadingPotencials = false;
+    return { ...estado, potenciales: spotenciales };
   }),
   on(fromActions.seleccionaArticulo, (estado, { articuloseleccionado }) => {
-    estado = { ...estado };
-    estado.potenciales = potencialadapter.addOne(
-      articuloseleccionado,
-      estado.potenciales
-    );
-    estado.potenciales.loadingPotencials = false;
-    estado.potenciales.selectedPotencial = articuloseleccionado;
-    return estado;
+    let spotenciales = { ...estado.potenciales };
+    spotenciales = potencialadapter.addOne(articuloseleccionado, spotenciales);
+    spotenciales.loadingPotencials = false;
+    spotenciales.selectedPotencial = articuloseleccionado;
+    return { ...estado, potenciales: spotenciales };
   }),
   on(fromActions.seleccionaCandidato, (estado, { selectKandidato }) => {
-    estado = { ...estado };
-    estado.kandidatos.selectedKandidate = selectKandidato;
-    return estado;
+    const skandidatos = { ...estado.kandidatos };
+    skandidatos.selectedKandidate = selectKandidato;
+    return { ...estado, kandidatos: skandidatos };
   }),
   on(fromActions.AddSesionPosSuccess, (estado, { nuevasespos }) => {
-    estado = { ...estado };
-    estado.posiciones = posicionsadapter.addOne(nuevasespos, estado.posiciones);
-    estado.posiciones.selectedSessionPos = nuevasespos;
+    let sposiciones = { ...estado.posiciones };
+    sposiciones = posicionsadapter.addOne(nuevasespos, sposiciones);
+    sposiciones.selectedSessionPos = nuevasespos;
+    sposiciones.createdSuccess = true;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.AddSesionPosSuccessAcknowledge, (estado) => {
+    const sposiciones = { ...estado.posiciones };
+    sposiciones.createdSuccess = false;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.TryAddSerialBestandToGezahltSuccess, (estado, { sespos }) => {
+    let sposiciones = { ...estado.posiciones };
+    sposiciones = posicionsadapter.upsertOne(sespos, sposiciones);
+    sposiciones.modificada = true;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.TryAddSerialBestandToGezahltFailed, (estado) => {
     return estado;
+  }),
+  on(fromActions.TryResetGezhaltIDSucess, (estado, { sespos }) => {
+    let sposiciones = { ...estado.posiciones };
+    sposiciones = posicionsadapter.upsertOne(sespos, sposiciones);
+    sposiciones.modificada = true;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.ChangePosGzehalDetailIDSuccess, (estado, { sespos }) => {
+    let sposiciones = { ...estado.posiciones };
+    sposiciones = posicionsadapter.upsertOne(sespos, sposiciones);
+    sposiciones.modificada = true;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.DeleteGezhaltIDSuccess, (estado, { posicion }) => {
+    let sposiciones = { ...estado.posiciones };
+    sposiciones = posicionsadapter.upsertOne(posicion, sposiciones);
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.TrySaveGezhaltID, (estado, { posicion }) => {
+    const sposiciones = { ...estado.posiciones };
+    sposiciones.saving = true;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.SaveGezhaltIDSucess, (estado, { posicion }) => {
+    let sposiciones = { ...estado.posiciones };
+    sposiciones = posicionsadapter.upsertOne(posicion, sposiciones);
+    sposiciones.modificada = false;
+    sposiciones.saving = false;
+    sposiciones.selectedSessionPos = posicion;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.SaveGezhaltIDFailed, (estado) => {
+    const sposiciones = { ...estado.posiciones };
+    sposiciones.saving = false;
+    return { ...estado, posiciones: sposiciones };
   })
 );
 
