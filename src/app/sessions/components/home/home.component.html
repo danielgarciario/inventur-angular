@@ -8,12 +8,14 @@
       <p>
         Sessions: Verknupfung zwischen Anwender und Lager
       </p>
-      <p>
-        blablablablabla
-      </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button color="Warn" aria-label="icon button add">
+      <button
+        mat-icon-button
+        color="Warn"
+        aria-label="icon button add"
+        (click)="onCreateSesion()"
+      >
         <mat-icon>add_to_queue</mat-icon>
         Neue
       </button>

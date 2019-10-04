@@ -13,8 +13,21 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatGridListModule, MatTooltipModule } from '@angular/material';
+import {
+  MatGridListModule,
+  MatTooltipModule,
+  MatMenuModule,
+  MatButtonToggleModule,
+  MatSlideToggleModule,
+  MatTreeModule,
+  MatExpansionModule,
+  MatDividerModule,
+  MatSortModule
+} from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HelpersModule } from '../helpers-module/helpers-module.module';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [],
@@ -23,6 +36,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatInputModule,
     MatFormFieldModule,
     MatSidenavModule,
@@ -30,16 +44,27 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSnackBarModule,
     MatListModule,
     MatTableModule,
+    MatSortModule,
+    MatTreeModule,
     MatCheckboxModule,
     MatDialogModule,
     MatGridListModule,
     MatTooltipModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatExpansionModule,
+    HelpersModule,
+
+    ChartsModule,
     FlexLayoutModule
   ],
   exports: [
     MatToolbarModule,
     MatCardModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatInputModule,
     MatFormFieldModule,
     MatSidenavModule,
@@ -47,10 +72,20 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSnackBarModule,
     MatListModule,
     MatTableModule,
+    MatSortModule,
+    MatTreeModule,
     MatCheckboxModule,
     MatDialogModule,
     MatGridListModule,
     MatTooltipModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatExpansionModule,
+    HelpersModule,
+
+    ChartsModule,
     FlexLayoutModule
   ]
 })

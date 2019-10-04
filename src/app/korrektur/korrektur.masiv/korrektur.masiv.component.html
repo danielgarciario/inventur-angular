@@ -1,0 +1,100 @@
+<div *ngIf="isLoading$ | async">
+  Loading...
+</div>
+<app-paginador [elpaginador]="mipaginador"></app-paginador>
+<table mat-table [dataSource]="mipaginador.display$ | async">
+  <ng-container matColumnDef="artikelnr">
+    <th mat-header-cell *matHeaderCellDef>Artikel</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.artikel.artikelnr }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="artbesch">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.artikel.beschreibung }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="ort">
+    <th mat-header-cell *matHeaderCellDef>Lagerplat</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.lagerort.lager }}
+      {{ pos.lagerort.lagerplatz }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="bestand">
+    <th mat-header-cell *matHeaderCellDef>Bestand</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.bqhnd }}
+      {{ pos.artikel.cuni }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="gezhalt">
+    <th mat-header-cell *matHeaderCellDef>Gezählt</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.gezehlt }}
+      {{ pos.artikel.cuni }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="abestand">
+    <th mat-header-cell *matHeaderCellDef>Jetzt</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.aqhnd }}
+      {{ pos.artikel.cuni }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef>Jetzt</th>
+    <td mat-cell *matCellDef="let pos">
+      <span class="clacciones">
+        <mat-icon *ngIf="pos.bqhnd !== pos.aqhnd" class="alerta"
+          >event_busy</mat-icon
+        >
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item color="Warn" aria-label="icon button delete">
+            <mat-icon>delete</mat-icon>
+            <span>Löschen</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>lock</mat-icon>
+            <span>No Idea</span>
+          </button>
+        </mat-menu>
+      </span>
+    </td>
+  </ng-container>
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="
+      [
+        'artikelnr',
+        'artbesch',
+        'ort',
+        'bestand',
+        'gezhalt',
+        'abestand',
+        'acciones'
+      ];
+      sticky: true
+    "
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="
+      let row;
+      columns: [
+        'artikelnr',
+        'artbesch',
+        'ort',
+        'bestand',
+        'gezhalt',
+        'abestand',
+        'acciones'
+      ]
+    "
+  ></tr>
+</table>

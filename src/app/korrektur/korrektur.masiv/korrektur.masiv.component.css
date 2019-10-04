@@ -1,0 +1,85 @@
+table {
+  width: 100%;
+}
+tr .mat-header-row {
+  height: 36;
+}
+.mat-header-cell{
+  color: white;
+}
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+
+tr.mat-row{
+  height: 25px;
+}
+th.mat-header-cell:first-of-type{
+  padding-left: 12px;
+}
+td.mat-cell:first-of-type {
+  padding-left: 12px;
+}
+
+.mat-cell.mat-column-artikelnr {
+  border: rgba(0,0,0,.12);
+  border-style: none solid solid none;
+  border-width: 1px;
+  text-align: right;
+  padding-right: 6px;
+  width: 90px;
+
+}
+.mat-column-artbesch {
+  max-width: 600px;
+  min-width: 300px;
+  width: 600px;
+}
+.mat-column-ort {
+  width: 90px;
+}
+.mat-column-bestand {
+  width: 60px;
+  text-align: center;
+}
+.mat-cell.mat-column-bestand {
+  text-align: right;
+}
+.mat-column-gezhalt {
+  width: 60px;
+  text-align: center;
+}
+.mat-cell.mat-column-gezhalt {
+  text-align: right;
+}
+.mat-column-abestand {
+  width: 60px;
+  text-align: center
+}
+.mat-cell.mat-column-abestand {
+  text-align: right;
+}
+
+.mat-cell.mat-column-artbesch {
+  border: rgba(0,0,0,.12);
+  border-style: none solid solid none;
+  border-width: 1px;
+  padding-left: 5px;
+}
+.mat-column-acciones{
+  width:70px;
+}
+
+tr .mat-icon-button {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.alerta {
+  color:red;
+}
+.clacciones {
+  display: flex;
+}

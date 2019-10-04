@@ -1,0 +1,49 @@
+<div class="totalementos">
+  <label>Total Items:</label>
+  <label>{{ elpaginador.numelementos$ | async }}</label>
+</div>
+<div class="botones">
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="elpaginador.gotoFirst()"
+    [disabled]="(elpaginador.pagina$ | async) === 1"
+  >
+    <mat-icon>first_page</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="elpaginador.gotoPrevious()"
+    [disabled]="(elpaginador.pagina$ | async) === 1"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+</div>
+<div class="numeropaginas">
+  <label>Seite: &nbsp;</label>
+  <label>{{ elpaginador.pagina$ | async }} </label>
+  <label> &nbsp; von &nbsp; {{ elpaginador.numeropaginas$ | async }} </label>
+</div>
+<div class="botones">
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="elpaginador.gotoNext()"
+    [disabled]="
+      (elpaginador.pagina$ | async) === (elpaginador.numeropaginas$ | async)
+    "
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    color="primary"
+    [disabled]="
+      (elpaginador.pagina$ | async) === (elpaginador.numeropaginas$ | async)
+    "
+    (click)="elpaginador.gotoLast()"
+  >
+    <mat-icon>last_page</mat-icon>
+  </button>
+</div>

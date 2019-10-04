@@ -1,0 +1,59 @@
+<mat-accordion *ngIf="!isloading && !isEmpty">
+  <mat-expansion-panel *ngFor="let ped of leadtime.pedidos">
+    <mat-expansion-panel-header>
+      <!-- <mat-panel-title> -->
+      <div class="titulo">
+        <div class="lieferant">
+          [{{ ped.lieferant.liefnr }}] {{ ped.lieferant.liefname }}
+        </div>
+        <div class="resumen">
+          <div class="param">
+            <span>Modus:</span>
+            <span>{{ getMode(ped) }} W. </span>
+          </div>
+          <div class="param">
+            <span>Ø</span>
+            <span> {{ getMedia(ped) | number: '1.1-1' }} W. </span>
+          </div>
+          <div class="param">
+            <span>Max:</span>
+            <span> {{ getMax(ped) }} W. </span>
+          </div>
+        </div>
+      </div>
+      <!-- </mat-panel-title> -->
+      <!-- <mat-panel-description> </mat-panel-description> -->
+    </mat-expansion-panel-header>
+    <table mat-table [dataSource]="ped.detalles">
+      <ng-container matColumnDef="btl">
+        <th mat-header-cell *matHeaderCellDef>Bestellung</th>
+        <td mat-cell *matCellDef="let det">
+          {{ det.btldatum | date: 'dd.MM.yy' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="we">
+        <th mat-header-cell *matHeaderCellDef>W.Eingang</th>
+        <td mat-cell *matCellDef="let det">
+          {{ det.wedatum | date: 'dd.MM.yy' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="tage">
+        <th mat-header-cell *matHeaderCellDef>N.Tage</th>
+        <td mat-cell *matCellDef="let det">
+          {{ det.naturaltage }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="woche">
+        <th mat-header-cell *matHeaderCellDef>N.Woche</th>
+        <td mat-cell *matCellDef="let det">
+          {{ det.wochen }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['btl', 'we', 'tage', 'woche']"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['btl', 'we', 'tage', 'woche']"
+      ></tr>
+    </table>
+  </mat-expansion-panel>
+</mat-accordion>

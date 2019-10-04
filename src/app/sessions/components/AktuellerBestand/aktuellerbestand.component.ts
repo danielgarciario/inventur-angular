@@ -11,6 +11,8 @@ import { SessionsService } from 'src/app/services/sessions.service';
 export class AktullerBestandComponent implements OnInit, OnDestroy {
   @Input() lager: string;
   @Input() artikel: string;
+  @Input() cuni?: string;
+  @Input() marcalagerplatz?: string;
   aktubestand$: Observable<Array<AktuellerBestand>>;
 
   constructor(private sesserv: SessionsService) {}

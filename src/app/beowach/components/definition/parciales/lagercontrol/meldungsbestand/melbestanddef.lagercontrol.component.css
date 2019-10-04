@@ -1,0 +1,9 @@
+.principal {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 5px 0px 5px;
+}
+
+.comandos {
+  justify-self: right;
+}

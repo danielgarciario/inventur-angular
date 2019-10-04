@@ -5,3 +5,12 @@
 .formulario > * {
   width: 100%;
 }
+
+.mat-hint {
+  color:rgba(0,0,0,.6);
+  position: relative;
+  top: -20px;
+  font-size: 12px;
+  right: 0px;
+  text-align: end;
+}

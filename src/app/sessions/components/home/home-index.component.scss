@@ -1,10 +1,57 @@
 table {
   width: 100%;
 }
-tr .mat-header-row {
-  height: 36;
+// tr .mat-header-row {
+//   height: 36;
+// }
+
+// .tablafila {
+//   height: auto;
+// }
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+.mat-icon-button{
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
 }
 
-.tablafila {
-  height: auto;
+.mat-header-cell{
+  color: white;
+}
+tr.mat-row{
+  height: 25px;
+}
+
+th.mat-header-cell:first-of-type{
+  padding-left: 12px;
+}
+td.mat-cell:first-of-type {
+  padding-left: 12px;
+}
+
+.mat-column-empieza{
+ width: 85px;
+}
+.mat-column-acciones{
+  width: 55px;
+}
+.mat-column-status{
+  width: 100px;
+}
+.mat-column-posiciones{
+  width: 60px;
+}
+.mat-cell.mat-column-posiciones{
+  text-align: right;
+  padding-right: 5px;
+}
+.mat-column-contadas{
+  width: 60px;
+}
+.mat-cell.mat-column-contadas{
+  text-align: right;
+  padding-right: 5px;
 }

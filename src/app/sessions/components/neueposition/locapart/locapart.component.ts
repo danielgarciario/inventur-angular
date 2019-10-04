@@ -48,7 +48,7 @@ export class LocaPartComponent implements OnInit, OnDestroy {
         withLatestFrom(this.sesion$)
       )
       .subscribe(([loca, sesion]) => {
-        const lo: LagerOrt = { lager: sesion.lager, lagerplatz: loca };
+        const lo: LagerOrt = { lager: sesion.lager.cwar, lagerplatz: loca };
         this.store$.dispatch(
           fromActions.BuscaCandidatosLagerOrt({ localizacion: lo })
         );

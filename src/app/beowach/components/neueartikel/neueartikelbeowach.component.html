@@ -1,0 +1,246 @@
+<mat-card>
+  <p>
+    Um einen neue Artikel zu eingeben muss die zuerst in die Feste Lagerplätze
+    zu sein
+  </p>
+  <p>
+    Lagerwirtschaft --> Stammdaten --> Artikel --> Feste Lagerplätze
+  </p>
+  <p>
+    1. Suchen nach Artikel | 2. Artikel hinzufügen | 3. Artikel flegen
+  </p>
+</mat-card>
+<mat-card
+  class="busqueda"
+  *ngIf="!((isLoadingArticulos$ | async) || (isLoadingKandidatos$ | async))"
+>
+  <app-input-text
+    class="campo"
+    [validador]="artikelNrFC"
+    placeholder="Suchen nach ArtikelNr"
+    tipo="text"
+  ></app-input-text>
+  <app-input-text
+    class="campo"
+    [validador]="artikelBesFC"
+    placeholder="Suchen nach Artikel Beschreibung"
+    tipo="text"
+  ></app-input-text>
+  <app-input-text
+    class="campo"
+    [validador]="lagerplatzFC"
+    placeholder="Suchen nach Lagerplatz"
+    tipo="text"
+  ></app-input-text>
+</mat-card>
+<mat-card style="margin: 5px 0px">
+  <div class="tablatitulo">
+    <h3>Kandidaten:</h3>
+    <app-paginador [elpaginador]="pKandidatos"></app-paginador>
+  </div>
+  <table mat-table [dataSource]="pKandidatos.display$ | async">
+    <ng-container matColumnDef="artikelnr">
+      <th mat-header-cell *matHeaderCellDef>Artikel</th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.articulo.artikelnr }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="artbesch">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.articulo.beschreibung }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="meldbtnd">
+      <th mat-header-cell *matHeaderCellDef>Meldungsbestand</th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.meldungsbestand }}
+        {{ art.articulo.cuni }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="minddbtl">
+      <th mat-header-cell *matHeaderCellDef>Mindestbest.</th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.mindestbestellmenge }}
+        {{ art.articulo.cuni }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="capacidad">
+      <th mat-header-cell *matHeaderCellDef>Kapazität</th>
+      <td mat-cell *matCellDef="let art">
+        <ul>
+          <li *ngFor="let cap of art.capacidades">
+            <div class="mi-mat-figure">
+              <div class="lagerplatz">
+                {{ cap.lagerort.lagerplatz }}
+              </div>
+              <div class="maxbtnd">
+                {{ cap.maxbtnd }}
+                {{ art.articulo.cuni }}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let art">
+        <button
+          mat-icon-button
+          aria-label="icon button goto"
+          color="Accent"
+          (click)="onAddArtikel(art)"
+        >
+          <mat-icon>note_add</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="MenuActions with menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+          <mat-menu #menu="matMenu"> </mat-menu>
+        </button>
+      </td>
+    </ng-container>
+    <tr
+      mat-header-row
+      *matHeaderRowDef="
+        [
+          'artikelnr',
+          'artbesch',
+          'meldbtnd',
+          'minddbtl',
+          'capacidad',
+          'acciones'
+        ];
+        sticky: true
+      "
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="
+        let row;
+        columns: [
+          'artikelnr',
+          'artbesch',
+          'meldbtnd',
+          'minddbtl',
+          'capacidad',
+          'acciones'
+        ]
+      "
+    ></tr>
+  </table>
+</mat-card>
+<mat-card style="margin: 5px 0px">
+  <div class="tablatitulo">
+    <h3>Existentes</h3>
+    <app-paginador [elpaginador]="pExistentes"></app-paginador>
+  </div>
+  <table mat-table [dataSource]="pExistentes.display$ | async">
+    <ng-container matColumnDef="artikelnr">
+      <th mat-header-cell *matHeaderCellDef>Artikel</th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.articulo.artikelnr }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="artbesch">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.articulo.beschreibung }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="meldbtnd">
+      <th mat-header-cell *matHeaderCellDef>Meldungsbestand</th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.meldungsbestand }}
+        {{ art.articulo.cuni }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="minddbtl">
+      <th mat-header-cell *matHeaderCellDef>Mindestbest.</th>
+      <td mat-cell *matCellDef="let art">
+        {{ art.mindestbestellmenge }}
+        {{ art.articulo.cuni }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="capacidad">
+      <th mat-header-cell *matHeaderCellDef>Kapazität</th>
+      <td mat-cell *matCellDef="let art">
+        <ul>
+          <li *ngFor="let cap of art.capacidades">
+            <div class="mi-mat-figure">
+              <div class="lagerplatz">
+                {{ cap.lagerort.lagerplatz }}
+              </div>
+              <div class="maxbtnd">
+                {{ cap.maxbtnd }}
+                {{ art.articulo.cuni }}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let pos">
+        <button
+          mat-icon-button
+          aria-label="icon button goto"
+          color="Accent"
+          (click)="onGotoArtikel(pos)"
+        >
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="MenuActions with menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onDeleteArtikel(pos)">
+              <mat-icon>delete</mat-icon>
+              <span>Lössen</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>lock</mat-icon>
+              <span>Mach es zu</span>
+            </button>
+          </mat-menu>
+        </button>
+      </td>
+    </ng-container>
+    <tr
+      mat-header-row
+      *matHeaderRowDef="
+        [
+          'artikelnr',
+          'artbesch',
+          'meldbtnd',
+          'minddbtl',
+          'capacidad',
+          'acciones'
+        ];
+        sticky: true
+      "
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="
+        let row;
+        columns: [
+          'artikelnr',
+          'artbesch',
+          'meldbtnd',
+          'minddbtl',
+          'capacidad',
+          'acciones'
+        ]
+      "
+    ></tr>
+  </table>
+</mat-card>

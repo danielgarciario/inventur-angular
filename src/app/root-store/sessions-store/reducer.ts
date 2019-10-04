@@ -38,6 +38,11 @@ const elreducer = createReducer(
     ssesiones = sesionadapter.removeOne(sesionid, ssesiones);
     return { ...estado, sesiones: ssesiones };
   }),
+  on(fromActions.CrearSesionSuccess, (estado, { nuevasesion }) => {
+    let ssesiones = { ...estado.sesiones };
+    ssesiones = sesionadapter.upsertOne(nuevasesion, ssesiones);
+    return { ...estado, sesiones: ssesiones };
+  }),
   on(fromActions.LoadPositions, (estado) => {
     let sposiciones = { ...estado.posiciones };
     sposiciones.loadingPositions = true;
@@ -48,10 +53,16 @@ const elreducer = createReducer(
     fromActions.DeleteSesionPosicionSuccess,
     (estado, { sesionid, posicionid }) => {
       let sposiciones = { ...estado.posiciones };
+      sposiciones.deleteSuccess = true;
       sposiciones = posicionsadapter.removeOne(posicionid, sposiciones);
       return { ...estado, posiciones: sposiciones };
     }
   ),
+  on(fromActions.DeleteSesionPosicionAcknowledge, (estado) => {
+    const sposiciones = { ...estado.posiciones };
+    sposiciones.deleteSuccess = false;
+    return { ...estado, posiciones: sposiciones };
+  }),
   on(fromActions.SetSelectPosition, (estado, { posicion }) => {
     const sposiciones = { ...estado.posiciones };
     sposiciones.selectedSessionPos = posicion;
@@ -138,6 +149,12 @@ const elreducer = createReducer(
   on(fromActions.TryResetGezhaltIDSucess, (estado, { sespos }) => {
     let sposiciones = { ...estado.posiciones };
     sposiciones = posicionsadapter.upsertOne(sespos, sposiciones);
+    sposiciones.modificada = true;
+    return { ...estado, posiciones: sposiciones };
+  }),
+  on(fromActions.ChangePosGezhalDetailMasiv, (estado, { npgezahlt }) => {
+    let sposiciones = { ...estado.posiciones };
+    sposiciones = posicionsadapter.upsertOne(npgezahlt, sposiciones);
     sposiciones.modificada = true;
     return { ...estado, posiciones: sposiciones };
   }),

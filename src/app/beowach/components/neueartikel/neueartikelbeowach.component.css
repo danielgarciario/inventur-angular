@@ -1,0 +1,164 @@
+.busqueda {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.campo {
+  flex-grow: 1;
+  padding: 0 5px;
+}
+
+table {
+  width: 100%;
+}
+tr .mat-header-row {
+  height: 36;
+}
+.mat-header-cell{
+  color: white;
+}
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+
+tr.mat-row{
+  height: 25px;
+}
+th.mat-header-cell:first-of-type{
+  padding-left: 12px;
+}
+td.mat-cell:first-of-type {
+  padding-left: 12px;
+}
+.mat-column-artikelnr {
+  width:80px;
+}
+/* Esto se aplica a los que son celdas Y artikelnr*/
+.mat-cell.mat-column-artikelnr {
+  border: rgba(0,0,0,.12);
+  border-style: none solid solid none;
+  border-width: 1px;
+  text-align: right;
+  padding-right: 6px;
+
+
+}
+.mat-column-artbesch {
+  max-width: 600px;
+  min-width: 300px;
+  width: 600px;
+}
+
+.mat-cell.mat-column-artbesch {
+  border: rgba(0,0,0,.12);
+  border-style: none solid solid none;
+  border-width: 1px;
+  padding-left: 5px;
+}
+
+.mat-column-meldbtnd {
+  width: 60px;
+}
+
+.mat-cell.mat-column-meldbtnd {
+  border: rgba(0,0,0,.12);
+  text-align: right;
+  border-style: none solid solid none;
+  border-width: 1px;
+  padding-right: 5px;
+}
+
+.mat-column-minddbtl {
+  width:60px;
+}
+.mat-cell.mat-column-minddbtl {
+  border: rgba(0,0,0,.12);
+  text-align: right;
+  border-style: none solid solid none;
+  border-width: 1px;
+  padding-right: 5px;
+}
+
+.mat-cell.mat-column-capacidad {
+  justify-content: start;
+}
+
+.mat-column-acciones{
+  width:70px;
+}
+tr .mat-icon-button {
+  width: 32px;
+  height: 32px;
+  line-height: 36px;
+}
+td.mat-cell:last-of-type{
+  padding-right: 12px;
+}
+.mat-grid-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+ .mi-mat-figure {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding: 0 0 0 5px;
+  margin: 0;
+
+}
+ul{
+  display: flex;
+  list-style: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  padding-inline-start: 0;
+  flex-wrap: wrap;
+}
+
+.lagerplatz {
+  flex-basis: 80px;
+  padding: 0 5px 0 5px;
+  border: gray;
+  border-style: none none none solid;
+  align-self: stretch;
+  border-width: thin;
+  line-height: 36px;
+  min-width: 65px;
+  text-align: center;
+}
+.maxbtnd {
+  width: 85px;
+  padding: 0 5px 0 5px;
+  text-align: right;
+  color: darkblue;
+  border: gray;
+  border-style: none solid none none;
+  border-width: thin;
+  align-self: stretch;
+  line-height: 36px;
+}
+
+.tablatitulo{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border: green;
+  border-style: solid none;
+  border-width: thin;
+  margin: 0px 0px 10px 0px;
+}
+.tablatitulo h3 {
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+
+}

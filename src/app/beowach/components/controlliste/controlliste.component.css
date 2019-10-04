@@ -1,0 +1,11 @@
+.busqueda {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.campo {
+  flex-grow: 1;
+  padding: 0 5px;
+}

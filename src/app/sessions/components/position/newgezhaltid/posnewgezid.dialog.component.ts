@@ -25,10 +25,25 @@ import {
   ValidationErrors
 } from '@angular/forms';
 import { UniqueSerialByArtikelValidator } from 'src/app/services/UniqueSerialByArtikelValidator.service';
-import { Observable, of, Subscription } from 'rxjs';
-import { concatMap, withLatestFrom, map, switchMap } from 'rxjs/operators';
+import { Observable, of, Subscription, combineLatest } from 'rxjs';
+import {
+  concatMap,
+  withLatestFrom,
+  map,
+  switchMap,
+  startWith
+} from 'rxjs/operators';
 import { GezahltID } from 'src/app/models/Gezaehlt.model';
 import * as FromSesionActions from '../../../../root-store/sessions-store/actions';
+import { Validador } from 'src/app/helpers-module/Validador/validador.model';
+import {
+  DefineTipoValidador,
+  ValidadorNoEstaVacio,
+  DefineTipoValidadorMaximoLargo,
+  ValidadorMayorIgualQueCero,
+  DefineTipoValidadorMenorIgualQue
+} from 'src/app/helpers-module/Validador/DefineTipoValidador.model';
+import { TipoValidador } from 'src/app/helpers-module/Validador/TipoValidador.interface';
 
 export interface DialogGezhaltIDData {
   idgezhalt: number;
@@ -39,15 +54,68 @@ export interface DialogGezhaltIDData {
   Ok: boolean;
 }
 
+export class CheckIDExiste extends DefineTipoValidador<string> {
+  private serials = new Array<string>();
+  private subserials: Subscription;
+  private isloading = true;
+  constructor(private store$: Store<AppEstado>) {
+    super('ID Nr. schon vorhandeln');
+    this.getSerials();
+    super.fValidacionOK = (e) => {
+      if (this.isloading) {
+        return true;
+      }
+      return this.serials.filter((x) => x === e).length === 0;
+    };
+  }
+
+  onUnsubscribe() {
+    this.subserials.unsubscribe();
+  }
+  private getSerials() {
+    this.store$
+      .pipe(
+        select(fromSesionSelector.DamePosiciones),
+        withLatestFrom(
+          this.store$.pipe(select(fromSesionSelector.DameSelectedPosition))
+        ),
+        map(([p, sp]) => {
+          const pma = p.filter(
+            (x) => x.artikel.artikelnr === sp.artikel.artikelnr
+          );
+          const salida = new Array<string>();
+          if (pma.length === 0) {
+            return salida;
+          }
+          for (const sespos of pma) {
+            for (const gez of sespos.gezahlt) {
+              salida.push(gez.serl.toUpperCase());
+            }
+          }
+          return salida;
+        })
+      )
+      .subscribe((d) => {
+        console.log('cargando serials', d);
+        this.serials = d;
+        this.isloading = false;
+      });
+  }
+}
+
 @Component({
   selector: 'app-dialog-position-gezhaltid',
   templateUrl: './posnewgezid.dialog.component.html',
   styleUrls: ['./posnewgezid.dialog.component.scss']
 })
 export class DialogPosicionGezhaltIDComponent implements OnInit, OnDestroy {
-  gzidForm: FormGroup;
+  numsert: Validador;
+  gezhalt: Validador;
+  comments: Validador;
   serialAlreadyExists = false;
-  subserialchanges: Subscription;
+  // subserialchanges: Subscription;
+  private checkID: CheckIDExiste;
+  noSePuedeGrabar$: Observable<boolean>;
 
   constructor(
     public dialogo: MatDialogRef<DialogPosicionGezhaltIDComponent>,
@@ -56,31 +124,56 @@ export class DialogPosicionGezhaltIDComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.gzidForm = new FormGroup({
-      numsert: new FormControl(
-        {
-          value: this.data.serl,
-          disabled: this.data.serl.length > 0
-        },
+    const numsertvalidators = new Array<TipoValidador>();
+    numsertvalidators.push(ValidadorNoEstaVacio);
+    this.checkID = new CheckIDExiste(this.store$);
+    numsertvalidators.push(this.checkID);
+    numsertvalidators.push(new DefineTipoValidadorMaximoLargo(30));
 
-        [Validators.required, Validators.maxLength(30)]
-        // asyncValidators: [
-        //   this.serialnrValidator.validate.bind(this.serialnrValidator)
-        // ],
-        // this.validateSerialNumberNotTaken.bind(this)
-      ),
-      gezhalt: new FormControl(this.data.gezahlt, {
-        validators: [Validators.min(0), Validators.max(1)]
-      }),
-      comment: new FormControl(this.data.comment)
-    });
-    this.subserialchanges = this.numsert.valueChanges
-      .pipe(switchMap((v: string) => this.testSiExiste(v)))
-      .subscribe((yex) => (this.serialAlreadyExists = yex));
+    const gezahltvalidators = new Array<TipoValidador>();
+    gezahltvalidators.push(ValidadorMayorIgualQueCero);
+    gezahltvalidators.push(new DefineTipoValidadorMenorIgualQue(1));
+
+    this.numsert = new Validador(
+      new FormControl(this.data.serl),
+      numsertvalidators
+    );
+    this.gezhalt = new Validador(
+      new FormControl(this.data.gezahlt),
+      gezahltvalidators
+    );
+    this.comments = new Validador(new FormControl(this.data.comment));
+    this.noSePuedeGrabar$ = combineLatest(
+      this.numsert.hayerrores$.pipe(startWith(this.numsert.tieneErrores)),
+      this.gezhalt.hayerrores$.pipe(startWith(this.gezhalt.tieneErrores))
+    ).pipe(map(([n, g]) => n || g));
+
+    // this.gzidForm = new FormGroup({
+    //   numsert: new FormControl(
+    //     {
+    //       value: this.data.serl,
+    //       disabled: this.data.serl.length > 0
+    //     },
+
+    //     [Validators.required, Validators.maxLength(30)]
+    //     // asyncValidators: [
+    //     //   this.serialnrValidator.validate.bind(this.serialnrValidator)
+    //     // ],
+    //     // this.validateSerialNumberNotTaken.bind(this)
+    //   ),
+    //   gezhalt: new FormControl(this.data.gezahlt, {
+    //     validators: [Validators.min(0), Validators.max(1)]
+    //   }),
+    //   comment: new FormControl(this.data.comment)
+    // });
+    // this.subserialchanges = this.numsert.valueChanges
+    //   .pipe(switchMap((v: string) => this.testSiExiste(v)))
+    //   .subscribe((yex) => (this.serialAlreadyExists = yex));
   }
 
   ngOnDestroy() {
-    this.subserialchanges.unsubscribe();
+    // this.subserialchanges.unsubscribe();
+    this.checkID.onUnsubscribe();
   }
 
   public close() {
@@ -90,9 +183,9 @@ export class DialogPosicionGezhaltIDComponent implements OnInit, OnDestroy {
     this.data.Ok = true;
     let sal: DialogGezhaltIDData;
     sal = { ...this.data };
-    sal.serl = this.numsert.value;
-    sal.gezahlt = this.gezhalt.value;
-    sal.comment = this.comment.value;
+    sal.serl = this.numsert.formulario.value;
+    sal.gezahlt = this.gezhalt.formulario.value;
+    sal.comment = this.comments.formulario.value;
     this.store$.dispatch(
       FromSesionActions.ChangePosGezahlDetailID({ gdid: sal })
     );
@@ -142,22 +235,22 @@ export class DialogPosicionGezhaltIDComponent implements OnInit, OnDestroy {
     );
   }
 */
-  get numsert() {
-    return this.gzidForm.get('numsert');
-  }
-  get gezhalt() {
-    return this.gzidForm.get('gezhalt');
-  }
-  get comment() {
-    return this.gzidForm.get('comment');
-  }
-  get serialinput(): string {
-    if (this.numsert === null) {
-      return '';
-    }
-    return this.numsert.value as string;
-  }
-  get f() {
-    return this.gzidForm.controls;
-  }
+  // get numsert(): FormControl {
+  //   return this.gzidForm.get('numsert') as FormControl;
+  // }
+  // get gezhalt(): FormControl {
+  //   return this.gzidForm.get('gezhalt') as FormControl;
+  // }
+  // get comment(): FormControl {
+  //   return this.gzidForm.get('comment') as FormControl;
+  // }
+  // get serialinput(): string {
+  //   if (this.numsert === null) {
+  //     return '';
+  //   }
+  //   return this.numsert.value as string;
+  // }
+  // get f() {
+  //   return this.gzidForm.controls;
+  // }
 }

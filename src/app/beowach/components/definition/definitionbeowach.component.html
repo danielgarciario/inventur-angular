@@ -1,0 +1,39 @@
+<mat-card class="menu">
+  <button
+    #btnzurucksesion
+    mat-raised-button
+    color="primary"
+    aria-label="icon button 2positions"
+    (click)="zuruck()"
+  >
+    <mat-icon>arrow_back</mat-icon>Zurück
+  </button>
+  <button
+    #btndelete
+    mat-raised-button
+    color="primary"
+    aria-label="icon button delete"
+  >
+    <mat-icon>delete</mat-icon>Löschen
+  </button>
+</mat-card>
+
+<mat-card class="lagercontrol">
+  <app-beo-lagercontrol [lagercontrol$]="lagercontrol$"> </app-beo-lagercontrol>
+</mat-card>
+<mat-card class="verbrauch">
+  <app-beo-lagerverbrauch [consumo$]="consumo$"></app-beo-lagerverbrauch>
+</mat-card>
+<mat-card class="bestand">
+  <app-beo-lagerbestand
+    [bestand$]="bestand$"
+    [lagercontrol$]="lagercontrol$"
+  ></app-beo-lagerbestand>
+</mat-card>
+<mat-card class="leadtime">
+  <app-beo-leadtime [leadtime$]="leadtime$"></app-beo-leadtime>
+</mat-card>
+<mat-card class="simulador">
+  <app-beo-simulation [consumo$]="consumo$" [LagerControl$]="lagercontrol$">
+  </app-beo-simulation>
+</mat-card>

@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+}
+
+table {
+  width: 100%;
+}
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+.mat-icon-button{
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.mat-header-cell{
+  color: white;
+}
+tr.mat-row{
+  height: 25px;
+}
+.mat-column-lager{
+  width: 85px;
+ }
+.mat-column-acciones{
+   width: 55px;
+ }

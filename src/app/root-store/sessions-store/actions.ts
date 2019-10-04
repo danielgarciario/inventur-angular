@@ -6,6 +6,7 @@ import { Kandidato } from 'src/app/models/kandidato.model';
 import { Artikel } from 'src/app/models/artikel.model';
 import { GezahltID } from 'src/app/models/Gezaehlt.model';
 import { DialogGezhaltIDData } from 'src/app/sessions/components/position/newgezhaltid/posnewgezid.dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 export const LoadSesions = createAction('[Sesions] Loadsessions');
 
@@ -20,6 +21,21 @@ export const SelectSesion = createAction(
 export const ConfirmDeleteSesion = createAction(
   '[Sesions] ConfirmDeleteSesion',
   props<{ sesionid: number }>()
+);
+export const MostarDialogCrearSesion = createAction(
+  '[Sesions] MostrarDialogo Crear Sesion'
+);
+export const CrearSesion = createAction(
+  '[Sesions] IntentaCrearSesion',
+  props<{ empno: string; lager: string; comment: string }>()
+);
+export const CrearSesionSuccess = createAction(
+  '[Sesions] Creada Sesion Sucess',
+  props<{ nuevasesion: Sesion }>()
+);
+export const CrearSesionInventur = createAction(
+  '[Sesions] Intenta Crear Sesion Inventur',
+  props<{ empno: string; lager: string; comment: string; idinventur: number }>()
 );
 export const DeleteSesion = createAction(
   '[Sesions] DeleteSesion',
@@ -40,6 +56,9 @@ export const DeleteSesionPosicion = createAction(
 export const DeleteSesionPosicionSuccess = createAction(
   '[Sesions] DeleteSesionPosicion',
   props<{ sesionid: number; posicionid: number }>()
+);
+export const DeleteSesionPosicionAcknowledge = createAction(
+  '[Sesions] Informado Borrada Sesionn Posicion'
 );
 
 export const LoadPositions = createAction('[Sesions] Load SessionsPosition');
@@ -138,6 +157,10 @@ export const ChangePosGezahlDetailID = createAction(
   '[Dialog GezhaltID] AcceptChanges',
   props<{ gdid: DialogGezhaltIDData }>()
 );
+export const ChangePosGezhalDetailMasiv = createAction(
+  '[SesionPos] Cambio en GezhaltPosition Masiv',
+  props<{ npgezahlt: SesionPos }>()
+);
 export const ChangePosGzehalDetailIDSuccess = createAction(
   '[Dialog GezhaltID] AcceptChanges Success',
   props<{ sespos: SesionPos }>()
@@ -161,11 +184,17 @@ export const DeleteGezhaltIDFailed = createAction(
 );
 export const TrySaveGezhaltID = createAction(
   '[Sesion Pos] Try Save Gezhalt Position',
-  props<{ posicion: SesionPos }>()
+  props<{
+    posicion: SesionPos;
+    rutadestinoOK: string;
+  }>()
 );
 export const SaveGezhaltIDSucess = createAction(
   '[Sesion Pos] Save Gezhalt Position Succes',
-  props<{ posicion: SesionPos }>()
+  props<{
+    posicion: SesionPos;
+    rutadestinoOK: string;
+  }>()
 );
 export const SaveGezhaltIDFailed = createAction(
   '[Sesion Pos] Save Gezhalt Position Failed'

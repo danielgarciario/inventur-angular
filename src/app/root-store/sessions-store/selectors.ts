@@ -118,6 +118,10 @@ export const DameSesPosicionCreateSuccess = createSelector(
   getPositionsEntityState,
   (p) => p.createdSuccess
 );
+export const DameSesPosicionDeleteSuccess = createSelector(
+  getPositionsEntityState,
+  (p) => p.deleteSuccess
+);
 
 export const DameKandidatos = createSelector(
   getKandidatosEntityState,

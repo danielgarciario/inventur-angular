@@ -40,6 +40,8 @@ import {
   DialogGezhaltIDData,
   DialogPosicionGezhaltIDComponent
 } from 'src/app/sessions/components/position/newgezhaltid/posnewgezid.dialog.component';
+import { DialogCreateSesionComponent } from 'src/app/sessions/components/createsesion/createsesion.dialog.component';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +52,8 @@ export class SessionsStoreEffects {
     private sesionService: SessionsService,
     // private store$: Store<RootStoreState.Estado>
     private store$: Store<AppEstado>,
-    private matdialog: MatDialog
+    private matdialog: MatDialog,
+    private router: Router
   ) {}
 
   loadSessionsEffect$ = createEffect(() =>
@@ -100,9 +103,7 @@ export class SessionsStoreEffects {
               sesionid: accion.sesionid,
               posicionid: accion.posicionid
             }),
-            text: `<p>Bestätigen löschen Artikel: </p> <p>  <strong>${
-              pos.artikel.artikelnr
-            }</strong> ${pos.artikel.beschreibung} </p>`,
+            text: `<p>Bestätigen löschen Artikel: </p> <p>  <strong>${pos.artikel.artikelnr}</strong> ${pos.artikel.beschreibung} </p>`,
             title: 'Position löschen?'
           };
           this.matdialog.open(DeleteConfirmDialogComponent, { data });
@@ -157,9 +158,7 @@ export class SessionsStoreEffects {
             delete: fromActions.DeleteSesion({
               sesionid: accion.sesionid
             }),
-            text: `<p>Bestätigen löschen Session: </p> <p>Id Sesion:<strong>${
-              ses.idSesion
-            }</strong> auf Lager: ${ses.lager}? </p>`,
+            text: `<p>Bestätigen löschen Session: </p> <p>Id Sesion:<strong>${ses.idSesion}</strong> auf Lager: ${ses.lager}? </p>`,
             title: 'Sesion löschen?'
           };
           this.matdialog.open(DeleteConfirmDialogComponent, { data });
@@ -190,7 +189,6 @@ export class SessionsStoreEffects {
     )
   );
 
-  // @Effect({ dispatch: false })
   selectedSessionEffect$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -336,7 +334,7 @@ export class SessionsStoreEffects {
       map(([a, ses]) => {
         return fromActions.BuscaCandidatosItem({
           item: a.articuloseleccionado.artikelnr,
-          lager: ses.lager
+          lager: ses.lager.cwar
         });
       })
     )
@@ -437,6 +435,59 @@ export class SessionsStoreEffects {
     )
   );
 
+  createSesionEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.CrearSesion),
+      exhaustMap((a) =>
+        this.sesionService.createnewsesion(a.empno, a.lager, a.comment).pipe(
+          map((s) => fromActions.CrearSesionSuccess({ nuevasesion: s })),
+          catchError((rr: HttpErrorResponse) =>
+            of(
+              fromSharedError.HttpError({
+                status: rr.status,
+                mensaje: rr.error
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+  createSesionInventarEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromActions.CrearSesionInventur),
+      exhaustMap((a) =>
+        this.sesionService
+          .createnewsesioninventario(a.empno, a.lager, a.idinventur, a.comment)
+          .pipe(
+            map((s) => fromActions.CrearSesionSuccess({ nuevasesion: s })),
+            catchError((rr: HttpErrorResponse) =>
+              of(
+                fromSharedError.HttpError({
+                  status: rr.status,
+                  mensaje: rr.error
+                })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  showCreateNewSesionEffect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.MostarDialogCrearSesion),
+        map((a) =>
+          this.matdialog.open(DialogCreateSesionComponent, {
+            width: '500px',
+            height: '350px'
+          })
+        )
+      ),
+    { dispatch: false }
+  );
+
   showGezhaltDetailIDEffect$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -477,9 +528,7 @@ export class SessionsStoreEffects {
               posicion: accion.posicion,
               gezahltId: accion.gezahltId
             }),
-            text: `<p>Bestätigen löschen Gezählt Data: </p> <p>Artikel:<strong>${
-              accion.posicion.artikel.artikelnr
-            } ${accion.posicion.artikel.beschreibung}</strong> </p>
+            text: `<p>Bestätigen löschen Gezählt Data: </p> <p>Artikel:<strong>${accion.posicion.artikel.artikelnr} ${accion.posicion.artikel.beschreibung}</strong> </p>
               <p> Id Nr: <strong> ${accion.gezahltId.serl} </strong> </p>
               <p> Gezählt ${accion.gezahltId.gezahlt} </p>
               <p> Comment: ${accion.gezahltId.comment} </p> ? `,
@@ -527,7 +576,12 @@ export class SessionsStoreEffects {
       ofType(fromActions.TrySaveGezhaltID),
       exhaustMap((a) =>
         this.sesionService.modifyGezhaltSesionPosition(a.posicion).pipe(
-          map((r) => fromActions.SaveGezhaltIDSucess({ posicion: r })),
+          map((r) =>
+            fromActions.SaveGezhaltIDSucess({
+              posicion: r,
+              rutadestinoOK: a.rutadestinoOK
+            })
+          ),
           catchError((rr: HttpErrorResponse) =>
             of(
               fromSharedError.HttpError({
@@ -539,6 +593,16 @@ export class SessionsStoreEffects {
         )
       )
     )
+  );
+  SaveGezhaltIDSuccessEffect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fromActions.SaveGezhaltIDSucess),
+        map((a) => {
+          this.router.navigate([a.rutadestinoOK, a.posicion.idsesion]);
+        })
+      ),
+    { dispatch: false }
   );
 
   generaSesPosicionConCambioDetailID(a: DialogGezhaltIDData): SesionPos {

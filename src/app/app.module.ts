@@ -26,6 +26,10 @@ import { SnackbarEffects } from './root-store/shared/effects/snackbar';
 import { LoginStoreEffects } from './root-store/login-store/login.effects';
 import { SessionsStoreEffects } from './root-store/sessions-store/effects';
 import { DeleteConfirmDialogComponent } from './shared/delete-confirm-dialog/delete-confirm-dialog.component';
+import { BeowachtungsModule } from './beowach/beowacht.module';
+// import { HelpersModule } from './helpers-module/helpers-module.module';
+// import { EntradaTextoComponent } from './helpers-module/EntradaTexto/entrada-texto.component';
+// import { DialogKeyboardComponent } from './helpers-module/Teclados/DialogTeclado.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +50,7 @@ import { DeleteConfirmDialogComponent } from './shared/delete-confirm-dialog/del
     AppMaterialModule,
     BrowserAnimationsModule,
     FormsModule,
+    BeowachtungsModule,
     ReactiveFormsModule,
     LayoutModule,
     StoreModule.forRoot(rootreducermap, {

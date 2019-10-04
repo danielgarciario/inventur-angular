@@ -1,3 +1,136 @@
-<div>
+<!-- Este es el modelo antiguo-->
+
+<!-- <div>
   <app-form-item-loca></app-form-item-loca>
-</div>
+</div> -->
+
+<!-- Esta es el modelo con facade-->
+<mat-card class="artikelcard">
+  <mat-card-header>
+    <mat-card-title> Nach Artikel Nr / EAN Code / Internal Ref </mat-card-title>
+  </mat-card-header>
+  <app-input-text
+    [validador]="artikelnr"
+    placeholder="Artikel Nr / EAN Code / Internal Ref."
+    type="text"
+    isRequired="false"
+  >
+  </app-input-text>
+  <div class="potenciales">
+    <mat-icon *ngIf="facade.isSearchingPotenciales$ | async">
+      contactless
+    </mat-icon>
+    <p *ngIf="(facade.haypotenciales$ | async).nohaycandidatos">
+      Artikel nicht bekannt
+    </p>
+    <p *ngIf="(facade.haypotenciales$ | async).searching">
+      Suchen...
+    </p>
+    <table
+      *ngIf="(facade.haypotenciales$ | async).showtable"
+      mat-table
+      [dataSource]="facade.potenciales$ | async"
+    >
+      <ng-container matColumnDef="artikel">
+        <th mat-header-cell *matHeaderCellDef>Artikel</th>
+        <td mat-cell *matCellDef="let articulo">
+          <span class="badge">{{ articulo.artikelnr }}</span>
+          <mat-icon *ngIf="articulo.seri == 1">info</mat-icon>
+          {{ articulo.beschreibung }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let pos">
+          <button
+            mat-icon-button
+            color="Accent"
+            aria-label="icon button selectkandidato"
+            (click)="facade.onSelectedPotencial(pos)"
+          >
+            <mat-icon>exit_to_app</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr
+        mat-header-row
+        [ngClass]="'tablafila'"
+        *matHeaderRowDef="['artikel', 'acciones']; sticky: true"
+      ></tr>
+      <tr
+        mat-row
+        [ngClass]="'tablafila'"
+        *matRowDef="let row; columns: ['artikel', 'acciones']"
+      ></tr>
+    </table>
+  </div>
+</mat-card>
+<mat-card class="lagerplatzcard" *ngIf="!(facade.LagerOhneLagerplatz$ | async)">
+  <mat-card-header>
+    <mat-card-title> Nach Lagerplatz </mat-card-title>
+  </mat-card-header>
+  <app-input-text
+    [validador]="lagerplatz"
+    placeholder="Lagerplatz"
+    type="text"
+    isRequired="false"
+  >
+  </app-input-text>
+</mat-card>
+<mat-card class="kandidatos">
+  <mat-card-header>
+    <mat-card-title> Artikel im Lagerplatz </mat-card-title>
+  </mat-card-header>
+  <p></p>
+  <p *ngIf="!(facade.hayKandidatos$ | async)">
+    Keine Artikel und Lagerplatz in dieser Lager
+  </p>
+  <p *ngIf="facade.isSearchingKandidatos">
+    Suchen...
+  </p>
+  <table
+    *ngIf="facade.hayKandidatos$ | async"
+    mat-table
+    [dataSource]="facade.kandidatos$ | async"
+  >
+    <ng-container matColumnDef="artikel">
+      <th mat-header-cell *matHeaderCellDef>Artikel</th>
+      <td mat-cell *matCellDef="let pos">
+        <span class="badge">{{ pos.articulo.artikelnr }}</span>
+        <mat-icon *ngIf="pos.articulo.seri == 1">info</mat-icon>
+        {{ pos.articulo.beschreibung }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="lagerort">
+      <th mat-header-cell *matHeaderCellDef>Lagerort</th>
+      <td mat-cell *matCellDef="let pos">
+        <span class="badge2">{{ pos.lagerort.lager }}</span>
+        {{ pos.lagerort.lagerplatz }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let pos">
+        <button
+          mat-icon-button
+          color="Accent"
+          aria-label="icon button selectkandidato"
+          (click)="selectkandidato(pos)"
+        >
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr
+      mat-header-row
+      [ngClass]="'tablafila'"
+      *matHeaderRowDef="['artikel', 'lagerort', 'acciones']; sticky: true"
+    ></tr>
+    <tr
+      mat-row
+      [ngClass]="'tablafila'"
+      *matRowDef="let row; columns: ['artikel', 'lagerort', 'acciones']"
+    ></tr>
+  </table>
+</mat-card>

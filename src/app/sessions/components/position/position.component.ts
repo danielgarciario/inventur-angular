@@ -16,7 +16,7 @@ import { AppEstado } from 'src/app/root-store/root-store.state';
 import { Store, select } from '@ngrx/store';
 import * as fromSesionSelectors from '../../../root-store/sessions-store/selectors';
 import * as fromSesionActions from '../../../root-store/sessions-store/actions';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { tap, switchMap, map, filter } from 'rxjs/operators';
 import { MatButton } from '@angular/material';
 import { BestandID } from 'src/app/models/bestand.model';
 import { GezahltID } from 'src/app/models/Gezaehlt.model';
@@ -34,6 +34,7 @@ Inspiracion: https://stackoverflow.com/questions/37770226/observable-from-button
 export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   snapshot: ActivatedRouteSnapshot;
   idposicion: number;
+  idsesion: number;
   position$: Observable<SesionPos>;
   modificada$: Observable<boolean>;
   zuruckbuttonclick$: Observable<Event>;
@@ -41,6 +42,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   subszuruck: Subscription;
   subsdelete: Subscription;
   subpos: Subscription;
+  subnavigate: Subscription;
   posicion: SesionPos;
 
   constructor(
@@ -89,6 +91,40 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
         )
       )
       .subscribe();
+    this.subnavigate = this.position$
+      .pipe(
+        filter((p) => {
+          if (p === undefined) { return true; }
+          if (p.artikel === undefined) { return true; }
+          return false;
+        }),
+        tap(() =>
+          this.router.navigate(['../../sesion', this.idsesion], {
+            relativeTo: this.route
+          })
+        )
+      )
+      .subscribe();
+
+    // this.subnavigate = this.store$
+    //   .select(fromSesionSelectors.DameSesPosicionDeleteSuccess)
+    //   .pipe(
+    //     tap(() => {
+    //       console.log('elemento borrado con exito');
+    //       this.store$.dispatch(
+    //         fromSesionActions.DeleteSesionPosicionAcknowledge()
+    //       );
+    //     }),
+    //     switchMap((e) => this.position$),
+    //     tap((p) =>
+    //       this.router.navigate(['../../sesion', p.idsesion], {
+    //         relativeTo: this.route
+    //       })
+    //     )
+    //   )
+    //   .subscribe();
+
+    // fromActions.DeleteGezhaltIDSuccess
   }
 
   ngOnInit() {
@@ -102,7 +138,14 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.modificada$ = this.store$.pipe(
       select(fromSesionSelectors.DameSiPosicionEstaModificada)
     );
-    this.subpos = this.position$.subscribe((p) => (this.posicion = p));
+    this.subpos = this.position$.subscribe((p) => {
+      this.posicion = p;
+      if (p !== undefined) {
+        if (p.idsesion !== undefined) {
+          this.idsesion = p.idsesion;
+        }
+      }
+    });
 
     // this.zuruckbuttonclick
     //   .pipe(
@@ -119,7 +162,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onDeletePosition() {
     this.position$.pipe(
-      tap((p) =>
+      map((p) =>
         fromSesionActions.ConfirDeleteSesionPosicion({
           sesionid: p.idsesion,
           posicionid: p.idsespos
@@ -129,7 +172,10 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   onSavePosition() {
     this.store$.dispatch(
-      fromSesionActions.TrySaveGezhaltID({ posicion: this.posicion })
+      fromSesionActions.TrySaveGezhaltID({
+        posicion: this.posicion,
+        rutadestinoOK: '/sessions/session'
+      })
     );
   }
 
@@ -182,10 +228,23 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
   }
+  onChangedGezhalt(ngid: GezahltID) {
+    const pos = { ...this.posicion };
+    const gez = new Array<GezahltID>();
+    gez.push(ngid);
+    pos.gezahlt = gez;
+
+    this.store$.dispatch(
+      fromSesionActions.ChangePosGezhalDetailMasiv({
+        npgezahlt: pos
+      })
+    );
+  }
 
   ngOnDestroy() {
     this.subszuruck.unsubscribe();
     this.subsdelete.unsubscribe();
     this.subpos.unsubscribe();
+    this.subnavigate.unsubscribe();
   }
 }

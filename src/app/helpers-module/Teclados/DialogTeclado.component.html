@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>
+  Feld
+</h1>
+<div mat-dialog-content>
+  <div class="enfila">
+    <mat-form-field>
+      <input
+        matInput
+        #elinput
+        (input)="onInputChange($event)"
+        autocomplete="false"
+        [value]="data.control.formulario.value"
+        type="{{ data.tipo }}"
+        placeholder="{{ data.placeholder }}"
+        [required]="data.isrequired"
+        [ngClass]="{ aLaDerecha: data.tipo === 'number' }"
+      />
+      <span *ngIf="data.suffix" matSuffix> &nbsp; {{ data.suffix }} </span>
+    </mat-form-field>
+    <button
+      *ngIf="(data.control.hayalgoqueborrar$ | async) && data.tipo != 'number'"
+      mat-icon-button
+      color="Accent"
+      aria-label="icon button showdetail"
+      matTooltip="lösen"
+      (click)="onBorralo()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="validaciones" [hidden]="!(data.control.hayerrores$ | async)">
+    <label class="rotulo"> Probleme: </label>
+    <ul class="apuntador">
+      <li *ngFor="let error of data.control.errores$ | async">
+        {{ error }}
+      </li>
+    </ul>
+  </div>
+  <div #elteclado class="simple-keyboard"></div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close] (click)="close()">Tschuss!!</button>
+</div>

@@ -3,62 +3,61 @@
   {{ data.sespos.artikel.beschreibung }}
 </h1>
 <div mat-dialog-content>
-  <form [formGroup]="gzidForm" class="formulario">
-    <mat-form-field>
-      <input
-        matInput
-        type="text"
-        id="numsert"
-        placeholder="ID Nummer"
-        formControlName="numsert"
-        maxlength="30"
-      />
-      <mat-hint align="end"
-        >Max. Buchstaben: {{ serialinput.length }} /30</mat-hint
-      >
-    </mat-form-field>
-    <div
+  <div class="formulario">
+    <app-input-text
+      [validador]="numsert"
+      type="text"
+      placeholder="ID Nummer"
+      isRequired="true"
+    >
+    </app-input-text>
+
+    <mat-hint align="end"
+      >Max. Buchstaben: {{ numsert.formulario.value.length }} /30</mat-hint
+    >
+
+    <!-- <div
       *ngIf="numsert.invalid && (numsert.dirty || numsert.touched)"
       class="alert alert-danger"
     >
-      <div *ngIf="gzidForm.get('numsert').errors.required">
+      <div *ngIf="numsert.errors?.required">
         Serial ID ist Mandantory
       </div>
-      <div *ngIf="gzidForm.get('numsert').errors.maxlength">
+      <div *ngIf="numsert.errors?.maxlength">
         Serial ID muss maximal 30 Bustaben haben
       </div>
     </div>
     <div *ngIf="serialAlreadyExists" class="alert alert-danger">
       ID Nummer schon benutzt
-    </div>
+    </div> -->
 
-    <mat-form-field>
-      <input
-        matInput
-        type="number"
-        placeholder="gezählt"
-        formControlName="gezhalt"
-        id="gezhalt"
-        min="0"
-        max="1"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <textarea
+    <app-input-text
+      [validador]="gezhalt"
+      placeholder="gezählt"
+      tipo="number"
+      isRequired="true"
+    >
+    </app-input-text>
+
+    <!-- <textarea
         matInput
         placeholder="Comments"
         id="comment"
         formControlName="comment"
-      ></textarea>
-    </mat-form-field>
-  </form>
+      ></textarea> -->
+    <app-input-text
+      [validador]="comments"
+      placeholder="Comments"
+      tipo="text"
+    ></app-input-text>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="close()">Tschuss!!</button>
   <button
     mat-button
     [mat-dialog-close]
-    [disabled]="gzidForm.invalid || serialAlreadyExists"
+    [disabled]="noSePuedeGrabar$ | async"
     (click)="ok()"
   >
     Ok

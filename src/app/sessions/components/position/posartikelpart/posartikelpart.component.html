@@ -1,19 +1,25 @@
-<div>
-  <div class="contenedor">
-    <span class="titulo1 titulo">
-      Artikel Nr
-    </span>
-    <span class="dato1 titulo">Beschreibung</span>
-    <span class="titulo1 dato">
-      {{ artikel.artikelnr }}
-    </span>
-    <span class="dato1 dato"> {{ artikel.beschreibung }} </span>
+<div class="imagen" [hidden]="noImagen">
+  <img
+    *ngIf="!isLoadingImagen"
+    height="200"
+    width="200"
+    src="{{ this.imagendata }}"
+  />
+</div>
+<div class="contenedor">
+  <span class="titulo">
+    Artikel Nr
+  </span>
+  <span class="dato">
+    {{ artikel.artikelnr }}
+  </span>
+  <span class="titulo">Beschreibung</span>
+  <span class="dato"> {{ artikel.beschreibung }} </span>
 
-    <span class="titulo2 titulo"> Bestandseinheit</span>
-    <span class="dato2 dato">{{ artikel.cuni }}</span>
-    <span class="titulo3 titulo">Mit Id Nr</span>
-    <span class="dato3 dato"> {{ artikel.seri }} </span>
-  </div>
+  <span class="titulo"> Bestandseinheit</span>
+  <span class="dato">{{ artikel.cuni }}</span>
+  <span class="titulo">Mit Id Nr</span>
+  <span class="dato"> {{ artikel.seri }} </span>
 </div>
 
 <!--

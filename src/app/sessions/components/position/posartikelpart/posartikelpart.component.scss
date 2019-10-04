@@ -1,31 +1,46 @@
-div .contenedor {
+:host {
+  display: flex;
+}
+
+.contenedor {
   display: grid;
-  grid-template-columns: 150px auto 100px auto
+  flex-grow: 1;
+  height: 200px;
+  grid-template-columns: 150px 1fr;
+  grid-column-gap: 10px;
+  align-items: stretch;
+  padding-left: 10px;
 }
 
-.titulo1 {
-  grid-column: 1 / span 2;
-  text-align: left
+.titulo {
+  text-align: right;
+  padding-right: 5px;
+  background: black;
+  border-style: solid none solid none;
+  border-width: thin;
+  border: white;
+  line-height: 48px;
+  background: black;
+  text-transform: uppercase;
+  color:white;
 }
-.dato1 {
-  grid-column: 3 / span 2;
-  text-align: left
+.dato  {
+  text-align: left;
+  padding-left: 5px;
+  line-height: 48px;
+  font-size: 18px;
+  border: lightgray;
+  border-width: thin;
+  border-style: solid;
+  font-weight: 500;
 }
-.titulo2 {
-  grid-column: 1;
+.imagen {
+  width: 200px;
+  height: 200px;
 }
-.dato2 {
-  grid-column: 2;
-}
-.titulo3 {
-  grid-column: 3;
-}
-.dato3 {
-  grid-column: 4
-};
 
 
-
+/*
 
 .titulo {
   display: block;
@@ -41,3 +56,4 @@ div .contenedor {
   font-size: normal;
   border-block-color:  darkblue;
 }
+*/

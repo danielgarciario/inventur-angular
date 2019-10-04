@@ -1,0 +1,33 @@
+:host {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-areas:
+  "menu menu"
+  "lagercontrol lagercontrol"
+  "verbrauch leadtime"
+  "bestand leadtime"
+  "simulador simulador";
+  grid-gap: 1em;
+}
+.menu {
+  grid-area: menu;
+}
+
+.lagercontrol {
+  grid-area: lagercontrol;
+}
+.verbrauch {
+  grid-area: verbrauch;
+
+}
+.bestand {
+  grid-area: bestand;
+
+}
+.leadtime {
+  grid-area: leadtime
+}
+.simulador {
+  grid-area: simulador
+}
+

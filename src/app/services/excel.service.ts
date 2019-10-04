@@ -4,6 +4,9 @@ import * as ExcelProper from 'exceljs';
 import { saveAs } from 'file-saver';
 import * as fromPipes from '../sessions/components/sesion/sumbestand.pipe';
 import { SesionPos } from '../models/sespos.model';
+import { Observable } from 'rxjs';
+import { BeowachtService } from './beowacht.service';
+import { BeowachtungsListe } from '../models/beowachliste.model';
 // import { DatePipe } from '@angular/common';
 // import * as moment from 'moment';
 
@@ -77,6 +80,78 @@ export class ExcelService {
       wspos.addRow(fila).commit();
     });
 
+    return wb;
+  }
+  generaWorkBookBeoCheckBestand(
+    listabeo: Array<BeowachtungsListe>
+  ): ExcelProper.Workbook {
+    const wb = new Excel.Workbook();
+    const wschbestand = wb.addWorksheet('CheckBestand');
+    wschbestand.columns = [
+      { header: '' },
+      { header: 'lager', key: 'cwar' },
+      { header: 'item', key: 'item', width: 10, style: { numFmt: '@' } },
+      { header: 'Bez', key: 'cdf_beza', width: 15, style: { numFmt: '@' } },
+      { header: 'Meldungsbenstand', key: 'mb' },
+      { header: '', key: 'mbcuni' },
+      { header: 'OnHnd', key: 'onhnd' },
+      { header: '', key: 'ohndcuni' },
+      { header: 'Bestellt', key: 'qord' },
+      { header: '', key: 'qordcuni' },
+      { header: 'Gesperrt.', key: 'qblk' },
+      { header: '', key: 'qblkcuni' },
+      { header: 'Reservi.', key: 'qall' },
+      { header: '', key: 'qallcuni' },
+      { header: 'Verfügbar', key: 'dispo' },
+      { header: '', key: 'dispocuni' },
+      { header: 'Mindestbest.', key: 'mindest' },
+      { header: '', key: 'mindcuni' },
+      { header: 'BestVor', key: 'orno', style: { numFmt: '@' } },
+      {
+        header: 'Datum',
+        key: 'datum',
+        style: { numFmt: 'dd.MM.yyyy HH:mm:ss' }
+      },
+      { header: 'Lieferant', key: 'liefn', style: { numFmt: '@' } },
+      { header: '', key: 'liefnam', style: { numFmt: '@' } },
+      { header: 'Bestellt.', key: 'menge' },
+      { header: '', key: 'btlcuni' }
+    ];
+    listabeo.forEach((lb) => {
+      const cuni = lb.lagercontrol.articulo.cuni;
+      const fila = {
+        cwar: lb.lagercontrol.cwar,
+        item: lb.lagercontrol.articulo.artikelnr,
+        ohndcuni: cuni,
+        qordcuni: cuni,
+        qblkcuni: cuni,
+        qallcuni: cuni,
+        dispocuni: cuni,
+        mindcuni: cuni,
+        btlcuni: cuni,
+        mbcuni: cuni,
+        cdf_beza: lb.lagercontrol.articulo.beschreibung,
+        mb: lb.lagercontrol.meldungsbestand,
+        onhnd: lb.lagerbestand.qhnd,
+        qord: lb.lagerbestand.qord,
+        qall: lb.lagerbestand.qall,
+        qblk: lb.lagerbestand.qblk,
+        dispo: lb.lagerbestand.disponible,
+        mindest: lb.lagercontrol.mindestbestellmenge,
+        orno: lb.bestellungsvorschlag ? lb.bestellungsvorschlag.orno : '',
+        datum: lb.bestellungsvorschlag
+          ? this.moment2ExcelPipe.transform(lb.bestellungsvorschlag.datum)
+          : '',
+        liefn: lb.bestellungsvorschlag
+          ? lb.bestellungsvorschlag.lieferant.liefnr
+          : '',
+        liefnam: lb.bestellungsvorschlag
+          ? lb.bestellungsvorschlag.lieferant.liefname
+          : '',
+        menge: lb.bestellungsvorschlag ? lb.bestellungsvorschlag.menge : ''
+      };
+      wschbestand.addRow(fila).commit();
+    });
     return wb;
   }
 }

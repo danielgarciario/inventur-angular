@@ -12,3 +12,16 @@ tr.mat-header-row{
 tr.mat-row{
   height: 25px;
 }
+
+.formulariomasiv{
+  display: flex;
+  flex-direction: column;
+}
+.cantidades{
+  display: flex;
+  flex-direction: row;
+}
+
+formulariomasiv > * {
+  width: 100%;
+}

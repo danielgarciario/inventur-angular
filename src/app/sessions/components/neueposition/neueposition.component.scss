@@ -1,0 +1,58 @@
+:host {
+  display: grid;
+  grid-template-columns: 50fr 50fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "artikel lagerplatz"
+   "kandidatos kandidatos";
+  row-gap: 10px;
+  column-gap: 15px;
+  margin: 15px;
+}
+
+.artikelcard {
+  grid-area: artikel
+}
+.lagerplatzcard{
+  grid-area: lagerplatz
+}
+.kandidatos {
+  grid-area: kandidatos;
+
+}
+
+table {
+  width:100%;
+}
+
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+
+.mat-header-cell{
+  color: white;
+}
+tr.mat-row{
+  height: 25px;
+}
+
+tr .mat-icon-button {
+  width: 32px;
+  height: 32px;
+  line-height: 35px;
+}
+
+.mat-card-header .mat-card-title{
+  padding: 10px 0px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+
+}
+
+.mat-card-header{
+  // background:#41008b;
+  background: #673AB7;
+}

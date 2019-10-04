@@ -1,113 +1,147 @@
-<div *ngIf="loading == null">
+<div *ngIf="loading == true">
   isLoading Data...
 </div>
-<div *ngIf="loading != null">
-  <table mat-table [dataSource]="posiciones">
-    <ng-container matColumnDef="idposicion">
-      <th mat-header-cell *matHeaderCellDef>Id</th>
-      <td mat-cell *matCellDef="let pos">
-        {{ pos.idsespos }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="checkedam">
-      <th mat-header-cell *matHeaderCellDef>Checked Am</th>
-      <td mat-cell *matCellDef="let pos">
-        {{ pos.checkedam | date: 'd.MM HH:mm' }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="artikel">
-      <th mat-header-cell *matHeaderCellDef>Artikel</th>
-      <td mat-cell *matCellDef="let pos">
-        <span class="badge">{{ pos.artikel.artikelnr }}</span>
-        <mat-icon *ngIf="pos.artikel.seri == 1">info</mat-icon>
-        {{ pos.artikel.beschreibung }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="lagerplatz">
-      <th mat-header-cell *matHeaderCellDef>Lagerplatz</th>
-      <td mat-cell *matCellDef="let pos">
-        {{ pos.lagerort.lagerplatz }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="efabestand">
-      <th mat-header-cell *matHeaderCellDef>EfA Bestand</th>
-      <td mat-cell *matCellDef="let pos">
-        <!-- {{ pos.bestand.reduce((acum,b)=>acum + b.qhnd ,0) }} -->
+<div class="searchdiv">
+  <mat-checkbox #nichtgezahltonly>Nicht Gezählt</mat-checkbox>
+  <app-input-text
+    [validador]="fcartnum"
+    placeholder="Artikel Nr"
+    isRequired="false"
+    tipo="text"
+  ></app-input-text>
+  <app-input-text
+    [validador]="fcartbez"
+    placeholder="Artikel Beschreibung"
+    isRequired="false"
+    tipo="text"
+  ></app-input-text>
+  <app-input-text
+    [validador]="floca"
+    placeholder="Lagerplatz"
+    isRequired="false"
+    tipo="text"
+  ></app-input-text>
+</div>
+<app-paginador [elpaginador]="mipaginador"></app-paginador>
+<table
+  mat-table
+  matSort
+  [dataSource]="mipaginador.display$ | async"
+  *ngIf="loading != null"
+  (matSortChange)="onSort($event)"
+>
+  <ng-container matColumnDef="idposicion">
+    <th mat-header-cell *matHeaderCellDef>Id</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.idsespos }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="checkedam">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>Checked Am</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.checkedam | date: 'dd.MM HH:mm' }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="artikel">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>Artikel</th>
+    <td mat-cell *matCellDef="let pos">
+      <span class="badge">{{ pos.artikel.artikelnr }}</span>
+
+      <mat-icon *ngIf="pos.artikel.seri == 1" class="iconito">info</mat-icon>
+      <span> {{ pos.artikel.beschreibung }} </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="lagerplatz">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>Lagerplatz</th>
+    <td mat-cell *matCellDef="let pos">
+      {{ pos.lagerort.lagerplatz }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="efabestand">
+    <th mat-header-cell *matHeaderCellDef>EfA Bestand</th>
+    <td mat-cell *matCellDef="let pos">
+      <!-- {{ pos.bestand.reduce((acum,b)=>acum + b.qhnd ,0) }} -->
+      <span>
+        {{ pos.bestand | getSumBestandOnHnd }}
+      </span>
+      <span>
+        {{ pos.artikel.cuni }}
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="gezaehlt">
+    <th mat-header-cell *matHeaderCellDef>Gezählt</th>
+    <td mat-cell *matCellDef="let pos">
+      <span *ngIf="pos.gezahlt.length == 0">
+        Nie!!
+      </span>
+      <span *ngIf="pos.gezahlt.length > 0">
         <span>
-          {{ pos.bestand | getSumBestandOnHnd }}
+          {{ pos.gezahlt | getSumGezahlt }}
         </span>
         <span>
           {{ pos.artikel.cuni }}
         </span>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="gezaehlt">
-      <th mat-header-cell *matHeaderCellDef>Gezählt</th>
-      <td mat-cell *matCellDef="let pos">
-        <span *ngIf="pos.gezahlt.length == 0">
-          Noch nicht!!
-        </span>
-        <span *ngIf="pos.gezahlt.length > 0">
-          <span>
-            {{ pos.gezahlt | getSumGezahlt }}
-          </span>
-          <span>
-            {{ pos.artikel.cuni }}
-          </span>
-        </span>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let pos">
-        <button
-          mat-icon-button
-          color="Warn"
-          aria-label="icon button delete"
-          (click)="delete.emit(pos)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          aria-label="icon button goto"
-          color="Accent"
-          (click)="gotoPosition.emit(pos)"
-        >
-          <mat-icon>exit_to_app</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      </span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let pos">
+      <button
+        mat-icon-button
+        aria-label="icon button goto"
+        color="Accent"
+        (click)="gotoPosition.emit(pos)"
+      >
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="MenuActions with menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="delete.emit(pos)">
+            <mat-icon>delete</mat-icon>
+            <span>Lössen</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>lock</mat-icon>
+            <span>Mach es zu</span>
+          </button>
+        </mat-menu>
+      </button>
+    </td>
+  </ng-container>
 
-    <tr
-      mat-header-row
-      [ngClass]="'tablafila'"
-      *matHeaderRowDef="
-        [
-          'checkedam',
-          'artikel',
-          'lagerplatz',
-          'efabestand',
-          'gezaehlt',
-          'acciones'
-        ];
-        sticky: true
-      "
-    ></tr>
-    <tr
-      mat-row
-      [ngClass]="'tablafila'"
-      *matRowDef="
-        let row;
-        columns: [
-          'checkedam',
-          'artikel',
-          'lagerplatz',
-          'efabestand',
-          'gezaehlt',
-          'acciones'
-        ]
-      "
-    ></tr>
-  </table>
-</div>
+  <tr
+    mat-header-row
+    *matHeaderRowDef="
+      [
+        'checkedam',
+        'artikel',
+        'lagerplatz',
+        'efabestand',
+        'gezaehlt',
+        'acciones'
+      ];
+      sticky: true
+    "
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="
+      let row;
+      columns: [
+        'checkedam',
+        'artikel',
+        'lagerplatz',
+        'efabestand',
+        'gezaehlt',
+        'acciones'
+      ]
+    "
+  ></tr>
+</table>

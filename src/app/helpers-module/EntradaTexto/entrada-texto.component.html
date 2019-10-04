@@ -1,0 +1,58 @@
+<div class="enfila">
+  <mat-form-field>
+    <input
+      matInput
+      #elinput
+      (input)="onInputChange($event)"
+      autocomplete="false"
+      [value]="validador.formulario.value"
+      type="{{ tipo }}"
+      placeholder="{{ placeholder }}"
+      [required]="isRequired"
+      [ngClass]="{ aLaDerecha: tipo === 'number' }"
+    />
+    <span *ngIf="suffix" matSuffix> &nbsp; {{ suffix }} </span>
+  </mat-form-field>
+  <button
+    mat-icon-button
+    *ngIf="(validador.hayalgoqueborrar$ | async) && tipo !== 'number'"
+    color="Accent"
+    aria-label="icon button borralo"
+    matTooltip="lösen"
+    tabindex="-1"
+    (click)="onborralo()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <!-- <mat-slide-toggle
+    *ngIf="isIPAD$ | async"
+    [checked]="usateclado"
+    (toggleChange)="usatecladochange()"
+  >
+    <mat-icon>keyboard</mat-icon>
+  </mat-slide-toggle> -->
+  <button
+    mat-icon-button
+    *ngIf="isIPAD$ | async"
+    (click)="showkeyboard()"
+    tabindex="-1"
+    matTooltip="Tastatur"
+    color="Accent"
+  >
+    <mat-icon>keyboard</mat-icon>
+  </button>
+</div>
+<div class="validaciones" [hidden]="!(hayerrores$ | async)">
+  <label class="rotulo"> Probleme: </label>
+  <ul class="apuntador">
+    <li *ngFor="let error of errores$ | async">
+      {{ error }}
+    </li>
+  </ul>
+</div>
+
+<!-- <div #elteclado class="simple-keyboard" [hidden]="!usateclado"></div> -->
+
+<!-- <div #elteclado class="simple-keyboard" [hidden]="!usateclado"></div> -->
+<!-- on-focus="onInputInFocus()"
+  placeholder="{{ placeholder }}" -->

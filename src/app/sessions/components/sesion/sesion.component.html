@@ -1,20 +1,27 @@
 <div style="margin: 10px">
   <mat-card>
     <mat-card-header>
-      <mat-card-title
-        >Postions für Lager {{ (sesion$ | async).lager }}</mat-card-title
-      >
+      <mat-card-title>
+        Postions für Lager [{{ thislager.cwar }}] {{ thislager.lager }} <br />
+        Sesion: {{ thissesion.idSesion }} - {{ thissesion.comment }}
+      </mat-card-title>
+
       <mat-card-subtitle>Actions</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p>
         Postions: Verknupfung zwischen Anwender und Lager
       </p>
-      <p>
-        blablablablabla
-      </p>
     </mat-card-content>
     <mat-card-actions>
+      <button
+        #btnzurucksesions
+        mat-raised-button
+        color="primary"
+        aria-label="icon button 2sesionss"
+      >
+        <mat-icon>arrow_back</mat-icon>Zurück
+      </button>
       <button
         mat-raised-button
         color="primary"
@@ -40,7 +47,7 @@
 <div style="margin: 10px">
   <app-pos-index
     [loading]="loading$ | async"
-    [posiciones]="posiciones$ | async"
+    [posiciones]="posiciones$"
     (delete)="onDeletePosicion($event)"
     (gotoPosition)="onGotoPosition($event)"
   >

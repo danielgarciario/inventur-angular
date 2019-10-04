@@ -9,31 +9,31 @@
     <ng-container matColumnDef="onhand">
       <th mat-header-cell *matHeaderCellDef>Onhand</th>
       <th mat-cell *matCellDef="let ab">
-        {{ ab.onhand }}
+        {{ ab.onhand }} {{ cuni ? cuni : '' }}
       </th>
     </ng-container>
     <ng-container matColumnDef="gesperrt">
       <th mat-header-cell *matHeaderCellDef>Gesperrt</th>
       <th mat-cell *matCellDef="let ab">
-        {{ ab.gesperrt }}
+        {{ ab.gesperrt }} {{ cuni ? cuni : '' }}
       </th>
     </ng-container>
     <ng-container matColumnDef="ordered">
       <th mat-header-cell *matHeaderCellDef>Ordered</th>
       <th mat-cell *matCellDef="let ab">
-        {{ ab.ordered }}
+        {{ ab.ordered }} {{ cuni ? cuni : '' }}
       </th>
     </ng-container>
     <ng-container matColumnDef="transit">
       <th mat-header-cell *matHeaderCellDef>Transit</th>
       <th mat-cell *matCellDef="let ab">
-        {{ ab.transit }}
+        {{ ab.transit }} {{ cuni ? cuni : '' }}
       </th>
     </ng-container>
     <ng-container matColumnDef="reserviert">
       <th mat-header-cell *matHeaderCellDef>Reserviert</th>
       <th mat-cell *matCellDef="let ab">
-        {{ ab.reserviert }}
+        {{ ab.reserviert }} {{ cuni ? cuni : '' }}
       </th>
     </ng-container>
     <ng-container matColumnDef="letztebuchung">
@@ -70,6 +70,7 @@
           'letztebuchung'
         ]
       "
+      [ngClass]="{ resumen: row.loca === 'Lager' }"
     ></tr>
   </table>
 </div>

@@ -1,0 +1,19 @@
+mat-grid-list {
+  border: black;
+  border-width: thin;
+  border-style: solid;
+}
+mat-grid-tile {
+  border: black;
+  border-width: thin;
+  border-style: solid;
+}
+.marcador {
+  font-weight: bold;
+  color: darkblue;
+  border-radius: 60px;
+  border-width: thick;
+  border: pink;
+  border-style: solid;
+  background: lightpink;
+}

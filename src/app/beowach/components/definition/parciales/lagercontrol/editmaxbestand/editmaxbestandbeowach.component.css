@@ -1,0 +1,47 @@
+:host{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 98% ;
+}
+
+table {
+  width: 100%;
+}
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+.mat-icon-button{
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.mat-header-cell{
+  color: white;
+}
+tr.mat-row{
+  height: 25px;
+}
+.mat-column-prio{
+  width: 55px;
+}
+.mat-column-lagerplatz{
+  width: 85px;
+ }
+ .mat-column-acciones{
+   width: 55px;
+ }
+
+ .formulario{
+   display: flex;
+   justify-content: space-around;
+   align-items: baseline;
+   padding: 10px 0px;
+   margin: 10px 0px;
+   height: 65px;
+   border: green;
+   border-style: solid none;
+ }
+

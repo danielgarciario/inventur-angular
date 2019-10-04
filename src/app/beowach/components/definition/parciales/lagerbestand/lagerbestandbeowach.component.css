@@ -1,0 +1,28 @@
+:host{
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+  grid-gap: 1em;
+  align-items: stretch;
+  justify-self: stretch;
+}
+
+.grafico {
+  position: relative;
+}
+.datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+.datos .titulo {
+  background: black;
+  color: white;
+  text-align: right;
+  padding-right: 5px;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 20px;
+}
+.datos .valores {
+  text-align: right;
+}

@@ -4,7 +4,8 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { LoginStoreSelectors, RootStoreState } from '../root-store';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+
 import { Sesion } from '../models/sesion.model';
 import { map, switchMap } from 'rxjs/operators';
 import { User } from '../models/user.model';
@@ -12,6 +13,9 @@ import { SesionPos } from '../models/sespos.model';
 import { Kandidato } from '../models/kandidato.model';
 import { Artikel } from '../models/artikel.model';
 import { AktuellerBestand } from '../models/aktuellerBestand.model';
+import { Lager } from '../models/lager.model';
+import { Urf } from '../models/urf.model';
+import { InventurDef } from '../models/inventurdef.model';
 
 @Injectable({ providedIn: 'root' })
 export class SessionsService {
@@ -25,9 +29,46 @@ export class SessionsService {
 
   getSessions(emno: string): Observable<Array<Sesion>> {
     // console.log(`Dentro de getSessions para empleado ${emno}`);
-    const q = `${this.baseURL}/api/Sesions/getSessions?empno=${emno}`;
+    const q = `${this.uSesions}/getSessions?empno=${emno}`;
     return this.http.get<Array<Sesion>>(q);
   }
+  // Por ahora lo tomamos del environment
+  getlagers(): Observable<Array<Lager>> {
+    const sal = new Array<Lager>(...environment.lagers);
+    return of(sal);
+  }
+  getlager(cwar: string): Observable<Lager> {
+    return this.getlagers().pipe(
+      switchMap((ls) => ls.filter((x) => x.cwar === cwar))
+    );
+  }
+  getInventurDef(): Observable<Array<InventurDef>> {
+    const q = `${this.uSesions}/getInventurDef`;
+    return this.http.get<Array<InventurDef>>(q);
+  }
+
+  createnewsesion(
+    emno: string,
+    lager: string,
+    comment: string
+  ): Observable<Sesion> {
+    const q = `${
+      this.uSesions
+    }/createSesion?empno=${emno}&lager=${lager}&comment=${comment}`;
+    return this.http.put<Sesion>(q, null);
+  }
+  createnewsesioninventario(
+    emno: string,
+    lager: string,
+    idinventario: number,
+    comment: string
+  ): Observable<Sesion> {
+    const q = `${
+      this.uSesions
+    }/createSesionInventario?empno=${emno}&lager=${lager}&idinventario=${idinventario}&comment=${comment}`;
+    return this.http.put<Sesion>(q, null);
+  }
+
   getOffenePositions(idsesion: number): Observable<Array<SesionPos>> {
     const q = `${this.uSesions}/getAktiveSessionsPos?idsesion=${idsesion}`;
     return this.http.get<Array<SesionPos>>(q);
@@ -110,5 +151,14 @@ export class SessionsService {
   modifyGezhaltSesionPosition(modSesPos: SesionPos): Observable<SesionPos> {
     const q = `${this.uSesions}/GezahtlSesionPositionAdd`;
     return this.http.put<SesionPos>(q, modSesPos);
+  }
+
+  getURF(artikelnr: string): Observable<Array<Urf>> {
+    const q = `${this.uArtikel}/getURFs?artikel=${artikelnr}`;
+    return this.http.get<Array<Urf>>(q);
+  }
+  getImagen(artikelnr: string): Observable<any> {
+    const q = `${this.uArtikel}/getImagen?artikel=${artikelnr}`;
+    return this.http.get<any>(q);
   }
 }

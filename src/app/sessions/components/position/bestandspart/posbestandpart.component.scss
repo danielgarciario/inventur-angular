@@ -30,3 +30,33 @@ tr.mat-row{
   height: 25px;
 }
 
+.contenedorMasiv{
+  display: grid;
+  grid-template-columns: max-content auto;
+  align-self: center;
+}
+.contenedorMasiv .primeracol{
+  grid-column: 1,
+}
+.contenedorMasiv .segundacol{
+  grid-column: 2,
+}
+.contenedorMasiv .titulo {
+  background-color: black;
+  height: 30px;
+  line-height: 30px;
+  color: white;
+  border-color: black;
+  padding-right: 0.8em;
+  padding-left: 1em;
+  text-transform: uppercase;
+  font-size: small;
+
+}
+.contenedorMasiv .dato {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  padding-left: 1em;
+  font-size: 20px;
+}

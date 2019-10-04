@@ -62,4 +62,7 @@ export class HomeComponent implements OnInit {
       fromActions.ConfirmDeleteSesion({ sesionid: ses.idSesion })
     );
   }
+  onCreateSesion() {
+    this.store$.dispatch(fromActions.MostarDialogCrearSesion());
+  }
 }

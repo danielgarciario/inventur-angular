@@ -1,0 +1,61 @@
+.maincontainer {
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr;
+  /* grid-template-rows: 20px, 1fr, 20px, 1fr; */
+  grid-template-areas:
+    "titleartikel titlecapacidad titlelagerdata"
+    "articulo capacidad lagerdata"
+}
+.maincontainer .titlemain {
+  border: black;
+  border-style: solid;
+  border-radius: 10px  10px  0px 0px;
+
+  padding: 5px 10px;
+  background: black;
+  color: white;
+  font-size: 16px;
+}
+
+.maincontainer .capacidad {
+  grid-area: capacidad;
+  margin: 0px 5px 0px 5px;
+}
+
+.maincontainer .lagerdata {
+  grid-area: lagerdata;
+  margin: 0px 5px 0px 5px;
+}
+
+
+
+.maincontainer .artikeltitle {
+  grid-area: titleartikel;
+  margin: 5px 5px 0px 5px;
+
+}
+.maincontainer .capacidadtitle {
+  grid-area: titlecapacidad;
+  margin: 5px 5px 0px 5px;
+}
+.maincontainer .lagerdatatitle {
+  grid-area: titlecapacidad;
+  margin: 5px 5px 0px 5px;
+  }
+.maincontainer .lagerdatatitle {
+    grid-area: titlelagerdata;
+  }
+
+/* Esto es como se trata el contenedor de datos */
+.maincontainer .datomain {
+  border: black;
+  border-style: solid;
+  border-radius: 0px 0px 10px 10px;
+  padding:10px;
+
+}
+.maincontainer .artikelcontainer {
+  grid-area: articulo;
+  margin: 0px 5px 5px 5px;
+}
+

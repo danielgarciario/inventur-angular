@@ -40,12 +40,37 @@
       </table>
     </div>
     <!-- Artikel Ohne ID-->
-    <div *ngIf="posicion.artikel.seri === 2"></div>
+    <div *ngIf="posicion.artikel.seri === 2">
+      <div *ngIf="bestandMasiv === null">
+        KEINE BESTAND!!
+      </div>
+      <div *ngIf="bestandMasiv !== null" class="contenedorMasiv">
+        <span
+          class="primeracol titulo"
+          *ngIf="posicion.lagerort.lagerplatz.length > 0"
+          >Lagerplatz</span
+        >
+        <span
+          class="segundacol dato"
+          *ngIf="posicion.lagerort.lagerplatz.length > 0"
+          >{{ posicion.lagerort.lagerplatz }}</span
+        >
+        <span class="primeracol titulo">Letzte Bewegung:</span>
+        <span class="segundacol dato">{{
+          bestandMasiv.ldatum | date: 'd.MM HH:mm'
+        }}</span>
+        <span class="primeracol titulo">On Hand</span>
+        <span class="segundacol dato"
+          >{{ bestandMasiv.qhnd }} {{ posicion.artikel.cuni }}</span
+        >
+      </div>
+    </div>
   </div>
   <div class="columna2">
     <app-sesion-aktueller-bestand
       [lager]="posicion.lagerort.lager"
       [artikel]="posicion.artikel.artikelnr"
+      [cuni]="posicion.artikel.cuni"
     ></app-sesion-aktueller-bestand>
   </div>
 </div>

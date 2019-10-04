@@ -1,0 +1,36 @@
+table {
+  width: 100%;
+}
+tr.mat-header-row{
+  height: 25px;
+  background-color: black;
+}
+.mat-header-cell{
+  color: white;
+}
+tr.mat-row{
+  height: 25px;
+}
+.mat-column-tage{
+  text-align: right;
+}
+.mat-column-woche{
+  text-align: right;
+}
+.titulo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 10px;
+}
+.titulo .lieferant {
+  border: darkblue;
+  border-width: thin;
+  border-style: none solid solid none
+}
+.titulo .resumen {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

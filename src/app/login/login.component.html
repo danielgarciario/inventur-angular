@@ -1,33 +1,42 @@
 <div class="signin-content">
   <mat-card>
     <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <p>Anmelden Sie bitte</p>
-        <mat-form-field class="full-width-input">
-          <input
-            matInput
-            placeholder="Anwender"
-            formControlName="userName"
-            required
-          />
-          <mat-error *ngIf="isFieldInvalid('userName')">
-            bitte geben Sie ihre Anwender name
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width-input">
-          <input
-            matInput
-            type="password"
-            placeholder="Passwort"
-            formControlName="password"
-            required
-          />
-          <mat-error *ngIf="isFieldInvalid('password')">
-            bitte geben Sie ihre Anwender Passwort
-          </mat-error>
-        </mat-form-field>
-        <button mat-raised-button color="primary">Anmelden</button>
-      </form>
+      <p>Melden Sie bitte an</p>
+      <app-input-text
+        [validador]="userName"
+        placeholder="Anwender"
+        isRequired="true"
+        tipo="text"
+      ></app-input-text>
+      <app-input-text
+        [validador]="passWord"
+        placeholder="Passwort"
+        isRequired="true"
+        tipo="password"
+      ></app-input-text>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formconerrores | async"
+        (click)="onSubmit()"
+      >
+        Anmelden
+      </button>
     </mat-card-content>
   </mat-card>
 </div>
+
+<!-- <app-input-text
+  [formcontrol]="teststring"
+  placeholder="teststring"
+  isRequired="false"
+  tipo="text"
+  [Validadores]="validadoresstring"
+></app-input-text>
+<app-input-text
+  [formcontrol]="tesnumero"
+  placeholder="testnumber"
+  isRequired="false"
+  tipo="number"
+  [Validadores]="validadoresnumero"
+></app-input-text> -->

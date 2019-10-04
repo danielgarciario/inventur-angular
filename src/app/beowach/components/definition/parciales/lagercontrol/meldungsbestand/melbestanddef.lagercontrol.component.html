@@ -1,0 +1,32 @@
+<div *ngIf="isLoading">
+  Loading....
+</div>
+<div *ngIf="!isLoading" class="principal">
+  <app-input-text
+    [validador]="meldungbfc"
+    tipo="number"
+    [isRequired]="true"
+    suffix="{{ cuni }}"
+    placeholder="Meldungsbestand"
+  >
+  </app-input-text>
+
+  <app-input-text
+    [validador]="mindestbfc"
+    tipo="number"
+    [isRequired]="true"
+    suffix="{{ cuni }}"
+    placeholder="Mindesbestellung"
+  >
+  </app-input-text>
+
+  <div mat-error class="comandos">
+    <button
+      mat-raised-button
+      [disabled]="noSePuedeGrabar$ | async"
+      (click)="onGrabalo()"
+    >
+      <mat-icon>save</mat-icon> Speichern
+    </button>
+  </div>
+</div>

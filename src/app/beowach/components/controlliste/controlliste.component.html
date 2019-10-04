@@ -1,0 +1,54 @@
+<mat-card>
+  <button
+    #btnzurucksesion
+    mat-raised-button
+    color="primary"
+    (click)="onZuruck()"
+  >
+    <mat-icon>arrow_back</mat-icon>Zurück
+  </button>
+  <button
+    #btnnuevoarticulo
+    mat-raised-button
+    color="primary"
+    (click)="ongotoNeueArtikel()"
+  >
+    <mat-icon>add_to_queue</mat-icon>Neue Artikel
+  </button>
+  <button
+    #btnexcel
+    mat-raised-button
+    color="primary"
+    aria-label="icon button delete"
+  >
+    <mat-icon>description</mat-icon>Zum Excel
+  </button>
+</mat-card>
+<mat-card class="busqueda">
+  <app-input-text
+    class="campo"
+    [validador]="sArtNr"
+    placeholder="Suchen nach ArtikelNr"
+    tipo="text"
+  ></app-input-text>
+  <app-input-text
+    class="campo"
+    [validador]="sArtBes"
+    placeholder="Suchen nach Artikel Beschreibung"
+    tipo="text"
+  ></app-input-text>
+  <app-input-text
+    class="campo"
+    [validador]="sLp"
+    placeholder="Suchen nach Lagerplatz"
+    tipo="text"
+  ></app-input-text>
+</mat-card>
+<mat-card>
+  <app-beo-controlliste-index
+    [articulos$]="articulos$"
+    [loadingArticulos$]="loadingArticulo$"
+    (gotoArtikel)="ongotoArtikel($event)"
+    (deleteArtikel)="ondeleteArtikel($event)"
+  ></app-beo-controlliste-index>
+</mat-card>

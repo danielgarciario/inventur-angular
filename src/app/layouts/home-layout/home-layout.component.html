@@ -4,8 +4,7 @@
       type="button"
       aria-label="Toggle sidenav"
       mat-icon-button
-      (click)="drawer.toggle()"
-      *ngIf="isIPAD$ | async"
+      (click)="tryToggle()"
     >
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
@@ -23,21 +22,64 @@
       fixedInViewPort="true"
       [attr.role]="(isIPAD$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isIPAD$ | async) ? 'push' : 'side'"
-      [opened]="!(isHandset$ | async)"
+      [opened]="!(isIPAD$ | async)"
     >
       <mat-nav-list>
         <a
           mat-list-item
+          class="mainenlace"
           [routerLink]="['/sessions']"
           routerLinkActive="router-link-active"
+          (click)="tryClose()"
         >
-          <mat-icon aria-hidden="false" style="margin: 3px">list</mat-icon>
+          <mat-icon style="margin: 3px">list</mat-icon>
           Sesions
         </a>
-        <a mat-list-item href="#">Link 2</a>
-        <a mat-list-item href="#">Link 3</a>
-        <a mat-list-item href="#">Link 4</a>
-        <a mat-list-item href="#">Link 4</a>
+        <mat-accordion>
+          <mat-expansion-panel mat-list-item>
+            <mat-expansion-panel-header>
+              <mat-icon style="margin: 3px">access_time</mat-icon>
+              Beowachtung
+            </mat-expansion-panel-header>
+            <a
+              mat-list-item
+              [routerLink]="['/beowach/home']"
+              routerLinkActive="router-link-active"
+              (click)="tryClose()"
+            >
+              <mat-icon>playlist_add_check</mat-icon>
+              Beowachtungsliste
+            </a>
+            <mat-divider></mat-divider>
+            <a
+              mat-list-item
+              [routerLink]="['/beowach/korrektur']"
+              routerLinkActive="router-link-active"
+              (click)="tryClose()"
+            >
+              <mat-icon>healing</mat-icon>
+              Korrektur
+            </a>
+            <mat-divider></mat-divider>
+            <a
+              mat-list-item
+              [routerLink]="['/beowach/controlliste']"
+              routerLinkActive="router-link-active"
+              (click)="tryClose()"
+            >
+              <mat-icon>format_shapes</mat-icon>
+              Controlliste
+            </a>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- <a
+          mat-list-item
+          [routerLink]="['/beowach']"
+          routerLinkActive="router-link-active"
+          ><mat-icon style="margin: 3px">access_time</mat-icon>
+          Beowachtung
+        </a> -->
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="maincontent">

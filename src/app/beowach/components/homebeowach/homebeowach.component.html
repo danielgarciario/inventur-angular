@@ -1,0 +1,114 @@
+<div style="margin: 10px">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title> Beowachtungsliste </mat-card-title>
+      <mat-card-subtitle>Actions</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <a
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/beowach/controlliste']"
+      >
+        <mat-icon>format_shapes</mat-icon>
+        Control Liste
+      </a>
+      <button mat-raised-button color="primary" aria-label="icon button add">
+        <mat-icon>add_to_queue</mat-icon>
+        Neue Sesion
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="export2Excel()"
+        aria-label="crearExcel"
+      >
+        <mat-icon>description</mat-icon>
+        Zum Excel
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card style="margin-top: 10px">
+    <mat-checkbox #withoutbestellunbvor>Ohne Bestellungsvorschlag</mat-checkbox>
+    <table
+      mat-table
+      matSort
+      [dataSource]="liste$ | async"
+      (matSortChange)="ordenadatos($event)"
+    >
+      <ng-container matColumnDef="artikelnr">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Artikel</th>
+        <td mat-cell *matCellDef="let l">
+          {{ l.lagercontrol.articulo.artikelnr }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="artikelbes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let l">
+          {{ l.lagercontrol.articulo.beschreibung }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="disponible">
+        <th mat-header-cell *matHeaderCellDef>Verfügbar</th>
+        <td mat-cell *matCellDef="let l">
+          {{ l.lagerbestand.disponible }} {{ l.lagercontrol.articulo.cuni }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="meldungsbestand">
+        <th mat-header-cell *matHeaderCellDef>Meldungsbestand</th>
+        <td mat-cell *matCellDef="let l">
+          {{ l.lagercontrol.meldungsbestand }}
+          {{ l.lagercontrol.articulo.cuni }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let l">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button
+              mat-menu-item
+              color="Warn"
+              aria-label="icon button delete"
+              (click)="navDefinition(l)"
+            >
+              <mat-icon>build</mat-icon>
+              <span>Definition</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="
+          [
+            'artikelnr',
+            'artikelbes',
+            'disponible',
+            'meldungsbestand',
+            'acciones'
+          ];
+          sticky: true
+        "
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let row;
+          columns: [
+            'artikelnr',
+            'artikelbes',
+            'disponible',
+            'meldungsbestand',
+            'acciones'
+          ]
+        "
+        [class.yapedido]="row.bestellungsvorschlag !== null"
+      ></tr>
+    </table>
+  </mat-card>
+</div>

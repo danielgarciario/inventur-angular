@@ -6,6 +6,7 @@ export interface SessionPosState extends EntityState<SesionPos> {
   modificada: boolean;
   selectedSessionPos: SesionPos;
   createdSuccess: boolean;
+  deleteSuccess: boolean;
   saving: boolean;
 }
 
@@ -29,6 +30,7 @@ export const positionInitialState: SessionPosState = posicionsadapter.getInitial
     modificada: false,
     selectedSessionPos: null,
     createdSuccess: false,
+    deleteSuccess: false,
     saving: false
   }
 );

@@ -1,4 +1,4 @@
-<form [formGroup]="locaForm">
+<form [formGroup]="locaForm" *ngIf="(sesion$ | async).lager.mitlagerplatz">
   <mat-form-field>
     <input
       matInput

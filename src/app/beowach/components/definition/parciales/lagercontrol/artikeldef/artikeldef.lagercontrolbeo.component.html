@@ -1,0 +1,42 @@
+<div *ngIf="isloading">
+  Loading...
+</div>
+<div *ngIf="!isloading">
+  <div class="principal">
+    <div class="imagen" [hidden]="noImagen">
+      <img height="200" width="200" [src]="imagendata$ | async" />
+    </div>
+    <div class="contenedor">
+      <label class="titulo">
+        Artikel Nr
+      </label>
+      <span class="dato">
+        {{ (artikel$ | async).artikelnr }}
+      </span>
+      <label class="titulo">
+        B.E.
+      </label>
+      <span class="dato">
+        {{ (artikel$ | async).cuni }}
+      </span>
+      <label class="titulo">
+        Mit ID Nr.
+      </label>
+      <span class="dato">
+        {{ (artikel$ | async).seri == 1 ? 'Ja' : 'Nein' }}
+      </span>
+      <label class="titulo">
+        Artikel Art
+      </label>
+      <span class="dato">
+        {{ (artikel$ | async).artikelart }}
+      </span>
+      <label class="bestitle titulo">
+        Beschreibung
+      </label>
+      <span class="beschreibung dato">
+        {{ (artikel$ | async).beschreibung }}
+      </span>
+    </div>
+  </div>
+</div>

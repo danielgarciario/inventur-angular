@@ -11,11 +11,17 @@ import { LoginService } from './login.service';
 import { AuthGuard } from './auth.guard';
 import { ExcelService } from './excel.service';
 import { UniqueSerialByArtikelValidator } from './UniqueSerialByArtikelValidator.service';
+import { SuchenArtikelFacadeService } from './facade/suchenArtikel.facade.service';
 import {
   SumBestandOnHandPipe,
   SumGezahltPipe,
   Moment2ExcelPipe
 } from '../sessions/components/sesion/sumbestand.pipe';
+import { BeowachtService } from './beowacht.service';
+import { ControlListeFacadeService } from './facade/controlListe.facade.service';
+import { KorrekturService } from './korrektur.service';
+import { KorrekturFacadeService } from './facade/korrektur.facade.service';
+import { SuchenArtikelFacade2Service } from './facade/suchenArtikelV2.facade.service';
 
 @NgModule({
   declarations: [],
@@ -32,7 +38,13 @@ import {
     SumGezahltPipe,
     UniqueSerialByArtikelValidator,
     Moment2ExcelPipe,
-    ExcelService
+    ExcelService,
+    SuchenArtikelFacadeService,
+    SuchenArtikelFacade2Service,
+    BeowachtService,
+    ControlListeFacadeService,
+    KorrekturService,
+    KorrekturFacadeService
   ]
 })
 export class ServicesModule {}

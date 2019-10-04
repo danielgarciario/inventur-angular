@@ -1,0 +1,26 @@
+<div *ngIf="!isloading" class="grafico">
+  <canvas
+    baseChart
+    [datasets]="Datos"
+    [labels]="Etiquetas"
+    [options]="barChartOptions"
+    [plugins]="barChartPlugins"
+    [legend]="barChartLegend"
+    [chartType]="barChartType"
+  >
+  </canvas>
+</div>
+<div *ngIf="!isloading" class="datos">
+  <label class="titulo">L52W:</label>
+  <span class="valores"> {{ Consumol52Woche() }} {{ cuni }} </span>
+  <label class="titulo">Ø WocheVer:</label>
+  <span class="valores">
+    {{ ConsumoMedioWoche() | number: '1.1-1' }} {{ cuni }}</span
+  >
+  <label class="titulo">Median WocheVer:</label>
+  <span class="valores">
+    {{ MedianaWoche() | number: '1.1-1' }} {{ cuni }}</span
+  >
+  <label class="titulo">4W Ø Verb.:</label>
+  <span class="valores"> 0 {{ cuni }} </span>
+</div>

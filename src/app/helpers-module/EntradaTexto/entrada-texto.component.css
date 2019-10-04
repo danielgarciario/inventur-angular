@@ -1,0 +1,51 @@
+/* @import url('../../../../node_modules/simple-keyboard/build/css/index.css'); */
+
+.enfila {
+  display: flex;
+  flex-direction: row;
+}
+
+.mat-icon {
+  line-height: 40px;
+}
+
+.mat-form-field{
+  flex-grow: 1;
+}
+.mat-icon-button{
+  width: unset;
+  height: unset;
+}
+.aLaDerecha {
+  text-align: right
+}
+
+.validaciones {
+  border:red;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 10px;
+  margin: -10px 0 10px 0;
+}
+.rotulo {
+  position: relative;
+  top: -10px;
+  left: 15px;
+  border: red;
+  border-style: none solid none solid;
+  padding: 0px 5px 0px 5px;
+  background: white;
+  color: red;
+  text-transform: uppercase;
+  font-size: smaller;
+}
+
+.apuntador {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 0px;
+  margin-block-end: 10px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  color: darkred;
+}

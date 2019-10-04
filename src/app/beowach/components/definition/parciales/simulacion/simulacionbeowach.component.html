@@ -1,0 +1,25 @@
+<div *ngIf="!consumovacio">
+  <!-- <app-input-text
+    [formcontrol]="leadtimevwochenfc"
+    placeholder="Lead Time"
+    isRequired="true"
+    tipo="number"
+    suffix="Wochen"
+  ></app-input-text>
+  <div>
+    {{ getCuantosNecesito(leadTime, 90).clave }}
+    {{ getCuantosNecesito(leadTime, 90).percent }}
+  </div> -->
+  <mat-grid-list
+    *ngIf="matrizresultados"
+    [cols]="matrizresultados.length"
+    rowHeight="60px"
+  >
+    <mat-grid-tile
+      *ngFor="let dato of matrizresultados"
+      [ngClass]="esMarcador(dato) ? 'marcador' : null"
+    >
+      {{ dato.woche }} Woche : {{ dato.clave }} {{ cuni }}
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

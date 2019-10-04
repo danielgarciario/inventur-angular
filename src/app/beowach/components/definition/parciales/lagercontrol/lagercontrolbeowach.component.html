@@ -1,0 +1,20 @@
+<div class="maincontainer">
+  <label class="artikeltitle titlemain">Artikel</label>
+  <label class="capacidadtitle titlemain">Max. Kapazität</label>
+  <label class="lagerdatatitle titlemain">Bestellungsdaten</label>
+
+  <app-beo-lagercontrol-artikel
+    class="artikelcontainer"
+    [lagercontrol$]="lagercontrol$"
+  >
+  </app-beo-lagercontrol-artikel>
+  <app-beo-lagercontrol-meldungbestand
+    class="lagerdata"
+    [lagercontrol$]="lagercontrol$"
+  ></app-beo-lagercontrol-meldungbestand>
+  <app-beo-lagercontrol-capacidad
+    class="capacidad"
+    [lagercontrol$]="lagercontrol$"
+  >
+  </app-beo-lagercontrol-capacidad>
+</div>

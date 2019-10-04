@@ -1,9 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from '@angular/forms';
 import { RootStoreState } from '../root-store';
 import { LoginState } from '../root-store/login-store/login.state';
 import { Store, select } from '@ngrx/store';
 import * as fromLoginActions from '../root-store/login-store/login.actions';
+import { Validador } from '../helpers-module/Validador/validador.model';
+import { Observable, merge, combineLatest } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { ValidadorNoEstaVacio } from '../helpers-module/Validador/DefineTipoValidador.model';
 
 @Component({
   selector: 'app-login',
@@ -11,41 +20,33 @@ import * as fromLoginActions from '../root-store/login-store/login.actions';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  form: FormGroup;
   private formSubmitAttempt: boolean;
 
-  constructor(private fb: FormBuilder, private store$: Store<LoginState>) {}
+  userName: Validador;
+  passWord: Validador;
+  campos = new Array<Validador>();
+  formconerrores: Observable<boolean>;
+
+  constructor(private store$: Store<LoginState>) {}
 
   ngOnInit() {
-    this.form = this.fb.group({
-      userName: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-  }
+    this.userName = new Validador(new FormControl(''), [ValidadorNoEstaVacio]);
+    this.passWord = new Validador(new FormControl(''), [ValidadorNoEstaVacio]);
 
-  isFieldInvalid(field: string) {
-    return (
-      (!this.form.get(field).valid && this.form.get(field).touched) ||
-      (this.form.get(field).untouched && this.formSubmitAttempt)
-    );
+    this.formconerrores = combineLatest(
+      this.userName.hayerrores$.pipe(startWith(this.userName.tieneErrores)),
+      this.passWord.hayerrores$.pipe(startWith(this.passWord.tieneErrores))
+    ).pipe(map(([u, p]) => u || p));
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      // this.authservice.login(this.form.value);
-      /*
-      this.loginService.intentaLogin(
-        this.form.get('userName').value,
-        this.form.get('password').value
-      );
-      */
-      this.store$.dispatch(
-        fromLoginActions.Trylogin({
-          username: this.form.get('userName').value,
-          password: this.form.get('password').value
-        })
-      );
-    }
+    this.store$.dispatch(
+      fromLoginActions.Trylogin({
+        username: this.userName.formulario.value,
+        password: this.passWord.formulario.value
+      })
+    );
+
     this.formSubmitAttempt = true;
   }
 }

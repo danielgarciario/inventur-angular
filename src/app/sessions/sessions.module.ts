@@ -28,6 +28,14 @@ import { PosicionBestandPartComponent } from './components/position/bestandspart
 import { PosicionGezahltPartComponent } from './components/position/gezahltpat/posgezahltpart.component';
 import { DialogPosicionGezhaltIDComponent } from './components/position/newgezhaltid/posnewgezid.dialog.component';
 import { AktullerBestandComponent } from './components/AktuellerBestand/aktuellerbestand.component';
+import { DialogCreateSesionComponent } from './components/createsesion/createsesion.dialog.component';
+import { DialogURFComponent } from './components/urf/urf.dialog.component';
+import { ShowStatusComponent } from './components/Status/status.component';
+import { EntradaTextoComponent } from '../helpers-module/EntradaTexto/entrada-texto.component';
+import { DialogKeyboardComponent } from '../helpers-module/Teclados/DialogTeclado.component';
+import { HelpersModule } from '../helpers-module/helpers-module.module';
+import { PosGezahltMitIDComponent } from './components/position/gezahltpat/gezhaltmitID/posgezhaltmitid.component';
+import { PosGezahltMasivComponent } from './components/position/gezahltpat/gezahltmasiv/posgezhaltmasiv.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +54,14 @@ import { AktullerBestandComponent } from './components/AktuellerBestand/aktuelle
     PosicionBestandPartComponent,
     PosicionGezahltPartComponent,
     AktullerBestandComponent,
+    DialogCreateSesionComponent,
     DialogPosicionGezhaltIDComponent,
+    DialogURFComponent,
+    ShowStatusComponent,
+    PosGezahltMitIDComponent,
+    PosGezahltMasivComponent,
+    // EntradaTextoComponent,
+    // DialogKeyboardComponent,
 
     SumBestandOnHandPipe,
     SumGezahltPipe,
@@ -59,6 +74,11 @@ import { AktullerBestandComponent } from './components/AktuellerBestand/aktuelle
     RouterModule.forChild(sessionsRoutes),
     AppMaterialModule
   ],
-  entryComponents: [DialogPosicionGezhaltIDComponent]
+  entryComponents: [
+    DialogCreateSesionComponent,
+    DialogPosicionGezhaltIDComponent,
+    DialogURFComponent
+    // DialogKeyboardComponent
+  ]
 })
 export class SessionsModule {}

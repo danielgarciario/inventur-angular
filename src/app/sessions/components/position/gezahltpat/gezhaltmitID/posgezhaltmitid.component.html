@@ -1,0 +1,79 @@
+<mat-card style="margin: 5px">
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      aria-label="icon button CreaNuevoID"
+      (click)="onNewGezhaltID()"
+    >
+      <mat-icon> add_to_queue </mat-icon> Neue ID Gezählt
+    </button>
+  </mat-card-actions>
+</mat-card>
+<table mat-table [dataSource]="posicion.gezahlt">
+  <ng-container matColumnDef="gezahlt">
+    <th mat-header-cell *matHeaderCellDef>Gezählt</th>
+    <td mat-cell *matCellDef="let ge">
+      {{ ge.gezahlt }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="serial">
+    <th mat-header-cell *matHeaderCellDef>ID Nummer</th>
+    <td mat-cell *matCellDef="let ge">
+      {{ ge.serl }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="comment">
+    <th mat-header-cell *matHeaderCellDef>Kommentar</th>
+    <td mat-cell *matCellDef="let ge">
+      {{ ge.comment }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let ge">
+      <button
+        mat-icon-button
+        color="Accent"
+        aria-label="icon button reset"
+        [disabled]="ge.gezahlt === 0"
+        matTooltip="Reset Gezählt -> Gezählt == 0"
+        (click)="onResetGezahltID(ge)"
+      >
+        <mat-icon>block</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="Accent"
+        aria-label="icon button delete"
+        [disabled]="ge.idgezahlt === 0"
+        matTooltip="Gezählte Position Löschen"
+        (click)="onDeleteGezahltIDDetail(ge)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="Accent"
+        aria-label="icon button showdetail"
+        matTooltip="Zeig mir mehr"
+        (click)="onShowGezhaltIDDetaill(ge)"
+      >
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="
+      ['gezahlt', 'serial', 'comment', 'acciones'];
+      sticky: true
+    "
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: ['gezahlt', 'serial', 'comment', 'acciones']"
+  ></tr>
+</table>

@@ -1,57 +1,115 @@
 <div *ngIf="loading == null">
   isLoading Data...
 </div>
-<div *ngIf="loading != null">
-  <table mat-table [dataSource]="sesiones">
-    <ng-container matColumnDef="idSesion">
-      <th mat-header-cell *matHeaderCellDef>Id</th>
-      <td mat-cell *matCellDef="let sesion">
-        {{ sesion.idSesion }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="started">
-      <th mat-header-cell *matHeaderCellDef>Started</th>
-      <td mat-cell *matCellDef="let sesion">
-        {{ sesion.started | date: 'dd.MM.yyyy' }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="lager">
-      <th mat-header-cell *matHeaderCellDef>Lager</th>
-      <td mat-cell *matCellDef="let sesion">
-        {{ sesion.lager }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let sesion">
+
+<table mat-table [dataSource]="sesiones" *ngIf="loading != null">
+  <ng-container matColumnDef="idSesion">
+    <th mat-header-cell *matHeaderCellDef>Id</th>
+    <td mat-cell *matCellDef="let sesion">
+      {{ sesion.idSesion }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="empieza">
+    <th mat-header-cell *matHeaderCellDef>
+      Started
+    </th>
+    <td mat-cell *matCellDef="let sesion">
+      {{ sesion.started | date: 'dd.MM.yyyy' }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="lager">
+    <th mat-header-cell *matHeaderCellDef>Lager</th>
+    <td mat-cell *matCellDef="let sesion">
+      [{{ sesion.lager.cwar }}] {{ sesion.lager.lager }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="posiciones">
+    <th mat-header-cell *matHeaderCellDef>Pos</th>
+    <td mat-cell *matCellDef="let sesion">
+      {{ sesion.numPosiciones }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="contadas">
+    <th mat-header-cell *matHeaderCellDef>Gez.Pos</th>
+    <td mat-cell *matCellDef="let sesion">
+      {{ sesion.posicionesContadas }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="comment">
+    <th mat-header-cell *matHeaderCellDef>Comment</th>
+    <td mat-cell *matCellDef="let sesion">
+      {{ sesion.comment }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let sesion">
+      <app-show-status [Elstatus]="sesion.statusSesion"></app-show-status>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let sesion">
+      <button
+        mat-icon-button
+        color="Accent"
+        aria-label="icon button gotoSesion"
+        (click)="gotoSesion.emit(sesion)"
+      >
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
         <button
-          mat-icon-button
-          color="Accent"
-          aria-label="icon button gotoSesion"
-          (click)="gotoSesion.emit(sesion)"
-        >
-          <mat-icon>exit_to_app</mat-icon>
-        </button>
-        <button
-          mat-icon-button
+          mat-menu-item
           color="Warn"
           aria-label="icon button delete"
           (click)="delete.emit(sesion)"
         >
           <mat-icon>delete</mat-icon>
+          <span>Löschen</span>
         </button>
-      </td>
-    </ng-container>
+        <button
+          mat-menu-item
+          [disabled]="sesion.numPosiciones !== sesion.posicionesContadas"
+        >
+          <mat-icon>lock</mat-icon>
+          <span>Mach es zu</span>
+        </button>
+      </mat-menu>
+    </td>
+  </ng-container>
 
-    <tr
-      mat-header-row
-      [ngClass]="'tablafila'"
-      *matHeaderRowDef="['started', 'lager', 'acciones']; sticky: true"
-    ></tr>
-    <tr
-      mat-row
-      [ngClass]="'tablafila'"
-      *matRowDef="let row; columns: ['started', 'lager', 'acciones']"
-    ></tr>
-  </table>
-</div>
+  <tr
+    mat-header-row
+    *matHeaderRowDef="
+      [
+        'empieza',
+        'lager',
+        'comment',
+        'posiciones',
+        'contadas',
+        'status',
+        'acciones'
+      ];
+      sticky: true
+    "
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="
+      let row;
+      columns: [
+        'empieza',
+        'lager',
+        'comment',
+        'posiciones',
+        'contadas',
+        'status',
+        'acciones'
+      ]
+    "
+  ></tr>
+</table>
