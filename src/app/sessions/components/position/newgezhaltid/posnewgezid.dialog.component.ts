@@ -61,7 +61,7 @@ export class CheckIDExiste extends DefineTipoValidador<string> {
   constructor(private store$: Store<AppEstado>) {
     super('ID Nr. schon vorhandeln');
     this.getSerials();
-    super.fValidacionOK = (e) => {
+    this.fValidacionOK = (e) => {
       if (this.isloading) {
         return true;
       }

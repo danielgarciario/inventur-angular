@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Excel from 'exceljs/dist/exceljs.min.js';
 import * as ExcelProper from 'exceljs';
-import { saveAs } from 'file-saver';
+import * as fs from 'file-saver';
 import * as fromPipes from '../sessions/components/sesion/sumbestand.pipe';
 import { SesionPos } from '../models/sespos.model';
 import { Observable } from 'rxjs';
@@ -27,7 +27,7 @@ export class ExcelService {
         type:
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       });
-      saveAs(blob, destino);
+      fs.saveAs(blob, destino);
     });
   }
   generaWorkBookPosiciones(posiciones: Array<SesionPos>): ExcelProper.Workbook {
@@ -72,8 +72,8 @@ export class ExcelService {
         beschreibung: p.artikel.beschreibung,
         artikelart: p.artikel.artikelart,
         seri: p.artikel.seri === 1 ? 'Ja' : 'Nein',
-        cwar: p.lagerort.lager,
-        loca: p.lagerort.lagerplatz,
+        cwar: p.localizador.lager,
+        loca: p.localizador.lagerplatz,
         btnd: this.sumbestandPipe.transform(p.bestand),
         gezahl: this.sumgezahltPipe.transform(p.gezahlt)
       };

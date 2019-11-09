@@ -54,7 +54,8 @@
   <ng-container matColumnDef="lagerplatz">
     <th mat-header-cell mat-sort-header *matHeaderCellDef>Lagerplatz</th>
     <td mat-cell *matCellDef="let pos">
-      {{ pos.lagerort.lagerplatz }}
+      <!-- {{ pos.localizador.lagerplatz }} -->
+      {{ onResuelveLocalizador(pos.localizador) | async }}
     </td>
   </ng-container>
   <ng-container matColumnDef="efabestand">

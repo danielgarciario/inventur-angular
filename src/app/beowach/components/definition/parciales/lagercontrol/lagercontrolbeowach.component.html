@@ -1,5 +1,7 @@
 <div class="maincontainer">
-  <label class="artikeltitle titlemain">Artikel</label>
+  <label class="artikeltitle titlemain"
+    >Artikel: {{ (lagercontrol$ | async).articulo.artikelnr }}</label
+  >
   <label class="capacidadtitle titlemain">Max. Kapazität</label>
   <label class="lagerdatatitle titlemain">Bestellungsdaten</label>
 

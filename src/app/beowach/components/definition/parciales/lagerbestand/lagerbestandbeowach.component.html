@@ -1,4 +1,4 @@
-<div *ngIf="!isloading" class="grafico">
+<div *ngIf="!isLoading" class="grafico">
   <canvas
     baseChart
     [datasets]="Datos"
@@ -10,7 +10,7 @@
   >
   </canvas>
 </div>
-<div *ngIf="!isloading" class="datos">
+<div *ngIf="!isLoading" class="datos">
   <label class="titulo">ØL52WBestd:</label>
   <span class="valores">
     {{ PromedioBestandsL52W() | number: '1.1-1' }} {{ cuni }}

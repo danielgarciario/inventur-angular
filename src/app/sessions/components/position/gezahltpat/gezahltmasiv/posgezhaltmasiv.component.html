@@ -1,9 +1,14 @@
-<app-input-text
-  class="campo"
-  [validador]="gezhaltMasiv"
-  placeholder="Menge"
-  tipo="number"
-  suffix="{{ posicion.artikel.cuni }}"
-></app-input-text>
+<div class="contador">
+  <button mat-raised-button (click)="onGetURF()" style="margin-right: 10px">
+    <mat-icon>transform</mat-icon>
+  </button>
+  <app-input-text
+    class="campo"
+    [validador]="gezhaltMasiv"
+    placeholder="Menge"
+    tipo="number"
+    suffix="{{ posicion.artikel.cuni }}"
+  ></app-input-text>
+</div>
 <app-input-text [validador]="comentarios" placeholder="Kommentar" tipo="text">
 </app-input-text>

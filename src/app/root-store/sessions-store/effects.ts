@@ -351,7 +351,8 @@ export class SessionsStoreEffects {
           .addSesionPosition(
             ses.idSesion,
             ac.selectKandidato.articulo.artikelnr,
-            ac.selectKandidato.lagerort.lagerplatz
+            ac.selectKandidato.lagerort.lagerplatz,
+            ac.selectKandidato.lagerort.regal
           )
           .pipe(
             map((sp) => {

@@ -47,13 +47,13 @@
       <div *ngIf="bestandMasiv !== null" class="contenedorMasiv">
         <span
           class="primeracol titulo"
-          *ngIf="posicion.lagerort.lagerplatz.length > 0"
+          *ngIf="posicion.localizador.lagerplatz.length > 0"
           >Lagerplatz</span
         >
         <span
           class="segundacol dato"
-          *ngIf="posicion.lagerort.lagerplatz.length > 0"
-          >{{ posicion.lagerort.lagerplatz }}</span
+          *ngIf="posicion.localizador.lagerplatz.length > 0"
+          >{{ posicion.localizador.lagerplatz }}</span
         >
         <span class="primeracol titulo">Letzte Bewegung:</span>
         <span class="segundacol dato">{{
@@ -68,7 +68,7 @@
   </div>
   <div class="columna2">
     <app-sesion-aktueller-bestand
-      [lager]="posicion.lagerort.lager"
+      [lager]="posicion.localizador.lager"
       [artikel]="posicion.artikel.artikelnr"
       [cuni]="posicion.artikel.cuni"
     ></app-sesion-aktueller-bestand>

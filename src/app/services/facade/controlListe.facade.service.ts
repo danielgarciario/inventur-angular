@@ -218,7 +218,9 @@ export class ControlListeFacadeService {
           if (sal.toUpperCase() !== 'OK') {
             return sal;
           }
-          const nart = { ...lagercontrol, meldungsbestand, mindestbestand };
+          const nart = { ...lagercontrol};
+          nart.meldungsbestand = meldungsbestand;
+          nart.mindestbestellmenge = mindestbestand;
           this.artikelListe.updateData(
             nart,
             (x) =>

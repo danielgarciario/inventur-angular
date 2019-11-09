@@ -10,6 +10,7 @@ import * as fromLoginSelectors from '../../../root-store/login-store/login.selec
 import * as fromSesionActions from '../../../root-store/sessions-store/actions';
 import { User } from 'src/app/models/user.model';
 import { InventurDef } from 'src/app/models/inventurdef.model';
+import { LagerStruct } from 'src/app/models/lagerstrukt.mode';
 
 @Component({
   selector: 'app-dialog-createsesion',
@@ -17,7 +18,7 @@ import { InventurDef } from 'src/app/models/inventurdef.model';
   styleUrls: ['./createsesion.dialog.component.scss']
 })
 export class DialogCreateSesionComponent implements OnInit, OnDestroy {
-  lagers$: Observable<Array<Lager>>;
+  lagers$: Observable<Array<LagerStruct>>;
   inventario$: Observable<Array<InventurDef>>;
   nsesion: FormGroup;
   subuser: Subscription;
@@ -37,7 +38,7 @@ export class DialogCreateSesionComponent implements OnInit, OnDestroy {
     this.subinventario.unsubscribe();
   }
   ngOnInit() {
-    this.lagers$ = this.sesionservice.getlagers();
+    this.lagers$ = this.sesionservice.getLagerStructur();
     this.inventario$ = this.sesionservice.getInventurDef();
     this.subinventario = this.inventario$.subscribe((s) => {
       this.inventario = s;

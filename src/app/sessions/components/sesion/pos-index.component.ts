@@ -36,6 +36,8 @@ import {
   CampoBusqueda,
   ConjuntoCampos
 } from 'src/app/services/facade/controlListe/CampoBusqueda.model';
+import { SessionsService } from 'src/app/services/sessions.service';
+import { Localizador } from 'src/app/models/lagerort.model';
 
 @Component({
   selector: 'app-pos-index',
@@ -63,7 +65,7 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
 
   conjuntos: ConjuntoCampos<SesionPos>;
 
-  constructor() {}
+  constructor(private ss: SessionsService) {}
 
   ngOnInit() {
     this.cbartikelnr = new CampoBusqueda<SesionPos, string>('ArtikelNR');
@@ -81,7 +83,7 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cbartikelbe.iniciofiltro = (t: string) => t.length > 2;
 
     this.cbloca.filtro = (sp, t) => {
-      return sp.lagerort.lagerplatz.toUpperCase().includes(t.toUpperCase());
+      return sp.localizador.lagerplatz.toUpperCase().includes(t.toUpperCase());
     };
     this.cbloca.iniciofiltro = (t: string) => t.length > 1;
     this.fcartnum = new Validador(this.cbartikelnr.formulario);
@@ -118,7 +120,7 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         campo: 'lagerplatz',
         funcascendente: (a, b) =>
-          a.lagerort.lagerplatz < b.lagerort.lagerplatz ? -1 : 1
+          a.localizador.lagerplatz < b.localizador.lagerplatz ? -1 : 1
       },
       {
         campo: 'checkedam',
@@ -130,6 +132,11 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
   onSort(cual: Sort) {
     this.mipaginador.onSort(cual);
   }
+
+  onResuelveLocalizador(cual: Localizador): Observable<string> {
+    return this.ss.resuelveLagerPlatzRegal(cual);
+  }
+
   ngAfterViewInit() {}
   ngOnDestroy() {}
 }

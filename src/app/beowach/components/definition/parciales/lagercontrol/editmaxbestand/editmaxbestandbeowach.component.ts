@@ -33,7 +33,7 @@ export class ValidadorExisteFesteLagerPlatz extends DefineTipoValidador<
   constructor(private festeLagerPlatze: Array<FestLagerPLatz>) {
     super('Lagerplatz ist nicht in der Festelagerplätze Liste für die Aritkel');
     this.getflp();
-    super.fValidacionOK = (e) => {
+    this.fValidacionOK = (e) => {
       if (this.flp.length === 0) {
         return true;
       }
@@ -53,7 +53,7 @@ export class ValidadorYaExisteLagerPlatzEnCapacidades extends DefineTipoValidado
   constructor(private capacidades: Array<Capacidades>) {
     super('Lagerplatz schon in der Liste von Lagerplatz Kapazität');
     this.getcap();
-    super.fValidacionOK = (e) => {
+    this.fValidacionOK = (e) => {
       if (this.cap.length === 0) {
         return true;
       }

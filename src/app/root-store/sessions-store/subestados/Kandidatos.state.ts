@@ -7,7 +7,7 @@ export interface KandidatosState extends EntityState<Kandidato> {
 }
 
 function getKandidatoId(k: Kandidato): string {
-  return k.lagerort.lagerplatz + k.articulo.artikelnr;
+  return k.lagerort.regal + k.lagerort.lagerplatz + k.articulo.artikelnr;
 }
 
 export const kandidatosadapter: EntityAdapter<Kandidato> = createEntityAdapter<

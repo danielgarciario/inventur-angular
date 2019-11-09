@@ -38,7 +38,7 @@
         ></app-posicion-artikel-part>
 
         <app-posicion-localizacion-part
-          [lagerort]="(position$ | async).lagerort"
+          [localizador]="(position$ | async).localizador"
         ></app-posicion-localizacion-part>
       </div>
     </mat-card-content>
@@ -64,7 +64,7 @@
         (resetgezahltID)="onResetGezahltID($event)"
         (showDetailID)="onShowGezhaltIDDetaill($event)"
         (DeletetgezahltID)="onDeleteGezahltIDDetail($event)"
-        (OnNeuGezhaltID)="onNewGezhaltID($event)"
+        (OnNeuGezhaltID)="onNewGezhaltID()"
         (OnChangedGezahlt)="onChangedGezhalt($event)"
       ></app-position-gezahlt-part>
     </mat-card-content>

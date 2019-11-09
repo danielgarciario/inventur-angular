@@ -1,0 +1,8 @@
+.contador {
+  display: flex;
+  align-items: center;
+}
+
+.campo {
+  font-size: 20px;
+}

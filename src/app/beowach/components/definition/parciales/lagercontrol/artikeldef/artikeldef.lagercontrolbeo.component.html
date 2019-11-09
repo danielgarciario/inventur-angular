@@ -7,6 +7,9 @@
       <img height="200" width="200" [src]="imagendata$ | async" />
     </div>
     <div class="contenedor">
+      <!--
+        lo vamos a cambiar porque es muy complicado...
+        Solamente vamos a colocar el titulo del articulo.
       <label class="titulo">
         Artikel Nr
       </label>
@@ -35,6 +38,11 @@
         Beschreibung
       </label>
       <span class="beschreibung dato">
+        {{ (artikel$ | async).beschreibung }}
+      </span> -->
+
+      <!-- Esto es la version mas simple  -->
+      <span class="dato">
         {{ (artikel$ | async).beschreibung }}
       </span>
     </div>

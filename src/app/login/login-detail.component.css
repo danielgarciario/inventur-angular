@@ -1,1 +1,5 @@
 
+.dentroboton {
+  display: flex;
+  align-items: baseline;
+}

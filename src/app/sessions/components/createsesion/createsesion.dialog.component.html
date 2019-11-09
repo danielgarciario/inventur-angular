@@ -6,7 +6,7 @@
     <mat-label>Lager:</mat-label>
     <mat-select formControlName="lager" placeholder="Lager">
       <mat-option *ngFor="let lager of lagers$ | async" [value]="lager.cwar">
-        [ {{ lager.cwar }} ] {{ lager.lager }}
+        [ {{ lager.cwar }} ] {{ lager.descripcion }}
       </mat-option>
     </mat-select>
     <div *ngIf="inventario?.length > 0">

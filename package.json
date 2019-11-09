@@ -28,6 +28,7 @@
     "@ngrx/store": "^8.0.1",
     "@ngrx/store-devtools": "^8.0.1",
     "@types/exceljs": "^0.5.3",
+    "@types/file-saver": "^2.0.1",
     "chart.js": "^2.8.0",
     "exceljs": "^1.13.0",
     "file-saver": "^2.0.2",

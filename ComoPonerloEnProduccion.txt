@@ -1,0 +1,15 @@
+Angular Comando Basico para hacer Build en produccion:
+
+ng build --base-href="/lager/" --prod
+
+
+https://angular.io/guide/deployment
+https://blog.angularindepth.com/deploy-an-angular-application-to-iis-60a0897742e7
+
+
+
+
+
+Hay que copiar el dist en ST-Lilliput03 pero en C:/www... ojo !!
+
+

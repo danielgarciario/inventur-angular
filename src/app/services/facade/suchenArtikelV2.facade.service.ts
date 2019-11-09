@@ -7,7 +7,6 @@ import { ValidadorTipo } from 'src/app/helpers-module/Validador/VadlidadorTipo.m
 import { FormControl } from '@angular/forms';
 import { Observable, of, Subject, BehaviorSubject, merge } from 'rxjs';
 import { Sesion, LagerSesion } from 'src/app/models/sesion.model';
-import { Lager } from 'src/app/models/lager.model';
 import {
   map,
   switchMap,
@@ -18,9 +17,6 @@ import {
 } from 'rxjs/operators';
 import { Artikel } from 'src/app/models/artikel.model';
 import { Kandidato } from 'src/app/models/kandidato.model';
-import { LagerOrt } from 'src/app/models/lagerort.model';
-import { FestLagerPLatz } from 'src/app/models/festelagerplatz.model';
-import { ArtikelLagerControlBeowachComponent } from 'src/app/beowach/components/definition/parciales/lagercontrol/artikeldef/artikeldef.lagercontrolbeo.component';
 
 /* ESTO LO USO PARA BUSCAR ARTICULOS EN UNA NUEVA POSICION PARA LAS SESION */
 
@@ -54,10 +50,7 @@ export class SuchenArtikelFacade2Service {
     lagerplatz: string;
   }>;
 
-  constructor(
-    private sesserv: SessionsService,
-    private store$: Store<AppEstado>
-  ) {
+  constructor(private sesserv: SessionsService, store$: Store<AppEstado>) {
     this.vArtnum = new ValidadorTipo<string>(new FormControl(''));
     this.vLagerplatz = new ValidadorTipo<string>(new FormControl(''));
 

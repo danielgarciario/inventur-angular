@@ -8,14 +8,15 @@
   height: 200px;
 }
 
-.contenedor {
-  display: grid;
+/* Lo he quitado para simplificar la zona del articulo */
+/* .contenedor {
+   display: grid;
   flex-grow: 1;
   padding: 10px 10px 0px 10px;
   height: 190px;
   grid-template-columns: auto 1fr auto 1fr auto 1fr auto 1fr;
   grid-template-rows: auto 1fr;
-}
+} */
 
 .bestitle {
   grid-column: 1;

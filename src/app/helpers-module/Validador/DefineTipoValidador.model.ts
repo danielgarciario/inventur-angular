@@ -1,8 +1,8 @@
 import { TipoValidador } from './TipoValidador.interface';
 
 export class DefineTipoValidador<T> implements TipoValidador {
-  private fvalidacion: (entrada: T) => boolean;
-  set fValidacionOK(mifuncion: (entrada: T) => boolean) {
+  protected fvalidacion: (entrada: T) => boolean;
+  public set fValidacionOK(mifuncion: (entrada: T) => boolean) {
     this.fvalidacion = mifuncion;
   }
 
@@ -31,7 +31,7 @@ export class DefineTipoValidadorMayorIgualQue extends DefineTipoValidador<
 > {
   constructor(valor: number) {
     super(`es muss großer oder gleich als ${valor}`);
-    super.fValidacionOK = (e: number) => e >= valor;
+    this.fValidacionOK = (e: number) => e >= valor;
   }
 }
 export class DefineTipoValidadorMenorIgualQue extends DefineTipoValidador<
@@ -39,7 +39,7 @@ export class DefineTipoValidadorMenorIgualQue extends DefineTipoValidador<
 > {
   constructor(valor: number) {
     super(`es muss kleiner oder gleich als ${valor}`);
-    super.fValidacionOK = (e: number) => e <= valor;
+    this.fValidacionOK = (e: number) => e <= valor;
   }
 }
 export class DefineTipoValidadorMaximoLargo extends DefineTipoValidador<
@@ -47,7 +47,7 @@ export class DefineTipoValidadorMaximoLargo extends DefineTipoValidador<
 > {
   constructor(largomaximo: number) {
     super(`es muss kleiner als ${largomaximo} Buchstaben`);
-    super.fValidacionOK = (e) => e.length <= largomaximo;
+    this.fValidacionOK = (e) => e.length <= largomaximo;
   }
 }
 
