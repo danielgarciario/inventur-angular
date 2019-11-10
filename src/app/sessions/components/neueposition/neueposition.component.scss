@@ -56,3 +56,22 @@ tr .mat-icon-button {
   // background:#41008b;
   background: #673AB7;
 }
+
+
+.resumen {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 100px;
+  grid-template-areas: "articulo lagerort accion";
+  column-gap: 10px;
+}
+
+.kandart {
+  grid-area: articulo;
+}
+.kandOrt {
+  grid-area: lagerort;
+}
+.kandBtn {
+  grid-area: accion;
+}

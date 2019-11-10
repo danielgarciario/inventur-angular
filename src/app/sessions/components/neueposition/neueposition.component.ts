@@ -19,6 +19,8 @@ import { SuchenArtikelFacade2Service } from 'src/app/services/facade/suchenArtik
 import { ValidadorTipo } from 'src/app/helpers-module/Validador/VadlidadorTipo.model';
 import { SuchenArtikelFacadeV3Service } from 'src/app/services/facade/suchenArtikelV3.facade.service';
 import { LagerStruct } from 'src/app/models/lagerstrukt.model';
+import { Localizador } from 'src/app/models/lagerort.model';
+import { KandidatoPartComponent } from './kandidatospart/kandidatopart.component';
 
 @Component({
   selector: 'app-neueposition',
@@ -44,11 +46,11 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.snapshot = route.snapshot;
-    this.subsesion = facade.lager$.subscribe((l) => (this.lager = l));
-    this.sublagerstruct = facade.lagerstruct$.subscribe((ls) => {
-      this.lagerstruct = ls;
-      console.log('lagerstruct', ls);
-    });
+    // this.subsesion = facade.lager$.subscribe((l) => (this.lager = l));
+    // this.sublagerstruct = facade.lagerstruct$.subscribe((ls) => {
+    //   this.lagerstruct = ls;
+    //   console.log('lagerstruct', ls);
+    // });
   }
 
   ngOnInit() {
@@ -90,8 +92,20 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
     );
   }
 
+  createposition() {
+    const miarticulo = this.facade.kandidato$.value.articulo;
+    const lo = this.facade.kandidato$.value.lagerot;
+    const kand = {
+      articulo: miarticulo,
+      lagerort: { lager: lo.cwar, lagerplatz: lo.loca, regal: lo.rega }
+    };
+    this.store$.dispatch(
+      fromActions.seleccionaCandidato({ selectKandidato: kand })
+    );
+  }
+
   ngOnDestroy() {
-    this.subsesion.unsubscribe();
-    this.subnavigate.unsubscribe();
+    // this.subsesion.unsubscribe();
+    // this.subnavigate.unsubscribe();
   }
 }

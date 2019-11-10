@@ -5,9 +5,22 @@ import { Store } from '@ngrx/store';
 import * as fromSesionSelectors from '../../root-store/sessions-store/selectors';
 import { AppEstado } from 'src/app/root-store/root-store.state';
 import { FormControl } from '@angular/forms';
-import { Observable, BehaviorSubject, of, ObservableLike } from 'rxjs';
+import {
+  Observable,
+  BehaviorSubject,
+  of,
+  ObservableLike,
+  combineLatest
+} from 'rxjs';
 import { Sesion, LagerSesion } from 'src/app/models/sesion.model';
-import { map, switchMap, debounceTime, withLatestFrom } from 'rxjs/operators';
+import {
+  map,
+  switchMap,
+  debounceTime,
+  withLatestFrom,
+  combineAll,
+  tap
+} from 'rxjs/operators';
 import {
   LagerStruct,
   ILagerOrtDatenBank
@@ -22,7 +35,7 @@ export class SuchenArtikelFacadeV3Service {
 
   public sesion$: Observable<Sesion>; // <-- Guardo la sesion
   public lager$: Observable<LagerSesion>; // <-- Guardo el LagerSesion (lo uso solamente para el Lager)
-  public lagerOhneLagerplatz$: Observable<boolean>; // <-- Para indicar que no hay Lagerplatz
+  public lagerMitLagerplatz$: Observable<boolean>; // <-- Para indicar que no hay Lagerplatz
   public lagerstruct$: Observable<LagerStruct>; // <-- Estructura del Lager de trabajo.
 
   // potenciales$ almacena los articulos cuando hay muchos para elegir...
@@ -68,20 +81,40 @@ export class SuchenArtikelFacadeV3Service {
     this.sesion$ = store$.select(fromSesionSelectors.DameSelectedSession);
     this.lager$ = this.sesion$.pipe(map((s) => s.lager));
     this.lagerstruct$ = this.sesion$.pipe(
-      map((s) => s.lager.cwar),
+      map((s) => {
+        if (s == null) {
+          return '';
+        }
+        return s.lager.cwar == null ? '' : s.lager.cwar;
+      }),
+      tap((l) => {
+        if (this.kandidato$.value.lagerot != null) {
+          if (this.kandidato$.value.lagerot.cwar !== l) {
+            this.kandidato$.next({ ...this.kandidato$.value, lagerot: null });
+            this.vLagerplatz.formulario.setValue('', { emitEvent: false });
+          }
+        }
+      }),
       switchMap((l) => sesserv.getLager(l))
     );
-    this.lagerOhneLagerplatz$ = this.lagerstruct$.pipe(
-      map((l) => !l.hasLagerPLatze)
+    this.lagerMitLagerplatz$ = this.lagerstruct$.pipe(
+      map((l) => {
+        const istnichtleer = l.lagerplatze != null && l.lagerplatze.length > 0;
+        if (!istnichtleer) {
+          this.kandidato$.next({ articulo: null, lagerot: l });
+        }
+        return istnichtleer;
+      })
     );
-
-    this.kandidatoCompleto$ = this.kandidato$.pipe(
-      withLatestFrom(this.lagerOhneLagerplatz$),
-      map(([k, l]) => {
+    this.kandidatoCompleto$ = combineLatest(
+      this.kandidato$,
+      this.lagerMitLagerplatz$
+    ).pipe(
+      map(([k, ls]) => {
         if (k.articulo == null) {
           return false;
         }
-        if (l) {
+        if (!ls) {
           return true;
         }
         if (k.lagerot == null) {
@@ -90,6 +123,21 @@ export class SuchenArtikelFacadeV3Service {
         return true;
       })
     );
+    // this.kandidatoCompleto$ = this.kandidato$.pipe(
+    //   withLatestFrom(this.lagerOhneLagerplatz$),
+    //   map(([k, l]) => {
+    //     if (k.articulo == null) {
+    //       return false;
+    //     }
+    //     if (l) {
+    //       return true;
+    //     }
+    //     if (k.lagerot == null) {
+    //       return false;
+    //     }
+    //     return true;
+    //   })
+    // );
 
     this.searchingpotenciales$ = this.vArtnum.valueChanges$.pipe(
       debounceTime(700),
@@ -110,6 +158,7 @@ export class SuchenArtikelFacadeV3Service {
           searching: true,
           showtable: false
         });
+        this.kandidato$.next({ ...this.kandidato$.value, articulo: null });
         return sesserv.getArtikelPotencials(e.toUpperCase()).pipe(
           map((p) => {
             console.log(`Encontrados ${p.length}`);
@@ -120,10 +169,9 @@ export class SuchenArtikelFacadeV3Service {
               potenciales: p
             });
             if (p.length === 1) {
-              this.kandidato$.next({
-                ...this.kandidato$.value,
-                articulo: p[0]
-              });
+              const ns = { ...this.kandidato$.value, articulo: p[0] };
+              console.log('Emitiendo nuevo Kandidato:', ns);
+              this.kandidato$.next(ns);
             }
             return p.length > 1;
           })
@@ -150,6 +198,7 @@ export class SuchenArtikelFacadeV3Service {
           searching: true,
           showtable: false
         });
+        this.kandidato$.next({ ...this.kandidato$.value, lagerot: null });
         return this.getOrtSuchen(e).pipe(
           map((l) => {
             console.log(`encontrados ${l.length}`);
@@ -160,10 +209,12 @@ export class SuchenArtikelFacadeV3Service {
               lugares: l
             });
             if (l.length === 1) {
-              this.kandidato$.next({
-                ...this.kandidato$.value,
-                lagerot: l[0]
+              const ns = { ...this.kandidato$.value, lagerot: l[0] };
+              this.vLagerplatz.formulario.setValue(l[0].descripcion, {
+                emitEvent: false
               });
+              console.log('Emitiendo nuevo Kandidato:', ns);
+              this.kandidato$.next(ns);
             }
             return l.length > 1;
           })
@@ -177,6 +228,10 @@ export class SuchenArtikelFacadeV3Service {
   }
   onSelectedOrt(cual: ILagerOrtDatenBank) {
     this.kandidato$.next({ ...this.kandidato$.value, lagerot: cual });
+    this.vLagerplatz.formulario.setValue(cual.descripcion, {
+      emitEvent: false
+    });
+    this.ort$.next({ ...this.ort$.value, showtable: false });
   }
 
   private getLagerortbyReference(

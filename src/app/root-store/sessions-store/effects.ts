@@ -120,12 +120,12 @@ export class SessionsStoreEffects {
         this.sesionService
           .deleteSesionPosicion(accion.sesionid, accion.posicionid)
           .pipe(
-            map((r) =>
-              fromActions.DeleteSesionPosicionSuccess({
-                sesionid: accion.posicionid,
+            map((r) => {
+              return fromActions.DeleteSesionPosicionSuccess({
+                sesionid: accion.sesionid,
                 posicionid: accion.posicionid
-              })
-            ),
+              });
+            }),
             catchError((rr: HttpErrorResponse) =>
               of(
                 fromSharedError.HttpError({
@@ -138,6 +138,15 @@ export class SessionsStoreEffects {
       )
     )
   );
+  // deletepositionsuccessEffect$ = createEffect(
+  //   () =>
+  //     this.actions$.pipe(
+  //       ofType(fromActions.DeleteSesionPosicionSuccess),
+  //       map((ac) => this.router.navigate(['/sessions/sesion', ac.sesionid]))
+  //     ),
+  //   { dispatch: false }
+  // );
+
   confirmdeletesesionEffect$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -153,7 +162,7 @@ export class SessionsStoreEffects {
             )
           )
         ),
-        switchMap(([accion, ses]) => {
+        map(([accion, ses]) => {
           const data = {
             delete: fromActions.DeleteSesion({
               sesionid: accion.sesionid
@@ -162,8 +171,6 @@ export class SessionsStoreEffects {
             title: 'Sesion löschen?'
           };
           this.matdialog.open(DeleteConfirmDialogComponent, { data });
-          // tslint:disable-next-line: deprecation
-          return empty();
         })
       ),
     { dispatch: false }
@@ -529,6 +536,7 @@ export class SessionsStoreEffects {
               posicion: accion.posicion,
               gezahltId: accion.gezahltId
             }),
+            // tslint:disable-next-line: max-line-length
             text: `<p>Bestätigen löschen Gezählt Data: </p> <p>Artikel:<strong>${accion.posicion.artikel.artikelnr} ${accion.posicion.artikel.beschreibung}</strong> </p>
               <p> Id Nr: <strong> ${accion.gezahltId.serl} </strong> </p>
               <p> Gezählt ${accion.gezahltId.gezahlt} </p>

@@ -36,6 +36,8 @@ import { DialogKeyboardComponent } from '../helpers-module/Teclados/DialogTeclad
 import { HelpersModule } from '../helpers-module/helpers-module.module';
 import { PosGezahltMitIDComponent } from './components/position/gezahltpat/gezhaltmitID/posgezhaltmitid.component';
 import { PosGezahltMasivComponent } from './components/position/gezahltpat/gezahltmasiv/posgezhaltmasiv.component';
+import { PartialArtikelComponent } from './components/neueposition/partartikel/partartikel.component';
+import { PartialLagerOrtComponent } from './components/neueposition/partlagerort/partlagerort.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { PosGezahltMasivComponent } from './components/position/gezahltpat/gezah
     ShowStatusComponent,
     PosGezahltMitIDComponent,
     PosGezahltMasivComponent,
+    PartialArtikelComponent,
+    PartialLagerOrtComponent,
     // EntradaTextoComponent,
     // DialogKeyboardComponent,
 

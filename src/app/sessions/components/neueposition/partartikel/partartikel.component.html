@@ -1,0 +1,13 @@
+<div *ngIf="artikel != null" class="contenedor">
+  <span class="titulo">
+    Artikel Nr
+  </span>
+  <span class="dato">
+    {{ artikel.artikelnr }}
+  </span>
+  <span class="titulo">Beschreibung</span>
+  <span class="dato"> {{ artikel.beschreibung }} </span>
+
+  <span class="titulo"> Bestandseinheit</span>
+  <span class="dato">{{ artikel.cuni }}</span>
+</div>

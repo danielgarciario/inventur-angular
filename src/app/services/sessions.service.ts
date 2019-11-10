@@ -101,6 +101,7 @@ export class SessionsService {
       })
     );
   }
+
   resuelveLagerPlatzRegal(locali: Localizador): Observable<string> {
     return this.getLagerStructur().pipe(
       map((ls) => {

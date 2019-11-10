@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+}
+
+.contenedor {
+  display: grid;
+  flex-grow: 1;
+  height: 150px;
+  grid-template-columns: 150px 1fr;
+  grid-column-gap: 10px;
+  align-items: stretch;
+  padding-left: 10px;
+}
+
+.titulo {
+  text-align: right;
+  padding-right: 5px;
+  background: black;
+  border-style: solid none solid none;
+  border-width: thin;
+  border: white;
+  line-height: 48px;
+  background: black;
+  text-transform: uppercase;
+  color:white;
+}
+.dato  {
+  text-align: left;
+  padding-left: 5px;
+  line-height: 48px;
+  font-size: 18px;
+  border: lightgray;
+  border-width: thin;
+  border-style: solid;
+  font-weight: 500;
+}

@@ -45,7 +45,7 @@ export class LagerStruct implements ILagerOrtDatenBank {
   public rega: string;
   public referencia: string;
   public get hasLagerPLatze(): boolean {
-    if (!this.lagerplatze) {
+    if (this.lagerplatze == null) {
       return false;
     }
     return this.lagerplatze.length > 0;

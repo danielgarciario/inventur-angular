@@ -78,28 +78,39 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe();
     this.subsdelete = this.deltebuttonclick$
-      .pipe(
-        switchMap((e) => this.position$),
-        tap(() => console.log('dentro de delete')),
-        map((p) =>
-          this.store$.dispatch(
-            fromSesionActions.ConfirDeleteSesionPosicion({
-              sesionid: p.idsesion,
-              posicionid: p.idsespos
-            })
-          )
-        )
-      )
-      .subscribe();
+      // .pipe(
+      //   switchMap((e) => this.position$),
+      //   tap(() => console.log('dentro de delete')),
+      //   map((p) =>
+      //     this.store$.dispatch(
+      //       fromSesionActions.ConfirDeleteSesionPosicion({
+      //         sesionid: p.idsesion,
+      //         posicionid: p.idsespos
+      //       })
+      //     )
+      //   )
+      // )
+      .subscribe(() => {
+        this.store$.dispatch(
+          fromSesionActions.ConfirDeleteSesionPosicion({
+            sesionid: this.idsesion,
+            posicionid: this.idposicion
+          })
+        );
+      });
     this.subnavigate = this.position$
       .pipe(
         filter((p) => {
-          if (p === undefined) { return true; }
-          if (p.artikel === undefined) { return true; }
+          if (p === undefined) {
+            return true;
+          }
+          if (p.artikel === undefined) {
+            return true;
+          }
           return false;
         }),
         tap(() =>
-          this.router.navigate(['../../sesion', this.idsesion], {
+          this.router.navigate(['../../session', this.idsesion], {
             relativeTo: this.route
           })
         )

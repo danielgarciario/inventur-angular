@@ -5,6 +5,14 @@
 </div> -->
 
 <!-- Esta es el modelo con facade-->
+<!-- <mat-card>
+  <p>
+    Neue Position für Lager [{{ (facade.lagerstruct$ | async).cwar }}]
+    {{ (facade.lagerstruct$ | async).descripcion }} hat Lagerplatze:
+    {{ facade.lagerMitLagerplatz$ | async }}
+  </p>
+</mat-card> -->
+
 <mat-card class="artikelcard">
   <mat-card-header>
     <mat-card-title> Nach Artikel Nr / EAN Code / Internal Ref </mat-card-title>
@@ -65,7 +73,7 @@
     </table>
   </div>
 </mat-card>
-<mat-card class="lagerplatzcard" *ngIf="!(facade.LagerOhneLagerplatz$ | async)">
+<mat-card class="lagerplatzcard" *ngIf="facade.lagerMitLagerplatz$ | async">
   <mat-card-header>
     <mat-card-title> Lagerort </mat-card-title>
   </mat-card-header>
@@ -134,4 +142,25 @@
   <mat-card-header>
     <mat-card-title> Artikel im Lagerort </mat-card-title>
   </mat-card-header>
+  <div class="resumen">
+    <app-partartikel-detail
+      class="kandart"
+      [artikel]="(facade.kandidato$ | async).articulo"
+    ></app-partartikel-detail>
+    <app-partlagerort-detail
+      *ngIf="facade.lagerMitLagerplatz$ | async"
+      class="kandOrt"
+      [lagerort]="(facade.kandidato$ | async).lagerot"
+    ></app-partlagerort-detail>
+    <button
+      class="kandBtn"
+      [disabled]="!(facade.kandidatoCompleto$ | async)"
+      mat-raised-button
+      color="primary"
+      (click)="createposition()"
+    >
+      CREATE
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </div>
 </mat-card>

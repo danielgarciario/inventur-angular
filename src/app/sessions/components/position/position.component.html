@@ -18,6 +18,7 @@
         <mat-icon>delete</mat-icon>Löschen
       </button>
       <button
+        *ngIf="(position$ | async) != null"
         mat-raised-button
         [disabled]="!(modificada$ | async)"
         color="primary"
@@ -27,7 +28,7 @@
       </button>
     </mat-card-actions>
   </mat-card>
-  <mat-card style="margin: 10px">
+  <mat-card *ngIf="(position$ | async) != null" style="margin: 10px">
     <mat-card-header>
       <mat-card-title>Artikel und Lagerplatz</mat-card-title>
     </mat-card-header>
@@ -43,7 +44,7 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <mat-card style="margin: 10px">
+  <mat-card *ngIf="(position$ | async) != null" style="margin: 10px">
     <mat-card-header>
       <mat-card-title>Bestand</mat-card-title>
     </mat-card-header>
@@ -54,7 +55,7 @@
       ></app-position-bestand-part>
     </mat-card-content>
   </mat-card>
-  <mat-card style="margin: 10px">
+  <mat-card *ngIf="(position$ | async) != null" style="margin: 10px">
     <mat-card-header>
       <mat-card-title>Gezählt</mat-card-title>
     </mat-card-header>
