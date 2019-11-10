@@ -10,7 +10,7 @@ import * as fromLoginSelectors from '../../../root-store/login-store/login.selec
 import * as fromSesionActions from '../../../root-store/sessions-store/actions';
 import { User } from 'src/app/models/user.model';
 import { InventurDef } from 'src/app/models/inventurdef.model';
-import { LagerStruct } from 'src/app/models/lagerstrukt.mode';
+import { LagerStruct } from 'src/app/models/lagerstrukt.model';
 
 @Component({
   selector: 'app-dialog-createsesion',

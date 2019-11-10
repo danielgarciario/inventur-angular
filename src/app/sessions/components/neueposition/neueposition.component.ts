@@ -17,6 +17,8 @@ import * as fromSelectors from '../../../root-store/sessions-store/selectors';
 import { concatMap, filter, withLatestFrom, map } from 'rxjs/operators';
 import { SuchenArtikelFacade2Service } from 'src/app/services/facade/suchenArtikelV2.facade.service';
 import { ValidadorTipo } from 'src/app/helpers-module/Validador/VadlidadorTipo.model';
+import { SuchenArtikelFacadeV3Service } from 'src/app/services/facade/suchenArtikelV3.facade.service';
+import { LagerStruct } from 'src/app/models/lagerstrukt.model';
 
 @Component({
   selector: 'app-neueposition',
@@ -27,20 +29,26 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
   snapshot: ActivatedRouteSnapshot;
   subsesion: Subscription;
   subnavigate: Subscription;
+  sublagerstruct: Subscription;
   lager: LagerSesion;
+  lagerstruct: LagerStruct;
 
   artikelnr: ValidadorTipo<string>;
-  artikelbes: ValidadorTipo<string>;
+  // artikelbes: ValidadorTipo<string>;
   lagerplatz: ValidadorTipo<string>;
 
   constructor(
-    public facade: SuchenArtikelFacade2Service,
+    public facade: SuchenArtikelFacadeV3Service,
     private store$: Store<AppEstado>,
     private router: Router,
     private route: ActivatedRoute
   ) {
     this.snapshot = route.snapshot;
     this.subsesion = facade.lager$.subscribe((l) => (this.lager = l));
+    this.sublagerstruct = facade.lagerstruct$.subscribe((ls) => {
+      this.lagerstruct = ls;
+      console.log('lagerstruct', ls);
+    });
   }
 
   ngOnInit() {
@@ -48,7 +56,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
     console.log(`En NeuePosition para ID= ${id}`);
 
     this.artikelnr = this.facade.vArtnum;
-    this.artikelbes = this.facade.vBesch;
+    // this.artikelbes = this.facade.vBesch;
     this.lagerplatz = this.facade.vLagerplatz;
     this.subnavigate = this.store$
       .select(fromSelectors.DameSesPosicionCreateSuccess)

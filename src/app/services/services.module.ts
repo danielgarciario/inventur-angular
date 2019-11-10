@@ -22,6 +22,7 @@ import { ControlListeFacadeService } from './facade/controlListe.facade.service'
 import { KorrekturService } from './korrektur.service';
 import { KorrekturFacadeService } from './facade/korrektur.facade.service';
 import { SuchenArtikelFacade2Service } from './facade/suchenArtikelV2.facade.service';
+import { SuchenArtikelFacadeV3Service } from './facade/suchenArtikelV3.facade.service';
 
 @NgModule({
   declarations: [],
@@ -39,8 +40,9 @@ import { SuchenArtikelFacade2Service } from './facade/suchenArtikelV2.facade.ser
     UniqueSerialByArtikelValidator,
     Moment2ExcelPipe,
     ExcelService,
-    SuchenArtikelFacadeService,
-    SuchenArtikelFacade2Service,
+    SuchenArtikelFacadeService, // <-- Creo que hay que quitarlo..
+    SuchenArtikelFacade2Service, // <- Antiguo habra que quitarlo.
+    SuchenArtikelFacadeV3Service,
     BeowachtService,
     ControlListeFacadeService,
     KorrekturService,

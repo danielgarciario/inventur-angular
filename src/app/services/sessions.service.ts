@@ -20,7 +20,7 @@ import {
   LagerStruct,
   LagerPlatzStruct,
   RegaleStruct
-} from '../models/lagerstrukt.mode';
+} from '../models/lagerstrukt.model';
 import { Localizador } from '../models/lagerort.model';
 
 @Injectable({ providedIn: 'root' })
@@ -56,6 +56,7 @@ export class SessionsService {
   getLager(cwar: string): Observable<LagerStruct> {
     return this.getLagerStructur().pipe(
       map((lg) => {
+        // console.log('Main Lagerstruct:', lg);
         const lgs = lg.filter((x) => x.cwar === cwar);
         if (lgs.length === 0) {
           return null;
