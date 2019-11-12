@@ -20,6 +20,7 @@ import { LoginState } from './../../root-store/login-store/login.state';
 import * as fromSelectors from './../../root-store/login-store/login.selectors';
 import { AppEstado } from './../../root-store/root-store.state';
 import { MatSidenav } from '@angular/material';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home-layout',
@@ -33,6 +34,7 @@ export class HomeLayoutComponent implements OnInit, OnDestroy {
   isLoggedIn$: Observable<boolean>;
   isIPAD$: Observable<boolean>;
   user$: Observable<User>;
+  istbeowacthunguser$: Observable<boolean>;
   subIsIpad: Subscription;
   IsIpad: boolean;
   constructor(
@@ -54,6 +56,12 @@ export class HomeLayoutComponent implements OnInit, OnDestroy {
     this.subIsIpad = this.isIPAD$.subscribe((ipad) => {
       this.IsIpad = ipad;
     });
+    this.istbeowacthunguser$ = this.user$.pipe(
+      map((u) => {
+        const lista: Array<string> = environment.beousers;
+        return lista.includes(u.emno);
+      })
+    );
   }
 
   onLogout() {

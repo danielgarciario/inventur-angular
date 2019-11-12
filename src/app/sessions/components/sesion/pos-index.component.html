@@ -16,6 +16,7 @@
     tipo="text"
   ></app-input-text>
   <app-input-text
+    *ngIf="(buscoConLagerplatze | async)"
     [validador]="floca"
     placeholder="Lagerort"
     isRequired="false"
@@ -55,7 +56,7 @@
     <th mat-header-cell mat-sort-header *matHeaderCellDef>Lagerplatz</th>
     <td mat-cell *matCellDef="let pos">
       <!-- {{ pos.localizador.lagerplatz }} -->
-      {{ onResuelveLocalizador(pos.localizador) | async }}
+      {{ onResuelveLocalizador(pos.localizador) }}
     </td>
   </ng-container>
   <ng-container matColumnDef="efabestand">

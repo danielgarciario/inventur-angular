@@ -1,8 +1,9 @@
 <div style="margin: 10px">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>
-        Postions für Lager [{{ thislager.cwar }}] {{ thislager.lager }} <br />
+      <mat-card-title *ngIf="thislager != null">
+        Postions für Lager [{{ thislager.cwar }}] {{ thislager.descripcion }}
+        <br />
         Sesion: {{ thissesion.idSesion }} - {{ thissesion.comment }}
       </mat-card-title>
 
@@ -48,6 +49,7 @@
   <app-pos-index
     [loading]="loading$ | async"
     [posiciones]="posiciones$"
+    [lagerstruct$]="thislagerstruct$"
     (delete)="onDeletePosicion($event)"
     (gotoPosition)="onGotoPosition($event)"
   >

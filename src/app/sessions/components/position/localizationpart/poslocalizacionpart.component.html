@@ -1,12 +1,28 @@
-<div>
+<div *ngIf="(lagerort$ | async) != null">
   <div class="contenedor">
-    <span class="titulo1 titulo">
+    <span class="titulo">
       Lager
     </span>
-    <span class="dato1 titulo">Lagerplatz</span>
-    <span class="titulo1 dato">
-      {{ localizador.lager }}
+    <span class="dato">
+      {{ (lagerort$ | async).cwar }}
     </span>
-    <span class="dato1 dato"> {{ localizador.lagerplatz }} </span>
+    <span class="titulo">
+      Lagerplatz
+    </span>
+    <span class="dato">
+      {{ (lagerort$ | async).loca }}
+    </span>
+    <span class="titulo">
+      Regal
+    </span>
+    <span class="dato">
+      {{ (lagerort$ | async).rega }}
+    </span>
+    <span class="titulo">
+      Ort
+    </span>
+    <span class="dato">
+      {{ (lagerort$ | async).descripcion }}
+    </span>
   </div>
 </div>

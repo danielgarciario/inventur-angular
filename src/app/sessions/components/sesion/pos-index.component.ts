@@ -38,6 +38,10 @@ import {
 } from 'src/app/services/facade/controlListe/CampoBusqueda.model';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { Localizador } from 'src/app/models/lagerort.model';
+import {
+  LagerStruct,
+  ILagerOrtDatenBank
+} from 'src/app/models/lagerstrukt.model';
 
 @Component({
   selector: 'app-pos-index',
@@ -47,8 +51,13 @@ import { Localizador } from 'src/app/models/lagerort.model';
 export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() loading: boolean;
   @Input() posiciones: Observable<Array<SesionPos>>;
+  @Input() lagerstruct$: Observable<LagerStruct>; // <-- Lo hacemos obserbable?
   @Output() delete = new EventEmitter<SesionPos>();
   @Output() gotoPosition = new EventEmitter<SesionPos>();
+
+  buscoConLagerplatze: Observable<boolean>;
+  private lagerstruct: LagerStruct;
+  private subslagerstruct: Subscription;
 
   @ViewChild('nichtgezahltonly', { static: true })
   gezcheckbox: MatCheckbox;
@@ -68,6 +77,12 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private ss: SessionsService) {}
 
   ngOnInit() {
+    this.buscoConLagerplatze = this.lagerstruct$.pipe(
+      map((x) => x.lagerplatze != null && x.lagerplatze.length > 0)
+    );
+    this.subslagerstruct = this.lagerstruct$.subscribe(
+      (l) => (this.lagerstruct = l)
+    );
     this.cbartikelnr = new CampoBusqueda<SesionPos, string>('ArtikelNR');
     this.cbartikelbe = new CampoBusqueda<SesionPos, string>('ArtikelBes');
     this.cbloca = new CampoBusqueda<SesionPos, string>('Loca');
@@ -83,7 +98,21 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cbartikelbe.iniciofiltro = (t: string) => t.length > 2;
 
     this.cbloca.filtro = (sp, t) => {
-      return sp.localizador.lagerplatz.toUpperCase().includes(t.toUpperCase());
+      const pos = this.onGetStructur(sp.localizador, this.lagerstruct);
+      if (pos == null) {
+        return false;
+      }
+      const busca = t.toUpperCase();
+      if (pos.loca.toUpperCase().includes(busca)) {
+        return true;
+      }
+      if (pos.descripcion.toUpperCase().includes(busca)) {
+        return true;
+      }
+      if (pos.referencia.toUpperCase().includes(busca)) {
+        return true;
+      }
+      return false;
     };
     this.cbloca.iniciofiltro = (t: string) => t.length > 1;
     this.fcartnum = new Validador(this.cbartikelnr.formulario);
@@ -133,10 +162,42 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
     this.mipaginador.onSort(cual);
   }
 
-  onResuelveLocalizador(cual: Localizador): Observable<string> {
-    return this.ss.resuelveLagerPlatzRegal(cual);
+  // onResuelveLocalizador(cual: Localizador): Observable<string> {
+  //   return this.ss.resuelveLagerPlatzRegal(cual);
+  // }
+
+  onResuelveLocalizador(cual: Localizador): string {
+    const stru = this.onGetStructur(cual, this.lagerstruct);
+    if (stru == null) {
+      return '';
+    }
+    return stru.descripcion;
+  }
+  private onGetStructur(
+    cual: Localizador,
+    donde: ILagerOrtDatenBank
+  ): ILagerOrtDatenBank {
+    if (
+      donde.cwar === cual.lager &&
+      donde.loca === cual.lagerplatz &&
+      donde.rega === cual.regal
+    ) {
+      return donde;
+    }
+    if (donde.hijos == null || donde.hijos.length === 0) {
+      return null;
+    }
+    for (const hijo of donde.hijos) {
+      const salida = this.onGetStructur(cual, hijo);
+      if (salida != null) {
+        return salida;
+      }
+    }
+    return null;
   }
 
   ngAfterViewInit() {}
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.subslagerstruct.unsubscribe();
+  }
 }

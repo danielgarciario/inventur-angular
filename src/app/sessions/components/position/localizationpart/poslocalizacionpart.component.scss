@@ -1,6 +1,11 @@
 div .contenedor {
   display: grid;
-  grid-template-columns: 60px auto
+  flex-grow: 1;
+  height: 100px;
+  grid-template-columns: 100px 1fr;
+  column-gap: 10px;
+  align-items: stretch;
+  line-height: 50px;
 }
 
 .titulo1 {
@@ -11,16 +16,16 @@ div .contenedor {
 }
 
 .titulo {
-  display: block;
-  font-size: small;
+  text-align: right;
+  padding-right: 5px;
   color: white;
   background-color: darkblue;
   border-radius:  4px;
   border-block-color: black;
-  margin-right: 0.8em;
+  text-transform: uppercase;
 }
 .dato {
-  display: inline-block;
-  font-size: normal;
+  text-align: left;
+  padding-left: 5px;
   border-block-color:  darkblue;
 }

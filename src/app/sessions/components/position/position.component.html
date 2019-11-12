@@ -44,17 +44,19 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <mat-card *ngIf="(position$ | async) != null" style="margin: 10px">
-    <mat-card-header>
-      <mat-card-title>Bestand</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <app-position-bestand-part
-        [posicion]="position$ | async"
-        (add2gezahlt)="onCopyBestandID2GezahltID($event)"
-      ></app-position-bestand-part>
-    </mat-card-content>
-  </mat-card>
+  <div *ngIf="!(inventurSesion | async)">
+    <mat-card *ngIf="(position$ | async) != null" style="margin: 10px">
+      <mat-card-header>
+        <mat-card-title>Bestand</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-position-bestand-part
+          [posicion]="position$ | async"
+          (add2gezahlt)="onCopyBestandID2GezahltID($event)"
+        ></app-position-bestand-part>
+      </mat-card-content>
+    </mat-card>
+  </div>
   <mat-card *ngIf="(position$ | async) != null" style="margin: 10px">
     <mat-card-header>
       <mat-card-title>Gezählt</mat-card-title>

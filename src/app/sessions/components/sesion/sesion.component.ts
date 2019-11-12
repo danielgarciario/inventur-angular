@@ -23,6 +23,7 @@ import { AppEstado } from 'src/app/root-store/root-store.state';
 import { Lager } from 'src/app/models/lager.model';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { MatButton } from '@angular/material';
+import { LagerStruct } from 'src/app/models/lagerstrukt.model';
 
 @Component({
   selector: 'app-sesion',
@@ -35,8 +36,10 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
   posiciones$: Observable<Array<SesionPos>>;
   posiciones: Array<SesionPos>;
   posisubscript: Subscription;
+  sesion$: Observable<Sesion>;
   thissesion: Sesion;
-  thislager: Lager;
+  thislager: LagerStruct;
+  thislagerstruct$: Observable<LagerStruct>;
   thissesionsubs: Subscription;
   thislagersubs: Subscription;
   zuruckbuttonclick$: Observable<Event>;
@@ -45,28 +48,32 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store$: Store<AppEstado>,
     private sservice: SessionsService,
+    private store$: Store<AppEstado>,
     private excel: ExcelService
   ) {
     this.snapshot = route.snapshot;
+    const id = +this.snapshot.paramMap.get('id');
+    console.log(`En SesionComponent para ID= ${id}`);
+    /* Pedimos que se seleccione el ID que nos pasan */
+    this.store$.dispatch(fromActions.SelectSesion({ selectedSesionId: id }));
+    this.sesion$ = this.store$.select(fromSelectors.DameSelectedSession);
+    this.thissesionsubs = this.sesion$.subscribe((s) => {
+      this.thissesion = s;
+      this.thislagersubs = this.sservice
+        .getLager(s.lager.cwar)
+        .subscribe((l) => (this.thislager = l));
+    });
+    this.thislagerstruct$ = this.sesion$.pipe(
+      switchMap((x) => {
+        return this.sservice.getLager(x.lager.cwar);
+      })
+    );
   }
   @ViewChild('btnzurucksesions', { static: true })
   btnzuruck: MatButton;
 
   ngOnInit() {
-    const id = +this.snapshot.paramMap.get('id');
-    console.log(`En SesionComponent para ID= ${id}`);
-    /* Pedimos que se seleccione el ID que nos pasan */
-    this.store$.dispatch(fromActions.SelectSesion({ selectedSesionId: id }));
-    this.thissesionsubs = this.store$
-      .select(fromSelectors.DameSelectedSession)
-      .subscribe((s) => {
-        this.thissesion = s;
-        this.thislagersubs = this.sservice
-          .getlager(s.lager.cwar)
-          .subscribe((l) => (this.thislager = l));
-      });
     this.loading$ = this.store$.select(fromSelectors.isLoadingPositions);
     this.posiciones$ = this.store$.select(fromSelectors.DamePosiciones);
     this.posisubscript = this.posiciones$.subscribe((p) => {

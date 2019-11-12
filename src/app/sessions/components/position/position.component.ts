@@ -39,6 +39,9 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   modificada$: Observable<boolean>;
   zuruckbuttonclick$: Observable<Event>;
   deltebuttonclick$: Observable<Event>;
+
+  inventurSesion: Observable<boolean>;
+
   subszuruck: Subscription;
   subsdelete: Subscription;
   subpos: Subscription;
@@ -157,6 +160,17 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
+    this.inventurSesion = this.store$
+      .pipe(select(fromSesionSelectors.DameSelectedSession))
+      .pipe(
+        map((s) => {
+          const stat: number = s.statusSesion;
+          const inv: number = SesionStates.Inventario;
+          console.log('Leyendo status sesion: ', stat);
+          // tslint:disable-next-line: no-bitwise
+          return (stat & inv) === inv;
+        })
+      );
 
     // this.zuruckbuttonclick
     //   .pipe(

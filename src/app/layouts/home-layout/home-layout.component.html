@@ -35,7 +35,7 @@
           <mat-icon style="margin: 3px">list</mat-icon>
           Sesions
         </a>
-        <mat-accordion>
+        <mat-accordion *ngIf="istbeowacthunguser$ | async">
           <mat-expansion-panel mat-list-item>
             <mat-expansion-panel-header>
               <mat-icon style="margin: 3px">access_time</mat-icon>

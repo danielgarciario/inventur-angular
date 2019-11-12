@@ -19,7 +19,8 @@ import { InventurDef } from '../models/inventurdef.model';
 import {
   LagerStruct,
   LagerPlatzStruct,
-  RegaleStruct
+  RegaleStruct,
+  ILagerOrtDatenBank
 } from '../models/lagerstrukt.model';
 import { Localizador } from '../models/lagerort.model';
 
@@ -100,6 +101,41 @@ export class SessionsService {
         return lpr[0];
       })
     );
+  }
+  resuelveLocalizador(locali: Localizador): Observable<ILagerOrtDatenBank> {
+    return this.getLagerStructur().pipe(
+      map((ls) => {
+        for (const lager of ls) {
+          const existe = this.procesaresuelvelocalizador(locali, lager);
+          if (existe != null) {
+            return existe;
+          }
+        }
+        return null;
+      })
+    );
+  }
+  private procesaresuelvelocalizador(
+    cual: Localizador,
+    donde: ILagerOrtDatenBank
+  ): ILagerOrtDatenBank {
+    let existe: ILagerOrtDatenBank = null;
+    if (donde.hijos != null && donde.hijos.length > 0) {
+      for (const hijo of donde.hijos) {
+        existe = this.procesaresuelvelocalizador(cual, hijo);
+        if (existe != null) {
+          return existe;
+        }
+      }
+    }
+    if (
+      donde.cwar === cual.lager &&
+      donde.loca === cual.lagerplatz &&
+      donde.rega === cual.regal
+    ) {
+      return donde;
+    }
+    return null;
   }
 
   resuelveLagerPlatzRegal(locali: Localizador): Observable<string> {

@@ -17,6 +17,7 @@ export const lagersdef: Array<{ cwar: string; lager: string }> = [
   { cwar: 'R02', lager: 'Rostock Montagewagen' },
   { cwar: 'RM1', lager: 'Rostock Mietlager' }
 ];
+export const beobenutzer: Array<string> = ['444', '167', '346', '361'];
 
 export const environment = {
   production: false,
@@ -24,7 +25,8 @@ export const environment = {
   apiURL: 'http://st-lilliput01.stock.local:50998',
   tokenaddress: 'stock_perminv_jwtToken',
   lagers: lagersdef,
-  beowachlager: 'S36'
+  beowachlager: 'S36',
+  beousers: beobenutzer
 };
 
 /*
