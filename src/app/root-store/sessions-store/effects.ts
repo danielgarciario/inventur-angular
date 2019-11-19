@@ -167,7 +167,8 @@ export class SessionsStoreEffects {
             delete: fromActions.DeleteSesion({
               sesionid: accion.sesionid
             }),
-            text: `<p>Bestätigen löschen Session: </p> <p>Id Sesion:<strong>${ses.idSesion}</strong> auf Lager: ${ses.lager}? </p>`,
+            // tslint:disable-next-line: max-line-length
+            text: `<p>Bestätigen löschen Session: </p> <p>Id Sesion:<strong>${ses.idSesion}</strong> auf Lager: ${ses.lager.lager}? </p>  <p>${ses.comment}</p>`,
             title: 'Sesion löschen?'
           };
           this.matdialog.open(DeleteConfirmDialogComponent, { data });

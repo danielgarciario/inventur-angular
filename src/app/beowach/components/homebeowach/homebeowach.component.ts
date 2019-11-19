@@ -13,18 +13,34 @@ import {
   BehaviorSubject,
   merge,
   Subscription,
-  combineLatest
+  combineLatest,
+  pipe,
+  of,
+  from
 } from 'rxjs';
 import {
   distinctUntilChanged,
   map,
   switchMap,
-  withLatestFrom
+  withLatestFrom,
+  exhaustMap,
+  tap,
+  mergeAll,
+  mergeMap,
+  concatMap,
+  catchError
 } from 'rxjs/operators';
 import { MatCheckbox, MatCheckboxChange, Sort } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExcelService } from 'src/app/services/excel.service';
-import { sortAscendingPriority } from '@angular/flex-layout';
+
+import { Seleccionador } from 'src/app/helpers-module/seleccionador/seleccionador';
+import * as fromLoginSelectors from '../../../root-store/login-store/login.selectors';
+import * as fromSesionActions from '../../../root-store/sessions-store/actions';
+import { User } from 'src/app/models/user.model';
+import { Kandidato } from 'src/app/models/kandidato.model';
+import { kandidatoInitialState } from 'src/app/root-store/sessions-store/subestados/Kandidatos.state';
+import { Sesion } from 'src/app/models/sesion.model';
 
 @Component({
   selector: 'app-beo-home',
@@ -33,14 +49,25 @@ import { sortAscendingPriority } from '@angular/flex-layout';
 })
 export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
   liste$: Observable<Array<BeowachtungsListe>>;
+  numarticulos: number;
   data$: Observable<Array<BeowachtungsListe>>;
   datos: Array<BeowachtungsListe>;
+  lalista: Array<BeowachtungsListe>;
   subDatos: Subscription;
+  subListe: Subscription;
+  subUser: Subscription;
+  subneueSesion: Subscription;
+  usuario: User;
   subcheckbox: Subscription;
   changeSubject$: Subject<MatCheckboxChange>;
+  clickNeueSesion$ = new Subject<Event>();
+  createsesion$ = this.clickNeueSesion$.asObservable();
+  nuevasesion$: Observable<boolean>;
+  nuevasesion: Sesion;
   soloohne$: Observable<boolean>;
   bs$: BehaviorSubject<boolean>;
   ordenalo = new BehaviorSubject<Sort>({ active: '', direction: '' });
+  selection = new Seleccionador<BeowachtungsListe>();
 
   estadofiltro = new BehaviorSubject<{ ohnebestellung: boolean; orden: Sort }>({
     ohnebestellung: false,
@@ -55,7 +82,10 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
     private excel: ExcelService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.numarticulos = 0;
+    this.lalista = new Array<BeowachtungsListe>();
+  }
 
   private compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
@@ -81,6 +111,7 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!e.orden.active || e.orden.direction === '') {
           return datos;
         }
+        this.numarticulos = datos.length;
         return datos.sort((a, b) => {
           const isAsc = e.orden.direction === 'asc';
           switch (e.orden.active) {
@@ -106,6 +137,37 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subDatos = this.data$.subscribe((l) => {
       this.datos = l;
     });
+    this.subListe = this.liste$.subscribe((l) => {
+      this.lalista = l;
+    });
+    this.subUser = this.beoservice
+      .getUser()
+      .subscribe((u) => (this.usuario = u));
+    this.nuevasesion$ = this.createsesion$.pipe(
+      switchMap(() => {
+        const art = this.selection
+          .selected()
+          .map((s) => s.lagercontrol.articulo.artikelnr);
+        return this.beoservice.crearSesion(this.usuario.emno, art);
+      }),
+      switchMap((s) => {
+        return this.router.navigate(['/sessions/session', s.idSesion]);
+      })
+    );
+    this.subneueSesion = this.nuevasesion$.subscribe((ns) => {
+      console.log('Evento navegar', ns);
+    });
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected().length;
+    const numRows = this.lalista.length;
+    return numSelected === numRows;
+  }
+  masterToggle() {
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.lalista.forEach((f) => this.selection.select(f));
   }
 
   private CambioEstado(nuevoestado: {
@@ -126,6 +188,8 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.subDatos.unsubscribe();
     this.subcheckbox.unsubscribe();
+    this.subUser.unsubscribe();
+    this.subneueSesion.unsubscribe();
   }
 
   navDefinition(adonde: BeowachtungsListe) {
@@ -138,6 +202,15 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       ],
       { relativeTo: this.route }
+    );
+  }
+  crearSesion() {
+    console.log('Emitiendo nuevo event');
+    this.clickNeueSesion$.next();
+  }
+  usuario$(): Observable<User> {
+    return this.clickNeueSesion$.pipe(
+      switchMap((x) => this.beoservice.getUser())
     );
   }
 }

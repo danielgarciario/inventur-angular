@@ -177,6 +177,9 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
     cual: Localizador,
     donde: ILagerOrtDatenBank
   ): ILagerOrtDatenBank {
+    if (donde == null) {
+      return null;
+    }
     if (
       donde.cwar === cual.lager &&
       donde.loca === cual.lagerplatz &&

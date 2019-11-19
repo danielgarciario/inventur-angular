@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BeowachtungsListe } from '../models/beowachliste.model';
 import { LagerControl } from '../models/lagercontrol.model';
@@ -11,6 +11,18 @@ import {
 } from '../models/wochenverbrauch.model';
 import { EndeWocheBestand } from '../models/endewochebestand.model';
 import { LeadTime } from '../models/leadtime.model';
+import { User } from 'src/app/models/user.model';
+import * as fromLoginSelectors from 'src/app/root-store/login-store/login.selectors';
+import * as fromSesionsActions from 'src/app/root-store/sessions-store/actions';
+import { AppEstado } from '../root-store/root-store.state';
+import { Store } from '@ngrx/store';
+import { SessionsService } from './sessions.service';
+import * as moment from 'moment';
+import { map, catchError, tap } from 'rxjs/operators';
+import * as fromSharedError from 'src/app/root-store/shared/actions/error';
+import { Sesion } from '../models/sesion.model';
+import { Kandidato } from '../models/kandidato.model';
+import { SesionPos } from '../models/sespos.model';
 
 @Injectable({ providedIn: 'root' })
 export class BeowachtService {
@@ -22,7 +34,44 @@ export class BeowachtService {
   private uBeowach = `${this.baseURL}/api/Beowachtungsliste`;
   private pLager = `lager=${this.lagerquery}`;
 
-  constructor(protected http: HttpClient) {}
+  constructor(
+    protected http: HttpClient,
+    private store$: Store<AppEstado>,
+    private sesservice: SessionsService
+  ) {}
+
+  getUser(): Observable<User> {
+    return this.store$.select(fromLoginSelectors.loginUsuario);
+  }
+  crearSesion(empno: string, articulos: Array<string>): Observable<Sesion> {
+    const ahora: moment.Moment = moment();
+    const titulo = `Von Beobachtung ${ahora.format('D.MM.YYYY HH:mm')}`;
+    const q = `${this.uSesions}/createbeobachtungsesion?empno=${empno}&cwar=${this.lagerquery}&comment=${titulo}`;
+    return this.http.put<Sesion>(q, articulos).pipe(
+      tap((s) => {
+        console.log('Creada Sesion id:', s.idSesion);
+        this.store$.dispatch(
+          fromSesionsActions.CrearSesionSuccess({ nuevasesion: s })
+        );
+      })
+    );
+  }
+  getKandidatos(item: string): Observable<Array<Kandidato>> {
+    console.log('Buscando item', item, ' en ', this.lagerquery);
+    return this.miskandidatosFromArtikel(item);
+  }
+  private miskandidatosFromArtikel(item: string): Observable<Array<Kandidato>> {
+    const q = `${this.uArtikel}/getLagerPlatzByArtikel?lager=${this.lagerquery}&artikel=${item}`;
+    return this.http.get<Array<Kandidato>>(q);
+  }
+
+  addSesionPosition(
+    idsesion: number,
+    artikelnr: string,
+    loca: string
+  ): Observable<SesionPos> {
+    return this.sesservice.addSesionPosition(idsesion, artikelnr, loca, '');
+  }
 
   getBeowachtungsliste(): Observable<Array<BeowachtungsListe>> {
     const q = `${this.uBeowach}/getBeowachtungsListe?${this.pLager}`;
