@@ -178,8 +178,13 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   export2Excel() {
-    const wb = this.excel.generaWorkBookBeoCheckBestand(this.datos);
-    this.excel.grabaWorkbook(wb, 'tests.xlsx');
+    this.excel.grabaWorkBookBeoCheckBestand(
+      this.datos,
+      'testBeobachutung.xlsx'
+    );
+    // const wb = this.excel.generaWorkBookBeoCheckBestand(this.datos);
+    // console.log('Generado Excel wb is null ', wb == null);
+    // this.excel.grabaWorkbook(wb, 'tests.xlsx');
   }
   ordenadatos(como: Sort) {
     this.CambioEstado({ ...this.estadofiltro.value, orden: como });

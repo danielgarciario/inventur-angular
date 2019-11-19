@@ -125,9 +125,9 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onExportToExcel() {
-    const wb = this.excel.generaWorkBookPosiciones(this.posiciones);
-
-    this.excel.grabaWorkbook(wb, 'tests.xlsx');
+    // const wb = this.excel.generaWorkBookPosiciones(this.posiciones);
+    // console.log('Generado Excel wb is null ', wb == null);
+    this.excel.grabaWorkBookPosiciones(this.posiciones, 'test.xlsx');
   }
   onNeuePosition() {
     this.router.navigate(
