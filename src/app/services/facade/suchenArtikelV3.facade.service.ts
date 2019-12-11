@@ -223,6 +223,11 @@ export class SuchenArtikelFacadeV3Service {
     );
   }
 
+  limpiaCacheArticulo() {
+    this.vArtnum.reseteaValor();
+    this.kandidato$.next({ ...this.kandidato$.value, articulo: null });
+  }
+
   onSelectedPotencial(cual: Artikel) {
     this.kandidato$.next({ ...this.kandidato$.value, articulo: cual });
   }

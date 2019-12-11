@@ -56,6 +56,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const id = +this.snapshot.paramMap.get('id');
     console.log(`En NeuePosition para ID= ${id}`);
+    this.facade.limpiaCacheArticulo();
 
     this.artikelnr = this.facade.vArtnum;
     // this.artikelbes = this.facade.vBesch;

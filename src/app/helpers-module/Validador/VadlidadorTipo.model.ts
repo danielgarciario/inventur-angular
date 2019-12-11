@@ -92,6 +92,10 @@ export class ValidadorTipo<T> implements ValidadorTipoInterface {
     return e.length > 0;
   }
 
+  public reseteaValor() {
+    this.formulario.setValue('', { emitEvent: false });
+  }
+
   private pasavalidadores(v: T): Array<string> {
     const salida = new Array<string>();
     if (this.validadores.length === 0) {
