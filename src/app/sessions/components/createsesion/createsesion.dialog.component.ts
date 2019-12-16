@@ -44,10 +44,8 @@ export class DialogCreateSesionComponent implements OnInit, OnDestroy {
       this.inventario = s;
       this.nohayinventario = this.inventario.length === 0;
       if (!this.nohayinventario) {
-        this.nsesion.addControl(
-          'idinventario',
-          new FormControl(this.inventario[0])
-        );
+        this.nsesion.addControl('idinventario', new FormControl(''));
+        this.nsesion.get('idinvetario').setValue(this.inventario[0]);
       }
     });
     this.subuser = this.store$

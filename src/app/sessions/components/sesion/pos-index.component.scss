@@ -9,80 +9,78 @@ tr .mat-header-row {
   height: auto;
 }
 
-tr.mat-header-row{
+tr.mat-header-row {
   height: 25px;
   background-color: black;
 }
 
-.mat-header-cell{
+.mat-header-cell {
   color: white;
 }
-tr.mat-row{
+tr.mat-row {
   height: 25px;
 }
-th.mat-header-cell:first-of-type{
+th.mat-header-cell:first-of-type {
   padding-left: 12px;
 }
 td.mat-cell:first-of-type {
   padding-left: 12px;
 }
 
-.mat-column-idposicion{
+.mat-column-idposicion {
   width: 45px;
 }
-.mat-column-checkedam{
+.mat-column-checkedam {
   width: 65px;
 }
-.mat-column-efabestand{
+.mat-column-efabestand {
   text-align: right;
   padding-right: 5px;
 }
-.mat-column-gezaehlt{
+.mat-column-gezaehlt {
   text-align: right;
   padding-right: 5px;
 }
-.mat-column-acciones{
-  width:70px;
+.mat-column-acciones {
+  width: 70px;
 }
 tr .mat-icon-button {
   width: 32px;
   height: 32px;
   line-height: 35px;
 }
-td.mat-cell:last-of-type{
+td.mat-cell:last-of-type {
   padding-right: 12px;
 }
 
 .searchdiv {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 10% auto auto auto;
+  column-gap: 15px;
   align-items: baseline;
   border-width: thin;
   border-style: solid;
   border-radius: 10px;
-  margin-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
   font-size: 11px;
-  background-color: lightskyblue;
+  background: white;
 }
 
-.iconito{
+.iconito {
   height: 12px;
   width: 12px;
-  position:relative;
+  position: relative;
   left: -10px;
   top: 0px;
 }
-
 
 .badge {
   display: inline-block;
   font-size: small;
   color: white;
   padding: 0.8em 0.7em 0 0.7em;
-  background-color: #607D8B;
+  background-color: #607d8b;
   line-height: 1em;
   position: relative;
   left: 0px;

@@ -9,15 +9,18 @@
         [ {{ lager.cwar }} ] {{ lager.descripcion }}
       </mat-option>
     </mat-select>
-    <div *ngIf="inventario?.length > 0">
-      <mat-label>Inventur</mat-label>
-      <mat-select formControlName="idinventario" placeholder="Inventar">
-        <mat-option *ngFor="let inv of inventario" [value]="inv.idinventur">
-          [ {{ inv.idinventur }} ] {{ inv.inventur }}
-        </mat-option>
-      </mat-select>
-    </div>
 
+    <mat-label *ngIf="inventario?.length > 0">Inventur</mat-label>
+    <mat-select
+      *ngIf="inventario?.length > 0"
+      formControlName="idinventario"
+      placeholder="Inventar"
+    >
+      <mat-option *ngFor="let inv of inventario" [value]="inv.idinventur">
+        [ {{ inv.idinventur }} ] {{ inv.inventur }}
+      </mat-option>
+    </mat-select>
+    <mat-label>Comments:</mat-label>
     <mat-form-field>
       <textarea
         matInput
@@ -28,10 +31,12 @@
   </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-button (click)="close()">Tschuss!!</button>
+<div mat-dialog-actions class="acciones">
+  <button mat-button mat-raised-button (click)="close()">Tschuss!!</button>
   <button
     mat-button
+    mat-raised-button
+    color="primary"
     [mat-dialog-close]
     [disabled]="nsesion.invalid"
     (click)="ok()"
@@ -41,8 +46,10 @@
   <button
     *ngIf="!nohayinventario"
     mat-button
+    mat-raised-button
+    color="accent"
     [mat-dialog-close]
-    [disabled]="nsesion.invalid"
+    [disabled]="nsesion.invalid || idinventario == null"
     (click)="creaInventario()"
   >
     Neue Inventur

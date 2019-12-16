@@ -99,7 +99,7 @@ export class LoginService {
 
   deleteToken() {
     console.log('Borrando Token...');
-    // this.jwtService.destroyToken();
+    this.jwtService.destroyToken();
   }
   saveTheToken(usuario: User) {
     if (usuario === null) {

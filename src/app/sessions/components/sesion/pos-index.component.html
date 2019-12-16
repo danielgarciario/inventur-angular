@@ -16,7 +16,7 @@
     tipo="text"
   ></app-input-text>
   <app-input-text
-    *ngIf="(buscoConLagerplatze | async)"
+    *ngIf="buscoConLagerplatze | async"
     [validador]="floca"
     placeholder="Lagerort"
     isRequired="false"
@@ -109,10 +109,10 @@
             <mat-icon>delete</mat-icon>
             <span>Lössen</span>
           </button>
-          <button mat-menu-item>
+          <!-- <button mat-menu-item>
             <mat-icon>lock</mat-icon>
             <span>Mach es zu</span>
-          </button>
+          </button> -->
         </mat-menu>
       </button>
     </td>
