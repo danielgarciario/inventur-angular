@@ -10,7 +10,7 @@ import {
   ActivatedRoute,
   Router
 } from '@angular/router';
-import { Observable, fromEvent, Subscription } from 'rxjs';
+import { Observable, fromEvent, Subscription, combineLatest } from 'rxjs';
 import { SesionPos } from 'src/app/models/sespos.model';
 import { AppEstado } from 'src/app/root-store/root-store.state';
 import { Store, select } from '@ngrx/store';
@@ -40,7 +40,8 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   zuruckbuttonclick$: Observable<Event>;
   deltebuttonclick$: Observable<Event>;
 
-  inventurSesion: Observable<boolean>;
+  inventurSesion$: Observable<boolean>;
+  showGezahlt$: Observable<boolean>;
 
   subszuruck: Subscription;
   subsdelete: Subscription;
@@ -160,7 +161,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
-    this.inventurSesion = this.store$
+    this.inventurSesion$ = this.store$
       .pipe(select(fromSesionSelectors.DameSelectedSession))
       .pipe(
         map((s) => {
@@ -171,6 +172,17 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
           return (stat & inv) === inv;
         })
       );
+    this.showGezahlt$ = combineLatest(
+      this.inventurSesion$,
+      this.position$
+    ).pipe(
+      map(([invses, pos]) => {
+        if (pos.artikel.seri === 1) {
+          return true;
+        }
+        return !invses;
+      })
+    );
 
     // this.zuruckbuttonclick
     //   .pipe(

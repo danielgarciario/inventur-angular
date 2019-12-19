@@ -43,10 +43,10 @@ export class DialogCreateSesionComponent implements OnInit, OnDestroy {
     this.subinventario = this.inventario$.subscribe((s) => {
       this.inventario = s;
       this.nohayinventario = this.inventario.length === 0;
-      if (!this.nohayinventario) {
-        this.nsesion.addControl('idinventario', new FormControl(''));
-        this.nsesion.get('idinvetario').setValue(this.inventario[0]);
-      }
+      // if (!this.nohayinventario) {
+      //   this.nsesion.addControl('idinventario', new FormControl(''));
+      //   this.nsesion.get('idinvetario').setValue(this.inventario[0]);
+      // }
     });
     this.subuser = this.store$
       .select(fromLoginSelectors.loginUsuario)
@@ -56,7 +56,10 @@ export class DialogCreateSesionComponent implements OnInit, OnDestroy {
       lager: new FormControl('', {
         validators: [Validators.required]
       }),
-      comment: new FormControl()
+      comment: new FormControl(),
+      idinventario: new FormControl(1, {
+        validators: [Validators.required]
+      })
     });
   }
   public ok() {
@@ -77,7 +80,7 @@ export class DialogCreateSesionComponent implements OnInit, OnDestroy {
       empno: this.usuario.emno,
       lager: this.lager.value,
       comment: this.comment.value,
-      idinventur: this.idinventario.value
+      idinventur: this.idinventario
     };
     this.store$.dispatch(fromSesionActions.CrearSesionInventur(parametros));
   }
@@ -91,7 +94,10 @@ export class DialogCreateSesionComponent implements OnInit, OnDestroy {
   get comment() {
     return this.nsesion.get('comment');
   }
-  get idinventario() {
-    return this.nsesion.get('idinventario');
+  get idinventario(): number {
+    return this.nsesion.get('idinventario').value;
+  }
+  set idinventario(cual: number) {
+    this.nsesion.get('idinventario').setValue(cual);
   }
 }

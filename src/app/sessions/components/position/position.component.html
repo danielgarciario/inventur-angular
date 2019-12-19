@@ -44,7 +44,7 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <div *ngIf="!(inventurSesion | async)">
+  <div *ngIf="showGezahlt$ | async">
     <mat-card *ngIf="(position$ | async) != null" style="margin: 10px">
       <mat-card-header>
         <mat-card-title>Bestand</mat-card-title>

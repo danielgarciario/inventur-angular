@@ -15,6 +15,7 @@
       *ngIf="inventario?.length > 0"
       formControlName="idinventario"
       placeholder="Inventar"
+      required
     >
       <mat-option *ngFor="let inv of inventario" [value]="inv.idinventur">
         [ {{ inv.idinventur }} ] {{ inv.inventur }}
@@ -38,7 +39,7 @@
     mat-raised-button
     color="primary"
     [mat-dialog-close]
-    [disabled]="nsesion.invalid"
+    [disabled]="nsesion.invalid || true"
     (click)="ok()"
   >
     Neue Sesion
