@@ -61,6 +61,8 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('nichtgezahltonly', { static: true })
   gezcheckbox: MatCheckbox;
+  @ViewChild('abwichungonly', { static: true })
+  abwecheckbox: MatCheckbox;
 
   fcartnum: Validador;
   fcartbez: Validador;
@@ -132,9 +134,23 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       iniciofiltro: (v) => true
     };
+    const ckabw: TipoCampoBusqueda<SesionPos> = {
+      nombrecampo: 'diferentes',
+      valuechanges$: this.abwecheckbox.change.pipe(
+        map((v) => ({ campo: 'diferentes', valor: v.checked })),
+        debounceTime(100),
+        startWith({ campo: 'diferentes', valor: false })
+      ),
+      value: this.abwecheckbox.value,
+      filtro: (sp, v) => {
+        return v ? this.posdifer(sp) : true;
+      },
+      iniciofiltro: (v) => true
+    };
 
     this.conjuntos = new ConjuntoCampos<SesionPos>(this.posiciones, [
       ck,
+      ckabw,
       this.cbartikelnr,
       this.cbartikelbe,
       this.cbloca
@@ -197,6 +213,15 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     return null;
+  }
+
+  posdifer(sp: SesionPos): boolean {
+    if (sp.gezahlt == null) {
+      return false;
+    }
+    const gez = sp.gezahlt.reduce((acum, b) => acum + b.gezahlt, 0);
+    const bes = sp.bestand.reduce((acum, b) => acum + b.qhnd, 0);
+    return gez !== bes;
   }
 
   ngAfterViewInit() {}

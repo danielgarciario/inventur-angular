@@ -3,6 +3,7 @@
 </div>
 <div class="searchdiv">
   <mat-checkbox #nichtgezahltonly>Nicht Gezählt</mat-checkbox>
+  <mat-checkbox #abwichungonly>Abweichung</mat-checkbox>
   <app-input-text
     [validador]="fcartnum"
     placeholder="Artikel Nr"
@@ -145,5 +146,6 @@
         'acciones'
       ]
     "
+    [class.diferencia]="posdifer(row)"
   ></tr>
 </table>

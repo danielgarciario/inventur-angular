@@ -55,7 +55,7 @@ td.mat-cell:last-of-type {
 
 .searchdiv {
   display: grid;
-  grid-template-columns: 10% auto auto auto;
+  grid-template-columns: 100px 100px auto auto auto;
   column-gap: 15px;
   align-items: baseline;
   border-width: thin;
@@ -90,4 +90,8 @@ td.mat-cell:last-of-type {
   text-align: right;
   margin-right: 0px;
   border-radius: 4px 0 0 4px;
+}
+.diferencia {
+  background: lightsalmon;
+  font-weight: 600;
 }
