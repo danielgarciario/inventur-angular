@@ -20,6 +20,7 @@ export interface TipoPaginador {
   numeropaginas$: Observable<number>;
   pagina$: Observable<number>;
   elementoPorPagina$: Observable<number>;
+  estadopaginador$: Observable<EstadoPaginador>;
   gotoPage(pag: number);
   gotoNext();
   gotoPrevious();
@@ -35,9 +36,10 @@ export class Paginador<T> implements TipoPaginador {
   numelementos$: Observable<number>;
   pagina$: Observable<number>;
   numeropaginas$: Observable<number>;
+  estadopaginador$: Observable<EstadoPaginador>;
   elementoPorPagina$: Observable<number>;
   listaelementosPorPagina: Array<number> = [20, 50, 100];
-  private elestado = new BehaviorSubject<{
+  elestado = new BehaviorSubject<{
     paginador: EstadoPaginador;
     orden: Sort;
   }>({
@@ -74,6 +76,7 @@ export class Paginador<T> implements TipoPaginador {
         console.log('recalculando #paginas');
       })
     );
+    this.estadopaginador$ = this.elestado.pipe(map((s) => s.paginador));
     this.display$ = combineLatest(this.cargamibase$, this.elestado).pipe(
       map(([d, e]) => {
         let datos = [...d];

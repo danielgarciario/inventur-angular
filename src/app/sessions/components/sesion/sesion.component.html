@@ -49,6 +49,7 @@
   <app-pos-index
     [loading]="loading$ | async"
     [posiciones]="posiciones$"
+    [idsesion]="thissesion.idSesion"
     [lagerstruct$]="thislagerstruct$"
     (delete)="onDeletePosicion($event)"
     (gotoPosition)="onGotoPosition($event)"

@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { isUndefined } from 'util';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JwtService {
   private tokenaddres = environment.tokenaddress;

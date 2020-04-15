@@ -6,7 +6,7 @@ import {
   ViewChild,
   AfterViewInit,
   OnInit,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { SesionPos } from 'src/app/models/sespos.model';
 import {
@@ -16,9 +16,14 @@ import {
   empty,
   of,
   BehaviorSubject,
-  Subscription
+  Subscription,
 } from 'rxjs';
-import { MatCheckbox, MatCheckboxChange, Sort } from '@angular/material';
+import {
+  MatCheckbox,
+  MatCheckboxChange,
+  Sort,
+  MatSort,
+} from '@angular/material';
 import {
   map,
   distinctUntilChanged,
@@ -26,7 +31,7 @@ import {
   switchMap,
   tap,
   debounceTime,
-  startWith
+  startWith,
 } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Paginador } from 'src/app/helpers-module/paginador/paginador.component';
@@ -34,35 +39,39 @@ import { Validador } from 'src/app/helpers-module/Validador/validador.model';
 import {
   TipoCampoBusqueda,
   CampoBusqueda,
-  ConjuntoCampos
+  ConjuntoCampos,
 } from 'src/app/services/facade/controlListe/CampoBusqueda.model';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { Localizador } from 'src/app/models/lagerort.model';
 import {
   LagerStruct,
-  ILagerOrtDatenBank
+  ILagerOrtDatenBank,
 } from 'src/app/models/lagerstrukt.model';
 
 @Component({
   selector: 'app-pos-index',
   templateUrl: 'pos-index.component.html',
-  styleUrls: ['pos-index.component.scss']
+  styleUrls: ['pos-index.component.scss'],
 })
 export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() loading: boolean;
   @Input() posiciones: Observable<Array<SesionPos>>;
   @Input() lagerstruct$: Observable<LagerStruct>; // <-- Lo hacemos obserbable?
+  @Input() idsesion: number;
   @Output() delete = new EventEmitter<SesionPos>();
   @Output() gotoPosition = new EventEmitter<SesionPos>();
 
   buscoConLagerplatze: Observable<boolean>;
   private lagerstruct: LagerStruct;
   private subslagerstruct: Subscription;
+  private subspagina: Subscription;
 
   @ViewChild('nichtgezahltonly', { static: true })
   gezcheckbox: MatCheckbox;
   @ViewChild('abwichungonly', { static: true })
   abwecheckbox: MatCheckbox;
+  @ViewChild(MatSort, { static: false })
+  matSort: MatSort;
 
   fcartnum: Validador;
   fcartbez: Validador;
@@ -132,7 +141,7 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
       filtro: (sp, v) => {
         return v ? sp.gezahlt.length === 0 : true;
       },
-      iniciofiltro: (v) => true
+      iniciofiltro: (v) => true,
     };
     const ckabw: TipoCampoBusqueda<SesionPos> = {
       nombrecampo: 'diferentes',
@@ -145,7 +154,7 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
       filtro: (sp, v) => {
         return v ? this.posdifer(sp) : true;
       },
-      iniciofiltro: (v) => true
+      iniciofiltro: (v) => true,
     };
 
     this.conjuntos = new ConjuntoCampos<SesionPos>(this.posiciones, [
@@ -153,29 +162,63 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
       ckabw,
       this.cbartikelnr,
       this.cbartikelbe,
-      this.cbloca
+      this.cbloca,
     ]);
 
     this.mipaginador = new Paginador<SesionPos>(this.conjuntos.filtrados$, [
       {
         campo: 'artikel',
         funcascendente: (a, b) =>
-          a.artikel.artikelnr < b.artikel.artikelnr ? -1 : 1
+          a.artikel.artikelnr < b.artikel.artikelnr ? -1 : 1,
       },
       {
         campo: 'lagerplatz',
         funcascendente: (a, b) =>
-          a.localizador.lagerplatz < b.localizador.lagerplatz ? -1 : 1
+          a.localizador.lagerplatz < b.localizador.lagerplatz ? -1 : 1,
       },
       {
         campo: 'checkedam',
-        funcascendente: (a, b) => (a.checkedam < b.checkedam ? -1 : 1)
-      }
+        funcascendente: (a, b) => (a.checkedam < b.checkedam ? -1 : 1),
+      },
     ]);
+    this.compruebaSiHayQueOrdernar();
+    this.subspagina = this.mipaginador.pagina$.subscribe((x) => {
+      window.localStorage['pos-index-pagina'] = x;
+      window.localStorage['pos-index-sesi'] = this.idsesion;
+      console.log(`grabado estado: pagina ${x} idsesion: ${this.idsesion}`);
+    });
   }
 
+  // Evento que se lanza cuando el usuario pide ordenar
   onSort(cual: Sort) {
     this.mipaginador.onSort(cual);
+    window.localStorage['pos-index-sort'] = JSON.stringify(cual);
+    window.localStorage['pos-index-sesi'] = this.idsesion;
+    console.log(`grabado estado: idsesion: ${this.idsesion}`, cual);
+  }
+
+  compruebaSiHayQueOrdernar() {
+    console.log('Checking si hay que ordenarlo');
+    const sesgrabada: number = +window.localStorage['pos-index-sesi'];
+    if (sesgrabada === this.idsesion) {
+      console.log('Estoy en la sesion correcta');
+      const cualgrabado: Sort = JSON.parse(
+        window.localStorage['pos-index-sort']
+      );
+      console.log('He detectado nuevo sort', cualgrabado);
+      this.mipaginador.onSort(cualgrabado);
+
+      // this.matSort.active = cualgrabado.active;
+
+      // this.matSort.start = cualgrabado.direction === 'asc' ? 'asc' : 'desc';
+      // const numpagina: number = window.localStorage['pos-index-pagina'];
+      // if (numpagina > 0) {
+      //   console.log('Salto a la pagina: ', numpagina);
+      //   this.mipaginador.gotoPage(numpagina);
+      // }
+    } else {
+      console.log('No estoy en la sesion correcta', sesgrabada, this.idsesion);
+    }
   }
 
   // onResuelveLocalizador(cual: Localizador): Observable<string> {
