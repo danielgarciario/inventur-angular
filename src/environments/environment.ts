@@ -20,7 +20,7 @@ export const lagersdef: Array<{ cwar: string; lager: string }> = [
 // usuarios que pueden usar beobenutzer
 //
 
-export const beobenutzer: Array<string> = ['444', '167', '19', '361'];
+export const beobenutzer: Array<string> = ['444', '167', '19', '361', '463'];
 
 export const environment = {
   production: false,
