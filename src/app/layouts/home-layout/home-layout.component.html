@@ -32,13 +32,13 @@
           routerLinkActive="router-link-active"
           (click)="tryClose()"
         >
-          <mat-icon style="margin: 3px">list</mat-icon>
+          <mat-icon style="margin: 3px;">list</mat-icon>
           Sesions
         </a>
         <mat-accordion *ngIf="istbeowacthunguser$ | async">
           <mat-expansion-panel mat-list-item>
             <mat-expansion-panel-header>
-              <mat-icon style="margin: 3px">access_time</mat-icon>
+              <mat-icon style="margin: 3px;">access_time</mat-icon>
               Beobachtung
             </mat-expansion-panel-header>
             <a
@@ -70,6 +70,19 @@
               <mat-icon>format_shapes</mat-icon>
               Controlliste
             </a>
+            <mat-divider></mat-divider>
+            <mat-form-field appearance="fill">
+              <mat-label>Beobachtungslager</mat-label>
+              <mat-select [formControl]="beocontrol" name="beowlager">
+                <mat-option value=""></mat-option>
+                <mat-option
+                  *ngFor="let option of beowlagers"
+                  [value]="option.cwar"
+                >
+                  [{{ option.cwar }}] {{ option.lager }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </mat-expansion-panel>
         </mat-accordion>
 

@@ -7,7 +7,7 @@ import { LagerControl } from '../models/lagercontrol.model';
 import {
   WocheVerbrauch,
   GrupoWocheVerbrauch,
-  FdistribucionVerbrauch
+  FdistribucionVerbrauch,
 } from '../models/wochenverbrauch.model';
 import { EndeWocheBestand } from '../models/endewochebestand.model';
 import { LeadTime } from '../models/leadtime.model';
@@ -27,18 +27,32 @@ import { SesionPos } from '../models/sespos.model';
 @Injectable({ providedIn: 'root' })
 export class BeowachtService {
   protected baseURL = environment.apiURL;
-  protected lagerquery = 'S36';
+  // protected lagerquery = 'S36';
 
+  private beolageraddress = environment.beolageraddress;
+  private defaultbeolager = environment.beowachlager;
   private uSesions = `${this.baseURL}/api/Sesions`;
   private uArtikel = `${this.baseURL}/api/Artikel`;
   private uBeowach = `${this.baseURL}/api/Beowachtungsliste`;
-  private pLager = `lager=${this.lagerquery}`;
+  private pLager = `lager=${this.lagerquery()}`;
 
   constructor(
     protected http: HttpClient,
     private store$: Store<AppEstado>,
     private sesservice: SessionsService
   ) {}
+
+  lagerquery(): string {
+    const tt: string = window.localStorage[this.beolageraddress];
+    if (tt) {
+      return tt;
+    }
+    window.localStorage[this.beolageraddress] = this.defaultbeolager;
+    return this.defaultbeolager;
+  }
+  setlagerquery(neulager: string) {
+    window.localStorage[this.beolageraddress] = neulager;
+  }
 
   getUser(): Observable<User> {
     return this.store$.select(fromLoginSelectors.loginUsuario);
@@ -197,7 +211,7 @@ export class BeowachtService {
         item,
         cuni,
         menge: cantidad,
-        procent: acum
+        procent: acum,
       };
       salida.push(tt);
     }
@@ -232,7 +246,7 @@ export class BeowachtService {
         item,
         cuni,
         grupo: 0,
-        menge: consumo.map((x) => x.menge).reduce((p, n) => p + n)
+        menge: consumo.map((x) => x.menge).reduce((p, n) => p + n),
       };
       sal.push(datounico);
       return sal;
@@ -243,7 +257,7 @@ export class BeowachtService {
         item,
         cuni,
         grupo: index,
-        menge: this.sumaparciales(consumo, index, numsemanas)
+        menge: this.sumaparciales(consumo, index, numsemanas),
       };
       sal.push(dato);
     }

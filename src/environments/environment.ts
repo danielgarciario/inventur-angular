@@ -4,6 +4,11 @@ import { Dictionary } from '@ngrx/entity';
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+export interface LagerDefinition {
+  cwar: string;
+  lager: string;
+}
+
 export const lagersdef: Array<{ cwar: string; lager: string }> = [
   { cwar: 'S36', lager: 'Siek Haupt Lager' },
   { cwar: 'S38', lager: 'Siek Laden Lager' },
@@ -17,6 +22,11 @@ export const lagersdef: Array<{ cwar: string; lager: string }> = [
   { cwar: 'R02', lager: 'Rostock Montagewagen' },
   { cwar: 'RM1', lager: 'Rostock Mietlager' },
 ];
+
+export const beowlagersdef: Array<LagerDefinition> = [
+  { cwar: 'S36', lager: 'Siek Zentral Lager' },
+  { cwar: 'R01', lager: 'Rostock Lager' },
+];
 // usuarios que pueden usar beobenutzer
 //
 
@@ -27,7 +37,9 @@ export const environment = {
   // apiURL: 'http://localhost:50998',
   apiURL: 'http://st-lilliput01.stock.local:50998',
   tokenaddress: 'stock_perminv_jwtToken',
+  beolageraddress: 'stock_beobachtung_lager',
   lagers: lagersdef,
+  beowachlagers: beowlagersdef,
   beowachlager: 'S36',
   beousers: beobenutzer,
 };
