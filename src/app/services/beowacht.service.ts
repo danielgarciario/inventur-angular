@@ -60,7 +60,9 @@ export class BeowachtService {
   crearSesion(empno: string, articulos: Array<string>): Observable<Sesion> {
     const ahora: moment.Moment = moment();
     const titulo = `Von Beobachtung ${ahora.format('D.MM.YYYY HH:mm')}`;
-    const q = `${this.uSesions}/createbeobachtungsesion?empno=${empno}&cwar=${this.lagerquery}&comment=${titulo}`;
+    const q = `${
+      this.uSesions
+    }/createbeobachtungsesion?empno=${empno}&cwar=${this.lagerquery()}&comment=${titulo}`;
     return this.http.put<Sesion>(q, articulos).pipe(
       tap((s) => {
         console.log('Creada Sesion id:', s.idSesion);
