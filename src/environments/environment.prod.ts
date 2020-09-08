@@ -21,7 +21,14 @@ export const beowlagersdef: Array<LagerDefinition> = [
   { cwar: 'R01', lager: 'Rostock Lager' },
 ];
 
-export const beobenutzer: Array<string> = ['444', '167', '19', '361', '463'];
+export const beobenutzer: Array<string> = [
+  '444',
+  '167',
+  '19',
+  '361',
+  '463',
+  '392',
+];
 
 export const environment = {
   production: true,

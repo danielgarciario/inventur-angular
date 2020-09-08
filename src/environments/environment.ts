@@ -30,7 +30,14 @@ export const beowlagersdef: Array<LagerDefinition> = [
 // usuarios que pueden usar beobenutzer
 //
 
-export const beobenutzer: Array<string> = ['444', '167', '19', '361', '463'];
+export const beobenutzer: Array<string> = [
+  '444',
+  '167',
+  '19',
+  '361',
+  '463',
+  '392',
+];
 
 export const environment = {
   production: false,
