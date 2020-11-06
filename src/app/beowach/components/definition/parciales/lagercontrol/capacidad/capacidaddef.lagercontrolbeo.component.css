@@ -1,29 +1,31 @@
-:host {
-  display: flex;
+.container {
+  display: grid;
+  grid-template-columns: 100px auto;
+  margin: 5px;
 }
 
 table {
   width: 100%;
 }
-tr.mat-header-row{
+tr.mat-header-row {
   height: 25px;
   background-color: black;
 }
-.mat-icon-button{
+.mat-icon-button {
   width: 25px;
   height: 25px;
   line-height: 25px;
 }
 
-.mat-header-cell{
+.mat-header-cell {
   color: white;
 }
-tr.mat-row{
+tr.mat-row {
   height: 25px;
 }
-.mat-column-lager{
+.mat-column-lager {
   width: 85px;
- }
-.mat-column-acciones{
-   width: 55px;
- }
+}
+.mat-column-acciones {
+  width: 55px;
+}
