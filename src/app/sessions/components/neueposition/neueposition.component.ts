@@ -41,6 +41,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
   lagerplatz: ValidadorTipo<string>;
   suskandcomp: Subscription;
   kandcompleto: boolean;
+  magicKey: string;
 
   constructor(
     public facade: SuchenArtikelFacadeV3Service,
@@ -52,6 +53,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
     this.suskandcomp = this.facade.kandidatoCompleto$.subscribe(
       (b) => (this.kandcompleto = b)
     );
+    this.magicKey = environment.magickey;
     // this.subsesion = facade.lager$.subscribe((l) => (this.lager = l));
     // this.sublagerstruct = facade.lagerstruct$.subscribe((ls) => {
     //   this.lagerstruct = ls;
@@ -62,7 +64,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     console.log('Keyboard event', event);
-    if (event.key === environment.magickey) {
+    if (event.key === this.magicKey) {
       if (this.kandcompleto) {
         this.createposition();
       }

@@ -28,12 +28,8 @@
     <mat-icon *ngIf="facade.searchingpotenciales$ | async">
       contactless
     </mat-icon>
-    <p *ngIf="(facade.potenciales$ | async).vacio">
-      Artikel nicht bekannt
-    </p>
-    <p *ngIf="(facade.potenciales$ | async).searching">
-      Suchen...
-    </p>
+    <p *ngIf="(facade.potenciales$ | async).vacio">Artikel nicht bekannt</p>
+    <p *ngIf="(facade.potenciales$ | async).searching">Suchen...</p>
     <table
       *ngIf="(facade.potenciales$ | async).showtable"
       mat-table
@@ -85,15 +81,11 @@
   >
   </app-input-text>
   <div class="lugares">
-    <mat-icon *ngIf="facade.searchingort$ | async">
-      contactless
-    </mat-icon>
+    <mat-icon *ngIf="facade.searchingort$ | async"> contactless </mat-icon>
     <p *ngIf="(facade.ort$ | async).vacio">
       Lagerort nicht bekannt für dieser Lager...
     </p>
-    <p *ngIf="(facade.ort$ | async).searching">
-      Suchen...
-    </p>
+    <p *ngIf="(facade.ort$ | async).searching">Suchen...</p>
     <table
       *ngIf="(facade.ort$ | async).showtable"
       mat-table
@@ -159,7 +151,7 @@
       color="primary"
       (click)="createposition()"
     >
-      CREATE
+      CREATE <{{ magicKey }}>
       <mat-icon>exit_to_app</mat-icon>
     </button>
   </div>

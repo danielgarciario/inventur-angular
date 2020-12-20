@@ -3,37 +3,36 @@
   grid-template-columns: 50fr 50fr;
   grid-template-rows: auto;
   grid-template-areas:
-    "artikel lagerplatz"
-   "kandidatos kandidatos";
+    'artikel lagerplatz'
+    'kandidatos kandidatos';
   row-gap: 10px;
   column-gap: 15px;
   margin: 15px;
 }
 
 .artikelcard {
-  grid-area: artikel
+  grid-area: artikel;
 }
-.lagerplatzcard{
-  grid-area: lagerplatz
+.lagerplatzcard {
+  grid-area: lagerplatz;
 }
 .kandidatos {
   grid-area: kandidatos;
-
 }
 
 table {
-  width:100%;
+  width: 100%;
 }
 
-tr.mat-header-row{
+tr.mat-header-row {
   height: 25px;
   background-color: black;
 }
 
-.mat-header-cell{
+.mat-header-cell {
   color: white;
 }
-tr.mat-row{
+tr.mat-row {
   height: 25px;
 }
 
@@ -43,26 +42,24 @@ tr .mat-icon-button {
   line-height: 35px;
 }
 
-.mat-card-header .mat-card-title{
+.mat-card-header .mat-card-title {
   padding: 10px 0px;
   margin: 0;
   font-size: 18px;
   font-weight: 500;
   color: white;
-
 }
 
-.mat-card-header{
+.mat-card-header {
   // background:#41008b;
-  background: #673AB7;
+  background: #673ab7;
 }
-
 
 .resumen {
   margin: 10px;
   display: grid;
-  grid-template-columns: 2fr 1fr 100px;
-  grid-template-areas: "articulo lagerort accion";
+  grid-template-columns: 2fr 1fr 150px;
+  grid-template-areas: 'articulo lagerort accion';
   column-gap: 10px;
 }
 
