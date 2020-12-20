@@ -9,7 +9,7 @@ import {
   FormBuilder,
   FormArray,
   AbstractControl,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { isUndefined } from 'util';
@@ -17,7 +17,7 @@ import { isUndefined } from 'util';
 @Component({
   selector: 'app-dialog-urf',
   templateUrl: './urf.dialog.component.html',
-  styleUrls: ['./urf.dialog.component.scss']
+  styleUrls: ['./urf.dialog.component.scss'],
 })
 export class DialogURFComponent implements OnInit, OnDestroy {
   public isloadingurfs: boolean;
@@ -34,13 +34,14 @@ export class DialogURFComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) {
     this.formulario = this.fb.group({
-      calculos: this.fb.array([])
+      calculos: this.fb.array([]),
     });
     this.valores = new Array<number>();
   }
   ngOnInit() {
     console.log('Arrancando URF');
     this.isloadingurfs = true;
+    this.addneue(this.data.origen);
     this.subsloadurfs = this.sesionservice
       .getURF(this.data.artikel.artikelnr)
       .pipe(
@@ -48,7 +49,7 @@ export class DialogURFComponent implements OnInit, OnDestroy {
           console.log('Respuesta URF!!');
           this.isloadingurfs = false;
           this.urfs = u;
-          this.addneue(this.data.origen);
+          // this.addneue(this.data.origen);
         })
       )
       .subscribe();
@@ -74,6 +75,7 @@ export class DialogURFComponent implements OnInit, OnDestroy {
   }
 
   get total(): number {
+    console.log('total', this.valores);
     if (this.valores.length === 0) {
       return 0;
     }
@@ -113,7 +115,7 @@ export class DialogURFComponent implements OnInit, OnDestroy {
   addneue(valor: number) {
     const npos = this.fb.group({
       einheit: [this.data.artikel.cuni, Validators.required],
-      menge: [valor]
+      menge: [valor],
     });
     this.fcalculos.push(npos);
 
