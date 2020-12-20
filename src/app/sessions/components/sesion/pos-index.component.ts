@@ -202,11 +202,13 @@ export class PosIndexComponent implements OnInit, AfterViewInit, OnDestroy {
     const sesgrabada: number = +window.localStorage['pos-index-sesi'];
     if (sesgrabada === this.idsesion) {
       console.log('Estoy en la sesion correcta');
-      const cualgrabado: Sort = JSON.parse(
-        window.localStorage['pos-index-sort']
-      );
-      console.log('He detectado nuevo sort', cualgrabado);
-      this.mipaginador.onSort(cualgrabado);
+      try {
+        const cualgrabado: Sort = JSON.parse(
+          window.localStorage['pos-index-sort']
+        );
+        console.log('He detectado nuevo sort', cualgrabado);
+        this.mipaginador.onSort(cualgrabado);
+      } catch (error) {}
 
       // this.matSort.active = cualgrabado.active;
 
