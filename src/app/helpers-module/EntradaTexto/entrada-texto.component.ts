@@ -8,7 +8,7 @@ import {
   ElementRef,
   HostListener,
   Output,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import Keyboard from 'simple-keyboard';
 import { MatDialog, MatDialogConfig } from '@angular/material';
@@ -19,12 +19,13 @@ import { DialogKeyboardComponent } from '../Teclados/DialogTeclado.component';
 import { EventEmitter } from '@angular/core';
 import { Validador } from '../Validador/validador.model';
 import { TipoValidador } from '../Validador/TipoValidador.interface';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-input-text',
 
   templateUrl: './entrada-texto.component.html',
-  styleUrls: ['./entrada-texto.component.css']
+  styleUrls: ['./entrada-texto.component.css'],
 })
 export class EntradaTextoComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() validador: Validador;
@@ -34,6 +35,26 @@ export class EntradaTextoComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() suffix = '';
   @Input() Validadores?: Array<TipoValidador>;
   @Output() BorrarClick = new EventEmitter();
+  // Con esto pedimos el focus
+  @Input()
+  set Focus(setfocus: boolean) {
+    if (setfocus === true) {
+      console.log('Pedimos Focus', this.elInput);
+      this.elInput.nativeElement.focus();
+      setfocus = false;
+    }
+  }
+  @Output() OnMagicKey = new EventEmitter();
+
+  @ViewChild('elinput', { static: true }) elInput: ElementRef;
+
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    // console.log('Keyboard event', event, environment.magickey);
+    if (event.key === environment.magickey) {
+      this.OnMagicKey.emit();
+    }
+  }
 
   teclado: Keyboard;
   // validador: Validador;
@@ -80,10 +101,10 @@ export class EntradaTextoComponent implements OnInit, AfterViewInit, OnDestroy {
       isrequired: this.isRequired,
       tipo: this.tipo,
       suffix: this.suffix,
-      validadores: this.Validadores
+      validadores: this.Validadores,
     };
     const dialogopts: MatDialogConfig = {
-      data: midata
+      data: midata,
     };
     if (this.tipo === 'number') {
       dialogopts.width = '350px';

@@ -3,11 +3,14 @@
     <mat-icon>transform</mat-icon>
   </button>
   <app-input-text
+    #MengeMasiv
     class="campo"
     [validador]="gezhaltMasiv"
     placeholder="Menge"
     tipo="number"
     suffix="{{ posicion.artikel.cuni }}"
+    [(Focus)]="pedirfocus"
+    (OnMagicKey)="onMagicKey()"
   ></app-input-text>
 </div>
 <app-input-text [validador]="comentarios" placeholder="Kommentar" tipo="text">

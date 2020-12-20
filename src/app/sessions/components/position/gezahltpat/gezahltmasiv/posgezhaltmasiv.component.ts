@@ -4,7 +4,11 @@ import {
   OnInit,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  AfterContentChecked,
 } from '@angular/core';
 import { SesionPos } from 'src/app/models/sespos.model';
 import { MatDialog } from '@angular/material';
@@ -20,27 +24,32 @@ import { ValidadorMayorIgualQueCero } from 'src/app/helpers-module/Validador/Def
 @Component({
   selector: 'app-pos-gezhaltmasiv',
   templateUrl: './posgezhaltmasiv.component.html',
-  styleUrls: ['./posgezhaltmasiv.component.css']
+  styleUrls: ['./posgezhaltmasiv.component.css'],
 })
-export class PosGezahltMasivComponent implements OnInit, OnDestroy {
+export class PosGezahltMasivComponent
+  implements OnInit, OnDestroy, AfterContentChecked {
   @Input() posicion: SesionPos;
   @Output() OnChangedGezahlt = new EventEmitter<GezahltID>();
+  @Output() OnMagicKey = new EventEmitter();
 
   gezhaltMasiv: Validador;
   comentarios: Validador;
   formconerrores$: Observable<boolean>;
   formcambiado$: Observable<GezahltID>;
   subformcambiados: Subscription;
+  pedirfocus: boolean;
 
-  constructor(public dialogo: MatDialog) {}
+  constructor(public dialogo: MatDialog) {
+    this.pedirfocus = false;
+  }
 
   onGetURF(): void {
     const midata = {
       artikel: this.posicion.artikel,
-      origen: this.gezhaltMasiv.formulario.value
+      origen: this.gezhaltMasiv.formulario.value,
     };
     const dialref = this.dialogo.open(DialogURFComponent, {
-      data: midata
+      data: midata,
     });
     const subsdiaclose = dialref.afterClosed().subscribe((salida) => {
       if (salida.grabar) {
@@ -48,6 +57,11 @@ export class PosGezahltMasivComponent implements OnInit, OnDestroy {
       }
       subsdiaclose.unsubscribe();
     });
+  }
+
+  onMagicKey() {
+    console.log('Magic key!');
+    this.OnMagicKey.emit();
   }
 
   ngOnInit() {
@@ -62,7 +76,7 @@ export class PosGezahltMasivComponent implements OnInit, OnDestroy {
       }
     }
     this.gezhaltMasiv = new Validador(new FormControl(entrada), [
-      ValidadorMayorIgualQueCero
+      ValidadorMayorIgualQueCero,
     ]);
     this.comentarios = new Validador(new FormControl(entradacomentarios));
     this.formconerrores$ = this.gezhaltMasiv.hayerrores$.pipe(
@@ -122,7 +136,7 @@ export class PosGezahltMasivComponent implements OnInit, OnDestroy {
           idsespos: this.posicion.idsespos,
           gezahlt: g,
           comment: c,
-          status: SesionStates.Abierto
+          status: SesionStates.Abierto,
         };
         return ngid;
       })
@@ -133,6 +147,11 @@ export class PosGezahltMasivComponent implements OnInit, OnDestroy {
       this.OnChangedGezahlt.emit(ngid);
     });
   }
+
+  ngAfterContentChecked(): void {
+    this.pedirfocus = true;
+  }
+
   ngOnDestroy() {
     this.subformcambiados.unsubscribe();
   }

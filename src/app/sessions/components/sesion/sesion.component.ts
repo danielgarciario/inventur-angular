@@ -3,13 +3,13 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import {
   Router,
   ActivatedRoute,
   ParamMap,
-  ActivatedRouteSnapshot
+  ActivatedRouteSnapshot,
 } from '@angular/router';
 import { switchMap, tap, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -24,11 +24,13 @@ import { Lager } from 'src/app/models/lager.model';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { MatButton } from '@angular/material';
 import { LagerStruct } from 'src/app/models/lagerstrukt.model';
+import { HostListener } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sesion',
   templateUrl: './sesion.component.html',
-  styleUrls: ['./sesion.component.scss']
+  styleUrls: ['./sesion.component.scss'],
 })
 export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
   snapshot: ActivatedRouteSnapshot;
@@ -44,6 +46,7 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
   thislagersubs: Subscription;
   zuruckbuttonclick$: Observable<Event>;
   subszuruck: Subscription;
+  magicKey: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,6 +67,7 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
         .getLager(s.lager.cwar)
         .subscribe((l) => (this.thislager = l));
     });
+    this.magicKey = environment.magickey;
     this.thislagerstruct$ = this.sesion$.pipe(
       switchMap((x) => {
         return this.sservice.getLager(x.lager.cwar);
@@ -72,6 +76,14 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   @ViewChild('btnzurucksesions', { static: true })
   btnzuruck: MatButton;
+
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    console.log('Keyboard event', event);
+    if (event.key === this.magicKey) {
+      this.onNeuePosition();
+    }
+  }
 
   ngOnInit() {
     this.loading$ = this.store$.select(fromSelectors.isLoadingPositions);
@@ -107,7 +119,7 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(
       fromActions.ConfirDeleteSesionPosicion({
         sesionid: pos.idsesion,
-        posicionid: pos.idsespos
+        posicionid: pos.idsespos,
       })
     );
   }
@@ -115,7 +127,7 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(`Goto Posistion: ${pos.idsespos} from ${this.route}`);
 
     this.router.navigate(['../../position', pos.idsespos], {
-      relativeTo: this.route
+      relativeTo: this.route,
     });
     /*
     this.store$.dispatch(
@@ -133,7 +145,7 @@ export class SesionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(
       ['../../neueposition', this.snapshot.paramMap.get('id')],
       {
-        relativeTo: this.route
+        relativeTo: this.route,
       }
     );
   }

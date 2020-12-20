@@ -49,6 +49,7 @@ export const environment = {
   beowachlagers: beowlagersdef,
   beowachlager: 'S36',
   beousers: beobenutzer,
+  magickey: 'F4',
 };
 
 /*

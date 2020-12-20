@@ -9,6 +9,7 @@
     *ngIf="posicion.artikel.seri === 2"
     [posicion]="posicion"
     (OnChangedGezahlt)="OnChangedGezahltEvent($event)"
+    (OnMagicKey)="OnMagicKeyEvent()"
   >
   </app-pos-gezhaltmasiv>
   <!-- Artikel Ohne ID-->

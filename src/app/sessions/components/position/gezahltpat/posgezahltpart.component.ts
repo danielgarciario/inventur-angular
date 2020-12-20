@@ -4,7 +4,7 @@ import {
   Output,
   EventEmitter,
   OnInit,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { SesionPos } from 'src/app/models/sespos.model';
 import { GezahltID, Gezahlt } from 'src/app/models/Gezaehlt.model';
@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-position-gezahlt-part',
   templateUrl: './posgezahltpart.component.html',
-  styleUrls: ['./posgezahltpart.component.scss']
+  styleUrls: ['./posgezahltpart.component.scss'],
 })
 export class PosicionGezahltPartComponent implements OnInit, OnDestroy {
   @Input() posicion: SesionPos;
@@ -26,6 +26,7 @@ export class PosicionGezahltPartComponent implements OnInit, OnDestroy {
   @Output() DeletetgezahltID = new EventEmitter<GezahltID>();
   @Output() OnNeuGezhaltID = new EventEmitter();
   @Output() OnChangedGezahlt = new EventEmitter<GezahltID>();
+  @Output() OnMagicKey = new EventEmitter();
 
   constructor(public dialogo: MatDialog) {}
 
@@ -33,6 +34,9 @@ export class PosicionGezahltPartComponent implements OnInit, OnDestroy {
   subsonchanges: Subscription;
   OnChangedGezahltEvent(ngid: GezahltID) {
     this.OnChangedGezahlt.emit(ngid);
+  }
+  OnMagicKeyEvent() {
+    this.OnMagicKey.emit();
   }
 
   ngOnInit() {
@@ -43,7 +47,7 @@ export class PosicionGezahltPartComponent implements OnInit, OnDestroy {
       ),
       comment: new FormControl(
         this.GezahltMasiv ? this.GezahltMasiv.comment : ''
-      )
+      ),
     });
     this.subscribeOnchanges();
   }
@@ -69,7 +73,7 @@ export class PosicionGezahltPartComponent implements OnInit, OnDestroy {
           idsespos: this.posicion.idsespos,
           gezahlt: valor,
           comment: val.comment,
-          status: SesionStates.Abierto
+          status: SesionStates.Abierto,
         };
         this.OnChangedGezahlt.emit(ngid);
       }
@@ -117,10 +121,10 @@ export class PosicionGezahltPartComponent implements OnInit, OnDestroy {
   onGetURF(): void {
     const midata = {
       artikel: this.posicion.artikel,
-      origen: this.GezahltMasiv ? this.GezahltMasiv.gezahlt : 0
+      origen: this.GezahltMasiv ? this.GezahltMasiv.gezahlt : 0,
     };
     const dialogref = this.dialogo.open(DialogURFComponent, {
-      data: midata
+      data: midata,
     });
     dialogref.afterClosed().subscribe((salida) => {
       if (salida.grabar) {

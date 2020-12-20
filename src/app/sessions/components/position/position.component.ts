@@ -3,12 +3,12 @@ import {
   OnInit,
   OnDestroy,
   AfterViewInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   ActivatedRoute,
-  Router
+  Router,
 } from '@angular/router';
 import { Observable, fromEvent, Subscription, combineLatest } from 'rxjs';
 import { SesionPos } from 'src/app/models/sespos.model';
@@ -21,6 +21,7 @@ import { MatButton } from '@angular/material';
 import { BestandID } from 'src/app/models/bestand.model';
 import { GezahltID } from 'src/app/models/Gezaehlt.model';
 import { SesionStates } from 'src/app/models/sesionstatesenum.enum';
+import { environment } from 'src/environments/environment';
 
 /*
 Inspiracion: https://stackoverflow.com/questions/37770226/observable-from-button-click-event-in-angular2
@@ -29,7 +30,7 @@ Inspiracion: https://stackoverflow.com/questions/37770226/observable-from-button
 @Component({
   selector: 'app-position',
   templateUrl: './position.component.html',
-  styleUrls: ['./position.component.scss']
+  styleUrls: ['./position.component.scss'],
 })
 export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   snapshot: ActivatedRouteSnapshot;
@@ -48,6 +49,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   subpos: Subscription;
   subnavigate: Subscription;
   posicion: SesionPos;
+  magicKey: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +57,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router
   ) {
     this.snapshot = route.snapshot;
+    this.magicKey = environment.magickey;
   }
 
   @ViewChild('btnzurucksesion', { static: true })
@@ -76,7 +79,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
         switchMap((e) => this.position$),
         map((p) =>
           this.router.navigate(['../../session', p.idsesion], {
-            relativeTo: this.route
+            relativeTo: this.route,
           })
         )
       )
@@ -98,7 +101,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
         this.store$.dispatch(
           fromSesionActions.ConfirDeleteSesionPosicion({
             sesionid: this.idsesion,
-            posicionid: this.idposicion
+            posicionid: this.idposicion,
           })
         );
       });
@@ -115,7 +118,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
         }),
         tap(() =>
           this.router.navigate(['../../session', this.idsesion], {
-            relativeTo: this.route
+            relativeTo: this.route,
           })
         )
       )
@@ -202,7 +205,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
       map((p) =>
         fromSesionActions.ConfirDeleteSesionPosicion({
           sesionid: p.idsesion,
-          posicionid: p.idsespos
+          posicionid: p.idsespos,
         })
       )
     );
@@ -211,7 +214,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(
       fromSesionActions.TrySaveGezhaltID({
         posicion: this.posicion,
-        rutadestinoOK: '/sessions/session'
+        rutadestinoOK: '/sessions/session',
       })
     );
   }
@@ -220,7 +223,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(
       fromSesionActions.TryAddSerialBestandToGezahlt({
         idsespos: id.idsespos,
-        serl: id.serl
+        serl: id.serl,
       })
     );
   }
@@ -228,7 +231,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
   onResetGezahltID(gez: GezahltID) {
     this.store$.dispatch(
       fromSesionActions.TryResetGezhaltID({
-        gezahltId: gez
+        gezahltId: gez,
       })
     );
   }
@@ -236,7 +239,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(
       fromSesionActions.ShowPosGezahlDetailID({
         sespos: this.posicion,
-        gezhaltid: gez
+        gezhaltid: gez,
       })
     );
   }
@@ -244,7 +247,7 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(
       fromSesionActions.ConfirmDeleteGezahltID({
         posicion: this.posicion,
-        gezahltId: gez
+        gezahltId: gez,
       })
     );
   }
@@ -256,12 +259,12 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
       idsespos: this.idposicion,
       gezahlt: 1,
       comment: '',
-      status: SesionStates.Abierto
+      status: SesionStates.Abierto,
     };
     this.store$.dispatch(
       fromSesionActions.ShowPosGezahlDetailID({
         sespos: this.posicion,
-        gezhaltid: ngid
+        gezhaltid: ngid,
       })
     );
   }
@@ -273,9 +276,13 @@ export class PositionComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.store$.dispatch(
       fromSesionActions.ChangePosGezhalDetailMasiv({
-        npgezahlt: pos
+        npgezahlt: pos,
       })
     );
+  }
+
+  onMagicKeyEvent() {
+    this.onSavePosition();
   }
 
   ngOnDestroy() {

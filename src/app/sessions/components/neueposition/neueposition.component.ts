@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   ActivatedRoute,
-  Router
+  Router,
 } from '@angular/router';
 import { SuchenArtikelFacadeService } from 'src/app/services/facade/suchenArtikel.facade.service';
 import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
@@ -21,11 +21,12 @@ import { SuchenArtikelFacadeV3Service } from 'src/app/services/facade/suchenArti
 import { LagerStruct } from 'src/app/models/lagerstrukt.model';
 import { Localizador } from 'src/app/models/lagerort.model';
 import { KandidatoPartComponent } from './kandidatospart/kandidatopart.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-neueposition',
   templateUrl: './neueposition.component.html',
-  styleUrls: ['./neueposition.component.scss']
+  styleUrls: ['./neueposition.component.scss'],
 })
 export class NeuePositionComponent implements OnInit, OnDestroy {
   snapshot: ActivatedRouteSnapshot;
@@ -38,6 +39,8 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
   artikelnr: ValidadorTipo<string>;
   // artikelbes: ValidadorTipo<string>;
   lagerplatz: ValidadorTipo<string>;
+  suskandcomp: Subscription;
+  kandcompleto: boolean;
 
   constructor(
     public facade: SuchenArtikelFacadeV3Service,
@@ -46,11 +49,24 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.snapshot = route.snapshot;
+    this.suskandcomp = this.facade.kandidatoCompleto$.subscribe(
+      (b) => (this.kandcompleto = b)
+    );
     // this.subsesion = facade.lager$.subscribe((l) => (this.lager = l));
     // this.sublagerstruct = facade.lagerstruct$.subscribe((ls) => {
     //   this.lagerstruct = ls;
     //   console.log('lagerstruct', ls);
     // });
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    console.log('Keyboard event', event);
+    if (event.key === environment.magickey) {
+      if (this.kandcompleto) {
+        this.createposition();
+      }
+    }
   }
 
   ngOnInit() {
@@ -82,7 +98,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
         console.log(`Hemos anadido nueva posicion`, nsp);
         this.store$.dispatch(fromActions.AddSesionPosSuccessAcknowledge());
         this.router.navigate(['../../position', nsp.idsespos], {
-          relativeTo: this.route
+          relativeTo: this.route,
         });
       });
   }
@@ -98,7 +114,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
     const lo = this.facade.kandidato$.value.lagerot;
     const kand = {
       articulo: miarticulo,
-      lagerort: { lager: lo.cwar, lagerplatz: lo.loca, regal: lo.rega }
+      lagerort: { lager: lo.cwar, lagerplatz: lo.loca, regal: lo.rega },
     };
     this.store$.dispatch(
       fromActions.seleccionaCandidato({ selectKandidato: kand })
@@ -106,6 +122,7 @@ export class NeuePositionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.suskandcomp.unsubscribe();
     // this.subsesion.unsubscribe();
     // this.subnavigate.unsubscribe();
   }

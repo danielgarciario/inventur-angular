@@ -24,7 +24,7 @@
         color="primary"
         (click)="onSavePosition()"
       >
-        <mat-icon>save</mat-icon>Speichern
+        <mat-icon>save</mat-icon>Speichern < {{ magicKey }} >
       </button>
     </mat-card-actions>
   </mat-card>
@@ -69,6 +69,7 @@
         (DeletetgezahltID)="onDeleteGezahltIDDetail($event)"
         (OnNeuGezhaltID)="onNewGezhaltID()"
         (OnChangedGezahlt)="onChangedGezhalt($event)"
+        (OnMagicKey)="onMagicKeyEvent()"
       ></app-position-gezahlt-part>
     </mat-card-content>
   </mat-card>
