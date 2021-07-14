@@ -1,7 +1,10 @@
 <div class="maincontainer">
-  <label class="artikeltitle titlemain"
-    >Artikel: {{ (lagercontrol$ | async).articulo.artikelnr }}</label
-  >
+  <div class="artikeltitle titlemain">
+    <label>Artikel: &nbsp;</label>
+    <label *ngIf="!isloading">
+      {{ (lagercontrol$ | async).articulo.artikelnr }}
+    </label>
+  </div>
   <label class="capacidadtitle titlemain">Max. Kapazität</label>
   <label class="lagerdatatitle titlemain">Bestellungsdaten</label>
 

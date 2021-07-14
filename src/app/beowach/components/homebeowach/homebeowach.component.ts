@@ -3,7 +3,7 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import { BeowachtService } from 'src/app/services/beowacht.service';
 import { BeowachtungsListe } from 'src/app/models/beowachliste.model';
@@ -16,7 +16,7 @@ import {
   combineLatest,
   pipe,
   of,
-  from
+  from,
 } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -28,7 +28,7 @@ import {
   mergeAll,
   mergeMap,
   concatMap,
-  catchError
+  catchError,
 } from 'rxjs/operators';
 import { MatCheckbox, MatCheckboxChange, Sort } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -45,7 +45,7 @@ import { Sesion } from 'src/app/models/sesion.model';
 @Component({
   selector: 'app-beo-home',
   templateUrl: './homebeowach.component.html',
-  styleUrls: ['./homebeowach.component.css']
+  styleUrls: ['./homebeowach.component.css'],
 })
 export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
   liste$: Observable<Array<BeowachtungsListe>>;
@@ -71,7 +71,7 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
 
   estadofiltro = new BehaviorSubject<{ ohnebestellung: boolean; orden: Sort }>({
     ohnebestellung: false,
-    orden: { active: '', direction: '' }
+    orden: { active: '', direction: '' },
   });
 
   @ViewChild('withoutbestellunbvor', { static: true })
@@ -203,8 +203,8 @@ export class HomeBeowachComponent implements OnInit, OnDestroy, AfterViewInit {
         '../definition',
         {
           lager: adonde.lagercontrol.cwar,
-          item: adonde.lagercontrol.articulo.artikelnr
-        }
+          item: adonde.lagercontrol.articulo.artikelnr,
+        },
       ],
       { relativeTo: this.route }
     );

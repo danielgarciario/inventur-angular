@@ -43,3 +43,32 @@ td.mat-cell:first-of-type {
 .yapedido {
   background: lightseagreen;
 }
+
+.ullimpio {
+  display: flex;
+  list-style-type: none;
+  margin:0;
+  padding: 0;
+}
+
+
+.mi-mat-figure{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding: 0 0 0 5px;
+  margin: 0;
+}
+.lagerplatz{
+  flex-basis: 80px;
+  padding: 0 5px 0 5px;
+  border: gray;
+  border-style: none none none solid;
+  align-self: stretch;
+  border-width: thin;
+  line-height: 36px;
+  min-width: 65px;
+  text-align: center;
+}
